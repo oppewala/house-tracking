@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/oppewala/ht-gateway/queue"
+	"github.com/oppewala/house-tracking/cmd/gateway/queue"
 )
 
 type houseSubmission struct {

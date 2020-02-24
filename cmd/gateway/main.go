@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/oppewala/ht-gateway/api"
+	"github.com/oppewala/house-tracking/cmd/gateway/api"
 )
 
 func main() {
