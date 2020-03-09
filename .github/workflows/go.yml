@@ -24,8 +24,5 @@ jobs:
             dep ensure
         fi
 
-    - name: Build Gateway
-      run: go build -v cmd/gateway/.
-
-    - name: Build Scraper
-      run: go build -v cmd/scraper/.
+    - name: Build
+      run: make build
