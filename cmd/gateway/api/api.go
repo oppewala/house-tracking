@@ -18,7 +18,7 @@ type houseSubmission struct {
 func Index(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("content-type", "application/json")
-	w.Write([]byte(`{"message":"Hello"}`))
+	w.Write([]byte(`{"message":"Welcome to the gateway"}`))
 }
 
 // Submit request
