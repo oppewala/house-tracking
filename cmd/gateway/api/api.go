@@ -61,7 +61,11 @@ func fail(s string, w http.ResponseWriter) {
 	w.Header().Set("content-type", "application/json")
 	res := fmt.Sprintf(`{"message":"%s"}`, s)
 	_, err := w.Write([]byte(res))
+	handleError(err, "Failed to write response body")
+}
+
+func handleError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("Failed to write response body: #{err}")
+		log.Fatalf("%s: %s", msg, err)
 	}
 }
