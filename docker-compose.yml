@@ -6,6 +6,8 @@ services:
             dockerfile: ./cmd/management/Dockerfile
         ports: 
             - "5000:5000"
+        env_file: 
+            - "./common.env"
     gateway: 
         build: 
             context: .

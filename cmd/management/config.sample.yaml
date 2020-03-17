@@ -1,3 +1,0 @@
-global:
-    database:
-        connection: "mongodb+srv://<username>:<password>@<url>"
