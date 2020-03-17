@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . .
 
-WORKDIR /app/cmd/gateway
+WORKDIR /app/cmd/scraper
 RUN go build -o main .
 
 FROM alpine:latest
@@ -19,6 +19,6 @@ WORKDIR /app
 
 COPY --from=builder /app .
 
-ENTRYPOINT /app/cmd/gateway/main
+ENTRYPOINT /app/cmd/scraper/main
 
-EXPOSE 5000
+EXPOSE 8080

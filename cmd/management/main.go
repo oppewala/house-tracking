@@ -5,16 +5,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/oppewala/house-tracking/cmd/management/shared"
+	htconfig "github.com/oppewala/house-tracking/internal/config"
 	htdb "github.com/oppewala/house-tracking/internal/db"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 var database *mongo.Database
@@ -98,26 +96,13 @@ func newInspection(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Print("Starting 'management' service")
+	log.Print("Starting 'management' on :8080")
 
-	database = htdb.Connect()
-
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://dbuser:g628EhHUZLI3rhDZ@cluster0-vwhkj.mongodb.net/test?retryWrites=true&w=majority"))
+	config, err := htconfig.Retrieve()
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer client.Disconnect(ctx)
-
-	err = client.Ping(ctx, readpref.Primary())
-	if err != nil {
-		log.Fatal(err)
-	}
-	database = client.Database("house-tracking")
+	database = htdb.Connect(config)
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", allContents).Methods("GET")

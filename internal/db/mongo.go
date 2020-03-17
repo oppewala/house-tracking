@@ -13,12 +13,7 @@ import (
 )
 
 // Connect to database
-func Connect() *mongo.Database {
-	config, err := htconfig.Retrieve()
-	if err != nil {
-		log.Fatal(err)
-	}
-
+func Connect(config *htconfig.Configuration) *mongo.Database {
 	log.Printf("Connecting to: %v", config.MongoDB)
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(config.MongoDB))

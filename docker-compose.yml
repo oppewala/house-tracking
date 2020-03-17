@@ -1,0 +1,14 @@
+version: '3'
+services: 
+    management:
+        build: 
+            context: .
+            dockerfile: ./cmd/management/Dockerfile
+        ports: 
+            - "5000:5000"
+    gateway: 
+        build: 
+            context: .
+            dockerfile: ./cmd/gateway/Dockerfile
+        ports:
+            - "5000:5000"
