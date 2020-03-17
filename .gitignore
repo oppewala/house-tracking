@@ -1,5 +1,7 @@
-config.yaml
 main
+
+# Ignore config files with possible username/password
+*.env
 
 # Created by https://www.gitignore.io/api/go,macos,windows,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=go,macos,windows,visualstudiocode
