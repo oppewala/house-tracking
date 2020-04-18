@@ -102,6 +102,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Config: %v", config)
 	database = htdb.Connect(config)
 
 	router := mux.NewRouter().StrictSlash(true)

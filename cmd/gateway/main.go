@@ -11,6 +11,6 @@ func main() {
 	http.HandleFunc("/", api.Index)
 	http.HandleFunc("/submit", api.Submit)
 
-	log.Printf("Starting 'Gateway' on :5000")
-	log.Fatal(http.ListenAndServe(":5000", nil))
+	log.Printf("Starting 'Gateway' on :8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

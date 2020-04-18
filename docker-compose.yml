@@ -1,16 +1,47 @@
-version: '3'
+version: '3.7'
 services: 
     management:
         build: 
             context: .
             dockerfile: ./cmd/management/Dockerfile
-        ports: 
-            - "5000:5000"
         env_file: 
             - "./.env"
+        networks: 
+            - internal
     gateway: 
         build: 
             context: .
             dockerfile: ./cmd/gateway/Dockerfile
         ports:
-            - "5000:5000"
+            - "5001:8080"
+        networks: 
+            - internal
+            - public
+    scraper: 
+        build: 
+            context: .
+            dockerfile: ./cmd/scraper/Dockerfile
+        networks: 
+            - internal
+        depends_on: 
+            - rabbitmq
+    rabbitmq:
+        image: rabbitmq:3-management
+        hostname: rabbitmq-ht
+        networks: 
+            - internal
+            - public
+        # volumes: # Config if required
+        #     - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
+        #     - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+        #     - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+        ports:
+            - 5010:15672
+
+networks:
+    internal:
+        name: ht-internal
+        driver: bridge
+    public:
+        name: ht-public
+        driver: bridge

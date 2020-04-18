@@ -25,8 +25,8 @@ func main() {
 
 	queueInput()
 
-	log.Printf("Starting 'Scraper' on :5001")
-	log.Fatal(http.ListenAndServe(":5001", nil))
+	log.Printf("Starting 'Scraper' on :8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func submit(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +77,7 @@ func submit(w http.ResponseWriter, r *http.Request) {
 }
 
 func queueInput() {
-	var url string = "amqp://guest:guest@localhost:5672/"
+	var url string = "amqp://guest:guest@rabbitmq:5672/"
 
 	conn, err := amqp.Dial(url)
 	handleError(err, "Failed to connect to amqp")
