@@ -15,6 +15,7 @@ import (
 	htdb "github.com/oppewala/house-tracking/internal/db"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
@@ -49,28 +50,35 @@ func newHouse(w http.ResponseWriter, r *http.Request) {
 
 	var existingProperty shared.Property
 	err = propertiesCollection.FindOne(ctx, bson.M{
-		"Address.Street":   property.Address.Street,
-		"Address.Suburb":   property.Address.Suburb,
-		"Address.Postcode": property.Address.Postcode,
-		"Address.State":    property.Address.State}).Decode(&existingProperty)
+		"address.street":   property.Address.Street,
+		"address.suburb":   property.Address.Suburb,
+		"address.postcode": property.Address.Postcode}).Decode(&existingProperty)
 
 	if err == nil {
-		log.Printf("%s: %s", "Found Matching house", err)
+		msg := fmt.Sprintf("Add property failed: Property already exists with matching address (%v, %v, %v)", property.Address.Street, property.Address.Suburb, property.Address.Postcode)
+		log.Printf(msg)
+
+		w.WriteHeader(http.StatusBadRequest)
+		w.Header().Set("content-type", "application/json")
+
+		res := fmt.Sprintf(`{ 'status': 'failed', 'message' "%s"}`, msg)
+		_, innerErr := w.Write([]byte(res))
+		handleError(innerErr, "Failed to write response on duplicate address")
+
+	}
+
+	if err != nil {
+		log.Printf("%s: %s", "No matching house found", err)
+		property.ID = primitive.NewObjectID()
 		id, err := uuid.New()
 		handleError(err, "Failed to generate unique id")
 		property.PublicID = id
-	} else {
-		log.Printf("%s: %s", "No matching house found", err)
-		property.ID = existingProperty.ID
-		property.PublicID = existingProperty.PublicID
-	}
 
-	propertyResult, err := propertiesCollection.InsertOne(ctx, property)
-	if err != nil {
-		log.Fatal(err)
-	}
+		_, err = propertiesCollection.InsertOne(ctx, property)
+		handleBadRequest(w, err, "Failed to insert property")
 
-	fmt.Fprintf(w, "{ 'id': '%v' }", propertyResult.InsertedID)
+		fmt.Fprintf(w, "{ 'status': 'added', 'id': '%v', 'internalid': %v }", property.PublicID, property.ID)
+	}
 }
 
 func newInspection(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +107,9 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Printf("Config: %v", config)
-	database = htdb.Connect(config)
+	disconnect, db := htdb.Connect(config)
+	database = db
+	defer disconnect()
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", allContents).Methods("GET")
@@ -125,7 +135,7 @@ func handleBadRequest(w http.ResponseWriter, err error, msg string) error {
 	w.WriteHeader(http.StatusBadRequest)
 	w.Header().Set("content-type", "application/json")
 
-	res := fmt.Sprintf(`{"message":"%s"}`, "Invalid address")
+	res := fmt.Sprintf(`{"message":"%s"}`, msg)
 	_, innerErr := w.Write([]byte(res))
 	handleError(innerErr, "Failed to write response on invalid address")
 	return err

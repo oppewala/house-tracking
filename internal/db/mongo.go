@@ -13,7 +13,7 @@ import (
 )
 
 // Connect to database
-func Connect(config *htconfig.Configuration) *mongo.Database {
+func Connect(config *htconfig.Configuration) (disconnect func(), db *mongo.Database) {
 	log.Printf("Connecting to: %v", config.MongoDB)
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(config.MongoDB))
@@ -25,7 +25,7 @@ func Connect(config *htconfig.Configuration) *mongo.Database {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Disconnect(ctx)
+	// defer client.Disconnect(ctx)
 
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
@@ -34,5 +34,7 @@ func Connect(config *htconfig.Configuration) *mongo.Database {
 
 	log.Print("Connected to db")
 
-	return client.Database("house-tracking")
+	return func() {
+		client.Disconnect(ctx)
+	}, client.Database("house-tracking")
 }

@@ -8,13 +8,22 @@ POST http://localhost:5000/house HTTP/1.1
 content-type: application/json
 
 {
-    "Price": "20-30",
+    "Price": "750000-820000",
 	"Address": {
 		"Street":   "37 Camera Walk",
 	    "Suburb":   "Coburg North",
 		"Postcode": "3058",
-        "State": "Vic"
-	}
+        "State": "VIC"
+	},
+    "Bedrooms": 4,
+    "Bathrooms": 2,
+    "Parking": 2,
+    "References": [
+	    {
+	        "Source": "Domain",
+	        "URL":    "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139"
+	    }],
+	"Tags": ["omg", "nice"]
 }
 
 ###
