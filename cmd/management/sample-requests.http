@@ -1,11 +1,38 @@
-GET http://localhost:8080/
+
+
+GET http://localhost:5000/
 
 ###
 
-POST http://localhost:8080/house HTTP/1.1
+POST http://localhost:5000/house HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+    "Price": "20-30",
+	"Address": {
+		"Street":   "37 Camera Walk",
+	    "Suburb":   "Coburg North",
+		"Postcode": "3058",
+        "State": "Vic"
+	}
+}
+
+###
+
+{
+	"Price": "750000-820000",
+	"Address": {
+		"Street":   "37 Camera Walk",
+	    "Suburb":   "Coburg North",
+		"Postcode": "3058"
+	},
+	"Bedrooms":  4,
+	"Bathrooms": 2,
+	"Parking":   2,
+	"References": [
+	    {
+	        "Source": "Domain",
+	        "URL":    "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139",
+	    }],
+	"Tags": ["omg", "nice"],
 }

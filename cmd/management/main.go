@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -13,6 +16,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 
 var database *mongo.Database
@@ -38,37 +42,29 @@ func allContents(w http.ResponseWriter, r *http.Request) {
 func newHouse(w http.ResponseWriter, r *http.Request) {
 	var propertiesCollection = database.Collection("properties")
 
-	// var bedrooms int32 = 4
-	// var bathrooms int32 = 2
-	// var parking int32 = 2
-
-	// propertyResult, err := propertiesCollection.InsertOne(ctx, bson.D{
-	// 	{"Price", "750000-820000"},
-	// 	{"URL", "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139"},
-	// 	{"Bedrooms", bedrooms }
-	// 	{"Bathrooms", bathrooms }
-	// 	{"Bedrooms", parking }
-	// 	{"Type", "House"}
-	// 	{"Tags", []string{}}
-	// })
-	property := shared.Property{
-		Price: "750000-820000",
-		Address: shared.Address{
-			Street:   "37 Camera Walk",
-			Suburb:   "Coburg North",
-			Postcode: "3058",
-		},
-		Bedrooms:  4,
-		Bathrooms: 2,
-		Parking:   2,
-		References: []shared.Reference{
-			shared.Reference{
-				Source: "Domain",
-				URL:    "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139",
-			},
-		},
-		Tags: []string{"omg", "nice"},
+	property, err := getRequestedHouse(w, r)
+	if err != nil {
+		return
 	}
+
+	var existingProperty shared.Property
+	err = propertiesCollection.FindOne(ctx, bson.M{
+		"Address.Street":   property.Address.Street,
+		"Address.Suburb":   property.Address.Suburb,
+		"Address.Postcode": property.Address.Postcode,
+		"Address.State":    property.Address.State}).Decode(&existingProperty)
+
+	if err == nil {
+		log.Printf("%s: %s", "Found Matching house", err)
+		id, err := uuid.New()
+		handleError(err, "Failed to generate unique id")
+		property.PublicID = id
+	} else {
+		log.Printf("%s: %s", "No matching house found", err)
+		property.ID = existingProperty.ID
+		property.PublicID = existingProperty.PublicID
+	}
+
 	propertyResult, err := propertiesCollection.InsertOne(ctx, property)
 	if err != nil {
 		log.Fatal(err)
@@ -111,21 +107,72 @@ func main() {
 	router.HandleFunc("/house/{id}/inspection", newInspection).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
+}
 
-	// updateResult, err := housesCollection.UpdateMany(ctx,
-	// 	bson.M{
-	// 		"URL": bson.M{
-	// 			"$eq": "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139",
+func handleError(err error, msg string) {
+	if err != nil {
+		log.Fatalf("%s: %s", msg, err)
+	}
+}
+
+func handleBadRequest(w http.ResponseWriter, err error, msg string) error {
+	if err == nil {
+		return nil
+	}
+
+	log.Printf("%s: %s", msg, err)
+
+	w.WriteHeader(http.StatusBadRequest)
+	w.Header().Set("content-type", "application/json")
+
+	res := fmt.Sprintf(`{"message":"%s"}`, "Invalid address")
+	_, innerErr := w.Write([]byte(res))
+	handleError(innerErr, "Failed to write response on invalid address")
+	return err
+}
+
+func getRequestedHouse(w http.ResponseWriter, r *http.Request) (shared.Property, error) {
+
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if handleBadRequest(w, err, "Failed to read body of request") != nil {
+		return shared.Property{}, err
+	}
+
+	var property shared.Property
+	err = json.Unmarshal(reqBody, &property)
+	if handleBadRequest(w, err, "Failed to unmarshall request") != nil {
+		return shared.Property{}, err
+	}
+
+	// property := shared.Property{
+	// 	Price: "750000-820000",
+	//  PublicId:
+	// 	Address: shared.Address{
+	// 		Street:   "37 Camera Walk",
+	// 		Suburb:   "Coburg North",
+	// 		Postcode: "3058",
+	// 	},
+	// 	Bedrooms:  4,
+	// 	Bathrooms: 2,
+	// 	Parking:   2,
+	// 	References: []shared.Reference{
+	// 		shared.Reference{
+	// 			Source: "Domain",
+	// 			URL:    "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139",
 	// 		},
 	// 	},
-	// 	bson.M{
-	// 		"$set": bson.M{
-	// 			"Price": "500000",
-	// 		},
-	// 	})
-	// if err != nil {
-	// 	log.Fatal(err)
+	// 	Tags: []string{"omg", "nice"},
 	// }
 
-	// fmt.Printf("Matched: %v | Updated: %v", updateResult.MatchedCount, updateResult.UpsertedCount)
+	if property.Address.Postcode == "" ||
+		property.Address.State == "" ||
+		property.Address.Street == "" {
+		err = errors.New("Invalid Address")
+		if handleBadRequest(w, err, "Invalid Address") != nil {
+			return shared.Property{}, err
+		}
+	}
+
+	return property, nil
+
 }
