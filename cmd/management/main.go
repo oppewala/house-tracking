@@ -88,10 +88,8 @@ func newInspection(w http.ResponseWriter, r *http.Request) {
 
 	inspectionsResult, err := inspectionsCollection.InsertMany(ctx, []interface{}{
 		bson.D{
-			{"house", houseID},
-			{"Date", "2020-03-28"},
-		},
-	})
+			primitive.E{Key: "house", Value: houseID},
+			primitive.E{Key: "date", Value: "2020-03-28"}}})
 	if err != nil {
 		log.Fatal(err)
 	}
