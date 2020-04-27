@@ -1,5 +1,10 @@
 package shared
 
+// Handler house request
+type Handler interface {
+	Handle(*shared.HouseRequest) (string, error)
+}
+
 // HouseRequest is
 type HouseRequest struct {
 	URL string `json:"url"`
