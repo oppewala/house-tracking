@@ -13,6 +13,7 @@ import (
 	"github.com/oppewala/house-tracking/cmd/management/shared"
 	htconfig "github.com/oppewala/house-tracking/internal/config"
 	htdb "github.com/oppewala/house-tracking/internal/db"
+	eh "github.com/oppewala/house-tracking/internal/errhandler"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -63,7 +64,7 @@ func newHouse(w http.ResponseWriter, r *http.Request) {
 
 		res := fmt.Sprintf(`{ 'status': 'failed', 'message' "%s"}`, msg)
 		_, innerErr := w.Write([]byte(res))
-		handleError(innerErr, "Failed to write response on duplicate address")
+		eh.Fatal(innerErr, "Failed to write response on duplicate address")
 
 	}
 
@@ -71,10 +72,11 @@ func newHouse(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s: %s", "No matching house found", err)
 		property.ID = primitive.NewObjectID()
 		id, err := uuid.New()
-		handleError(err, "Failed to generate unique id")
+		eh.Fatal(err, "Failed to generate unique id")
 		property.PublicID = id
 
 		_, err = propertiesCollection.InsertOne(ctx, property)
+		eh.Print(err, "Failed to insert property")
 		handleBadRequest(w, err, "Failed to insert property")
 
 		fmt.Fprintf(w, "{ 'status': 'added', 'id': '%v', 'internalid': %v }", property.PublicID, property.ID)
@@ -117,38 +119,24 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-func handleError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
-}
-
-func handleBadRequest(w http.ResponseWriter, err error, msg string) error {
-	if err == nil {
-		return nil
-	}
-
-	log.Printf("%s: %s", msg, err)
-
+func writeBadRequestResponse(w http.ResponseWriter, err error) {
 	w.WriteHeader(http.StatusBadRequest)
 	w.Header().Set("content-type", "application/json")
-
-	res := fmt.Sprintf(`{"message":"%s"}`, msg)
-	_, innerErr := w.Write([]byte(res))
-	handleError(innerErr, "Failed to write response on invalid address")
-	return err
 }
 
 func getRequestedHouse(w http.ResponseWriter, r *http.Request) (shared.Property, error) {
-
 	reqBody, err := ioutil.ReadAll(r.Body)
-	if handleBadRequest(w, err, "Failed to read body of request") != nil {
+	eh.Print(err, "Failed to read body of request")
+	if err != nil {
+		writeBadRequestResponse(w, err)
 		return shared.Property{}, err
 	}
 
 	var property shared.Property
 	err = json.Unmarshal(reqBody, &property)
-	if handleBadRequest(w, err, "Failed to unmarshall request") != nil {
+	eh.Print(err, "Failed to unmarshal request")
+	if err != nil {
+		writeBadRequestResponse(w, err)
 		return shared.Property{}, err
 	}
 
@@ -176,7 +164,9 @@ func getRequestedHouse(w http.ResponseWriter, r *http.Request) (shared.Property,
 		property.Address.State == "" ||
 		property.Address.Street == "" {
 		err = errors.New("Invalid Address")
-		if handleBadRequest(w, err, "Invalid Address") != nil {
+		eh.Print(err, "Invalid Address")
+		if err != nil {
+			writeBadRequestResponse(w, err)
 			return shared.Property{}, err
 		}
 	}
