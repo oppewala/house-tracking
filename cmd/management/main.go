@@ -39,6 +39,18 @@ func allContents(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println(properties)
+
+	s, err := json.Marshal(properties)
+	if err != nil {
+		log.Fatalf("Failed to marshal response")
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("content-type", "application/json")
+	res := fmt.Sprintf(`{"message":"%s"}`, s)
+	_, err = w.Write([]byte(res))
 }
 
 func newHouse(w http.ResponseWriter, r *http.Request) {
