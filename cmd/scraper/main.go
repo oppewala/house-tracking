@@ -12,7 +12,7 @@ type Response struct {
 
 func main() {
 
-	http.HandleFunc("/submit", submit)
+	http.HandleFunc("/submit", Submit)
 	queueHandler()
 
 	log.Printf("Starting 'Scraper' on :8080")

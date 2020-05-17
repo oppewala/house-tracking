@@ -9,7 +9,8 @@ import (
 	"github.com/oppewala/house-tracking/cmd/scraper/shared"
 )
 
-func submit(w http.ResponseWriter, r *http.Request) {
+// Submit url manually (bypass queue)
+func Submit(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Processing submission from API")
 
 	if r.Method != "POST" {
