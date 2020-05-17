@@ -77,7 +77,7 @@ func newHouse(w http.ResponseWriter, r *http.Request) {
 
 		_, err = propertiesCollection.InsertOne(ctx, property)
 		eh.Print(err, "Failed to insert property")
-		handleBadRequest(w, err, "Failed to insert property")
+		writeBadRequestResponse(w, err)
 
 		fmt.Fprintf(w, "{ 'status': 'added', 'id': '%v', 'internalid': %v }", property.PublicID, property.ID)
 	}

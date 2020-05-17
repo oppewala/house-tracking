@@ -2,7 +2,7 @@ package shared
 
 // Handler house request
 type Handler interface {
-	Handle(*shared.HouseRequest) (string, error)
+	Handle(*HouseRequest) (string, error)
 }
 
 // HouseRequest is
