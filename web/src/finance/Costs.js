@@ -1,6 +1,5 @@
 import React from 'react'
 import { BudgetRow, BudgetSubTotal} from './Common'
-import Calculator from './CostsCalculator'
 
 const Costs = (props) => {
 

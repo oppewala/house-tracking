@@ -3,7 +3,6 @@ import Costs from './Costs'
 import Savings from './Savings'
 import Loan from "./Loan";
 import Calculator from "./CostsCalculator";
-import {BudgetRow} from "./Common";
 import Repayments from "./Repayments";
 
 class Budget extends Component {
@@ -23,13 +22,6 @@ class Budget extends Component {
         const prop = e.target.name;
         this.setState({[prop]: Number(e.target.value)})
     }
-
-    //<BudgetRow desc="House Price" val={this.state.housePrice} format='currency' />
-    //<BudgetRow desc="Joint Savings" val={this.state.savings} format='currency' />
-    //<BudgetRow desc="Gift" val={this.state.gift} format='currency' />
-    //<BudgetRow desc="Interest Rate" val={this.state.interestRate} format='percent' />
-    //<BudgetRow desc="Loan Length (yrs)" val={this.state.length} />
-    //<BudgetRow desc="Monthly Living" val={this.state.monthlyLivingCosts} format='currency' />
 
     render() {
         const stampDuty = Calculator.StampDuty(this.state.housePrice);
@@ -102,7 +94,7 @@ class Budget extends Component {
 const Input = (props) => {
     return (
         <div>
-            {props.desc} | <input type='text' value={props.value} name={props.name} onChange={props.handleChange}/>
+            {props.desc} <input type='text' value={props.value} name={props.name} onChange={props.handleChange}/>
         </div>
     )
 }

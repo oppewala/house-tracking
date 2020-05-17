@@ -11,9 +11,6 @@ const Loan = (props) => {
     let totalLivingCosts = props.monthlyLivingCosts * 6;
     let minimumSixMo = minimum + totalLivingCosts + totalRepayments;
 
-    console.log(props.monthlyRepayments, totalRepayments, totalLivingCosts)
-
-
     return (
         <div>
             <h3>Loan Details</h3>
