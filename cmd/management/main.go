@@ -49,8 +49,13 @@ func allContents(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("content-type", "application/json")
-	res := fmt.Sprintf(`{"message":"%s"}`, s)
-	_, err = w.Write([]byte(res))
+	res := []byte(fmt.Sprintf(`%v`, s))
+	_, err = w.Write(res)
+	if err != nil {
+		log.Fatalf("Failed to write response body")
+		http.Error(w, err.Error(), 500)
+		return
+	}
 }
 
 func newHouse(w http.ResponseWriter, r *http.Request) {
