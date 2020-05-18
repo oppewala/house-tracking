@@ -49,7 +49,7 @@ func allContents(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("content-type", "application/json")
-	res := []byte(fmt.Sprintf(`%v`, s))
+	res := []byte(string(s))
 	_, err = w.Write(res)
 	if err != nil {
 		log.Fatalf("Failed to write response body")
