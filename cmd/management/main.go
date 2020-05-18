@@ -18,7 +18,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 
 var database *mongo.Database
@@ -33,7 +32,7 @@ func allContents(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	var properties []bson.M
+	var properties []shared.Property
 	if err = cursor.All(ctx, &properties); err != nil {
 		log.Fatal(err)
 	}
@@ -81,22 +80,22 @@ func newHouse(w http.ResponseWriter, r *http.Request) {
 		res := fmt.Sprintf(`{ 'status': 'failed', 'message' "%s"}`, msg)
 		_, innerErr := w.Write([]byte(res))
 		eh.Fatal(innerErr, "Failed to write response on duplicate address")
-
+		return
 	}
 
-	if err != nil {
-		log.Printf("%s: %s", "No matching house found", err)
-		property.ID = primitive.NewObjectID()
-		id, err := uuid.New()
-		eh.Fatal(err, "Failed to generate unique id")
-		property.PublicID = id
+	log.Printf("%s: %s", "No matching house found", err)
+	property.ID = primitive.NewObjectID()
 
-		_, err = propertiesCollection.InsertOne(ctx, property)
+	_, err = propertiesCollection.InsertOne(ctx, property)
+	if err != nil {
 		eh.Print(err, "Failed to insert property")
 		writeBadRequestResponse(w, err)
-
-		fmt.Fprintf(w, "{ 'status': 'added', 'id': '%v', 'internalid': %v }", property.PublicID, property.ID)
+		return
 	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("content-type", "application/json")
+	fmt.Fprintf(w, "{ 'status': 'added', 'id': '%v' }", property.ID)
 }
 
 func newInspection(w http.ResponseWriter, r *http.Request) {

@@ -2,14 +2,12 @@ package shared
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 
 // Property is
 type Property struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty"`
-	PublicID   uuid.UUID          `bson:"id,omitempty`
-	Price      string             `bson"title,omitempty"`
+	Price      string             `bson:"price,omitempty"`
 	Address    Address            `bson:"address,omitempty"`
 	Bedrooms   int32              `bson:"bedrooms,omitempty"`
 	Bathrooms  int32              `bson:"bathrooms,omitempty"`
