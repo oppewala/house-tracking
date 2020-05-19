@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 import Budget from './finance/Budget'
-import HouseList from "./house-list/HouseList";
+import Properties from "./properties/Properties";
 
 function App() {
   return (
     <div className="App">
       <h1>House Tracking</h1>
-        <HouseList />
+        <Properties />
       <Budget />
     </div>
   );

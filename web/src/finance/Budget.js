@@ -19,8 +19,7 @@ class Budget extends Component {
     }
 
     priceChangeHandler = (e) => {
-        const prop = e.target.name;
-        this.setState({[prop]: Number(e.target.value)})
+        this.setState({[e.target.name]: e.target.value})
     }
 
     render() {
@@ -46,7 +45,7 @@ class Budget extends Component {
             <div>
                 <h2>Budget</h2>
                 <h3>Inputs</h3>
-                <Input desc='House Price' value={this.state.housePrice} name='housePrice' handleChange={this.priceChangeHandler} />
+                <Input desc='Property Price' value={this.state.housePrice} name='housePrice' handleChange={this.priceChangeHandler} />
                 <Input desc='Joint Savings' value={this.state.savings} name='savings' handleChange={this.priceChangeHandler} />
                 <Input desc='Interest Rates' value={this.state.interestRate} name='interestRate' handleChange={this.priceChangeHandler} />
                 <Input desc='Loan Length (yrs)' value={this.state.length} name='length' handleChange={this.priceChangeHandler} />
@@ -92,9 +91,14 @@ class Budget extends Component {
 }
 
 const Input = (props) => {
+    let val = props.value;
+    if (Number.isNaN(val)) {
+        val = 0.00;
+    }
+
     return (
         <div>
-            {props.desc} <input type='text' value={props.value} name={props.name} onChange={props.handleChange}/>
+            {props.desc} <input type='number' value={val} name={props.name} onChange={props.handleChange}/>
         </div>
     )
 }
