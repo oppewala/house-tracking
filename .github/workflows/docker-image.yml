@@ -28,5 +28,5 @@ jobs:
         repository: ${{ env.DOCKER_REPOSITORY }}
         tag_with_ref: true
         tag_with_sha: true
-        dockerfile: '{path}/cmd/management/Dockerfile'
+        dockerfile: './cmd/management/Dockerfile'
         add_git_labels: true
