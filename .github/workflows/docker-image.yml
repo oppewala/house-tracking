@@ -1,0 +1,32 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  DOCKER_REPOSITORY: oppewala/house-tracking
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file ./cmd/management/Dockerfile --tag house-tracking:latest
+    
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v1.1.0
+      with:
+        username: ${{ secret.DOCKERHUB_USERNAME }}
+        password: ${{ secret.DOCKERHUB_PASSWORD }}
+        repository: $DOCKER_REPOSITORY
+        tag_with_ref: true
+        tag_with_sha: true
+        dockerfile: '{path}/cmd/management/Dockerfile'
+        add_git_labels: true
