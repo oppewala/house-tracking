@@ -9,7 +9,7 @@ class Properties extends Component {
     }
 
     FetchProperties = () => {
-        fetch('https://ao-ht-mgmt.azurewebsites.net')
+        fetch('https://api.house.crackedjar.com')
             .then(res => res.json())
             .then(result => this.setState({
                     isLoaded: true,
