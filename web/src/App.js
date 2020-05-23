@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <h1>House Tracking</h1>
-        <Properties />
+      <Properties />
       <Budget />
     </div>
   );
