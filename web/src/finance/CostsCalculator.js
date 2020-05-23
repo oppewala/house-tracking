@@ -6,7 +6,7 @@ export class CostsCalculator {
     static TransferFee = (housePrice) => 98.5+(housePrice/1000)*2.34;
 
     static TotalCosts = (housePrice, stampDuty, transferFee, applicationFee) =>
-        housePrice + stampDuty + transferFee + applicationFee;
+        Number(housePrice) + Number(stampDuty) + Number(transferFee) + Number(applicationFee);
 
     static MinimumDeposit = (housePrice, totalCost) => (0.2 * housePrice) + totalCost - housePrice;
 
