@@ -1,19 +1,55 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export const Address = (props) => {
-    return (<div>
-        <p>Address</p>
-        <SimpleAddressInput desc='Street' name='street' val={props.address.street} changeHandler={props.changeHandler}/>
-        <SimpleAddressInput desc='Suburb' name='suburb' val={props.address.suburb} changeHandler={props.changeHandler}/>
-        <SimpleAddressInput desc='Postcode' name='postcode' val={props.address.postcode}
-                            changeHandler={props.changeHandler}/>
-        <SimpleAddressInput desc='State' name='state' val={props.address.state} changeHandler={props.changeHandler}/>
-    </div>)
-}
+const Address = (props) => {
+  const { address, changeHandler } = props;
+
+  return (
+    <div>
+      <p>Address</p>
+      <SimpleAddressInput
+        desc="Street"
+        name="street"
+        val={address.street}
+        changeHandler={changeHandler}
+      />
+      <SimpleAddressInput
+        desc="Suburb"
+        name="suburb"
+        val={address.suburb}
+        changeHandler={changeHandler}
+      />
+      <SimpleAddressInput
+        desc="Postcode"
+        name="postcode"
+        val={address.postcode}
+        changeHandler={changeHandler}
+      />
+      <SimpleAddressInput
+        desc="State"
+        name="state"
+        val={address.state}
+        changeHandler={changeHandler}
+      />
+    </div>
+  );
+};
+
+Address.propTypes = {
+  address: PropTypes.shape().isRequired,
+  changeHandler: PropTypes.func.isRequired,
+};
+
 const SimpleAddressInput = (props) => {
-    return (<div>
-        <label htmlFor={props.name}>{props.desc}</label>
-        <input type='text' id={'address' + props.name} name={props.name} value={props.val}
-               onChange={props.changeHandler}/>
-    </div>);
-}
+  const { name, desc, val, changeHandler } = props;
+  const id = `address $name`;
+
+  return (
+    <div>
+      <label htmlFor={name}>{desc}</label>
+      <input type="text" id={id} name={name} value={val} onChange={changeHandler} />
+    </div>
+  );
+};
+
+export default Address;

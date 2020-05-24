@@ -1,38 +1,51 @@
 import React from 'react';
 
 const formatter = (value, opt) => {
-    let val = value;
-    if (opt === 'currency') {
-        let currencyFormatter = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD'})
-        val = currencyFormatter.format(val);
-    }
+  let val = value;
+  if (opt === 'currency') {
+    const currencyFormatter = new Intl.NumberFormat('en-AU', {
+      style: 'currency',
+      currency: 'AUD',
+    });
+    val = currencyFormatter.format(val);
+  }
 
-    if (opt === 'percent') {
-        let perc = +Math.round(val * 10000) / 100;
-        val = perc + '%';
-    }
+  if (opt === 'percent') {
+    const perc = +Math.round(val * 10000) / 100;
+    val = `${perc}%`;
+  }
 
-    return val;
-}
+  return val;
+};
 
-export function BudgetRow (props) {
-    let val = formatter(props.val, props.format)
+export function BudgetRow(props) {
+  const { desc, format } = props;
 
-    return (
-        <div className="row">
-            {props.desc} | {val}
-        </div>
-    )
+  let { val } = props;
+  val = formatter(val, format);
+
+  return (
+    <div className="row">
+      {desc}
+      <span>|</span>
+      {val}
+    </div>
+  );
 }
 
 export function BudgetSubTotal(props) {
-    let val = formatter(props.val, props.format)
+  const { desc, format } = props;
 
-    return (
-        <div className="row sub-total">
-            <b>{props.desc} | {val}</b>
-        </div>
-    )
+  let { val } = props;
+  val = formatter(val, format);
+
+  return (
+    <div className="row sub-total">
+      <b>
+        <span>{desc}</span>
+        <span>|</span>
+        <span>{val}</span>
+      </b>
+    </div>
+  );
 }
-
-export default { BudgetRow, BudgetSubTotal }
