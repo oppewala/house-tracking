@@ -13,7 +13,13 @@ export class CostsCalculator {
     0.2 * Number(housePrice) + Number(totalCost) - Number(housePrice);
 
   static RepaymentsMonthly = (interestRate, loanLength, loanValue) => {
-    return CostsCalculator.PMT(interestRate / 12, loanLength * 12, loanValue, 0, 0);
+    return CostsCalculator.PMT(
+      interestRate / 12, // Interest Rate is annual, convert to months
+      loanLength * 12, // Loan Length is in years, convert to months
+      loanValue,
+      0,
+      0,
+    );
   };
 
   // From stackoverflow
@@ -21,7 +27,8 @@ export class CostsCalculator {
   static PMT = (ratePerPeriod, numberOfPayments, presentValue, futureValue, type) => {
     if (ratePerPeriod !== 0.0) {
       // Interest rate exists
-      const q = 1 + ratePerPeriod ** numberOfPayments;
+      const q = (1 + ratePerPeriod) ** numberOfPayments;
+
       return (
         -(ratePerPeriod * (futureValue + q * presentValue)) /
         ((-1 + q) * (1 + ratePerPeriod * type))
