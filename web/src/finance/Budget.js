@@ -53,7 +53,9 @@ class Budget extends Component {
       this.constants.mortgageApplicationFee,
     );
 
-    const mortgageAmount = totalCosts - savings;
+    const isFirstHomeBuyerEligible = firstHomeBuyer && housePrice <= 600000;
+    const totalSavings = CostsCalculator.Savings(savings, isFirstHomeBuyerEligible);
+    const mortgageAmount = totalCosts - totalSavings;
 
     const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(
       interestRate,
@@ -111,7 +113,7 @@ class Budget extends Component {
           applicationFee={this.constants.mortgageApplicationFee}
           total={totalCosts}
         />
-        <Savings joint={savings} />
+        <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
         <Mortgage
           housePrice={housePrice}
           totalCost={totalCosts}

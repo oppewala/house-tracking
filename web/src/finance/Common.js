@@ -20,8 +20,9 @@ const formatter = (value, opt) => {
 
 export function BudgetRow(props) {
   const { desc, format } = props;
-
   let { val } = props;
+
+  if (val === null) return null;
   val = formatter(val, format);
 
   return (

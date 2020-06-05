@@ -51,4 +51,7 @@ export class CostsCalculator {
 
     return 0;
   };
+
+  static Savings = (deposit, isFirstHomeBuyerEligible) =>
+    Number(deposit) + (isFirstHomeBuyerEligible ? 10000 : 0);
 }
