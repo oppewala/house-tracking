@@ -42,7 +42,7 @@ Address.propTypes = {
 
 const SimpleAddressInput = (props) => {
   const { name, desc, val, changeHandler } = props;
-  const id = `address $name`;
+  const id = `address ${name}`;
 
   return (
     <div>

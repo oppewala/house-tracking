@@ -1,0 +1,40 @@
+nav {
+  width: 100vw;
+  font-family: monospace;
+}
+nav h1 {
+  font-size: 3vh;
+}
+
+nav li {
+  list-style-type: none;
+  margin: 0 2vw;
+  font-size: 2vh;
+}
+nav a {
+  text-decoration: none;
+  color: #0e0e0e;
+}
+nav a:hover {
+  background-color: cornsilk;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+}
+
+@media only screen and (max-width: 500px) {
+  nav ul {
+    flex-direction: column;
+  }
+
+  nav li {
+    margin: 0;
+  }
+
+  nav a {
+    display: block;
+  }
+}

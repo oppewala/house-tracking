@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Costs from './Costs';
 import Savings from './Savings';
 import Loan from './Loan';
-import Calculator from './CostsCalculator';
+import { CostsCalculator } from './CostsCalculator';
 import Repayments from './Repayments';
 
 class Budget extends Component {
@@ -19,19 +19,34 @@ class Budget extends Component {
       interestRate: 0.03,
       length: 30,
       monthlyLivingCosts: 0,
+      firstHomeBuyer: false,
     };
   }
 
   priceChangeHandler = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    const { value, name } = e.target;
+
+    this.setState({ [name]: value });
+  };
+
+  fhbHandler = (e) => {
+    const value = e.target.checked;
+    this.setState({ firstHomeBuyer: value });
   };
 
   render() {
-    const { housePrice, savings, length, interestRate, monthlyLivingCosts } = this.state;
+    const {
+      housePrice,
+      savings,
+      length,
+      interestRate,
+      monthlyLivingCosts,
+      firstHomeBuyer,
+    } = this.state;
 
-    const stampDuty = Calculator.StampDuty(housePrice);
-    const transferFee = Calculator.TransferFee(housePrice);
-    const totalCosts = Calculator.TotalCosts(
+    const stampDuty = CostsCalculator.StampDuty(housePrice, firstHomeBuyer);
+    const transferFee = CostsCalculator.TransferFee(housePrice);
+    const totalCosts = CostsCalculator.TotalCosts(
       housePrice,
       stampDuty,
       transferFee,
@@ -40,7 +55,7 @@ class Budget extends Component {
 
     const loanAmount = totalCosts - savings;
 
-    const monthlyRepayment = -Calculator.RepaymentsMonthly(interestRate, length, loanAmount);
+    const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, loanAmount);
 
     return (
       <div>
@@ -76,6 +91,15 @@ class Budget extends Component {
           name="monthlyLivingCosts"
           handleChange={this.priceChangeHandler}
         />
+        <div>
+          First Home Buyer
+          <input
+            type="checkbox"
+            checked={firstHomeBuyer}
+            name="firstHomeBuyer"
+            onChange={this.fhbHandler}
+          />
+        </div>
         <Costs
           price={housePrice}
           stampDuty={stampDuty}
