@@ -14,12 +14,12 @@ class Budget extends Component {
     super();
 
     this.state = {
-      housePrice: 0,
-      savings: 0,
-      interestRate: 0.03,
-      length: 30,
-      monthlyLivingCosts: 0,
-      firstHomeBuyer: false,
+      housePrice: localStorage.getItem('Budget.housePrice') || 0,
+      savings: localStorage.getItem('Budget.savings') || 0,
+      interestRate: localStorage.getItem('Budget.interestRate') || 0.03,
+      length: localStorage.getItem('Budget.length') || 30,
+      monthlyLivingCosts: localStorage.getItem('Budget.monthlyLivingCosts') || 0,
+      firstHomeBuyer: localStorage.getItem('Budget.firstHomeBuyer') || false,
     };
   }
 
@@ -27,11 +27,13 @@ class Budget extends Component {
     const { value, name } = e.target;
 
     this.setState({ [name]: value });
+    localStorage.setItem(`Budget.${name}`, value);
   };
 
   fhbHandler = (e) => {
     const value = e.target.checked;
     this.setState({ firstHomeBuyer: value });
+    localStorage.setItem(`Budget.firstHomeBuyer`, value);
   };
 
   render() {
