@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Costs from './Costs';
 import Savings from './Savings';
-import Loan from './Loan';
+import Mortgage from './Mortgage';
 import { CostsCalculator } from './CostsCalculator';
 import Repayments from './Repayments';
 
@@ -53,9 +53,13 @@ class Budget extends Component {
       this.constants.mortgageApplicationFee,
     );
 
-    const loanAmount = totalCosts - savings;
+    const mortgageAmount = totalCosts - savings;
 
-    const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, loanAmount);
+    const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(
+      interestRate,
+      length,
+      mortgageAmount,
+    );
 
     return (
       <div>
@@ -80,7 +84,7 @@ class Budget extends Component {
           handleChange={this.priceChangeHandler}
         />
         <Input
-          desc="Loan Length (yrs)"
+          desc="Mortgage Length (yrs)"
           value={length}
           name="length"
           handleChange={this.priceChangeHandler}
@@ -108,17 +112,33 @@ class Budget extends Component {
           total={totalCosts}
         />
         <Savings joint={savings} />
-        <Loan
+        <Mortgage
           housePrice={housePrice}
           totalCost={totalCosts}
-          loanAmount={loanAmount}
+          mortgageAmount={mortgageAmount}
           monthlyRepayments={monthlyRepayment}
           monthlyLivingCosts={monthlyLivingCosts}
         />
-        <Repayments interestRate={interestRate} loanAmount={loanAmount} loanLength={length} />
-        <Repayments interestRate={3 / 100} loanAmount={loanAmount} loanLength={length} />
-        <Repayments interestRate={5 / 100} loanAmount={loanAmount} loanLength={length} />
-        <Repayments interestRate={8 / 100} loanAmount={loanAmount} loanLength={length} />
+        <Repayments
+          interestRate={interestRate}
+          mortgageAmount={mortgageAmount}
+          mortgageLength={length}
+        />
+        <Repayments
+          interestRate={3 / 100}
+          mortgageAmount={mortgageAmount}
+          mortgageLength={length}
+        />
+        <Repayments
+          interestRate={5 / 100}
+          mortgageAmount={mortgageAmount}
+          mortgageLength={length}
+        />
+        <Repayments
+          interestRate={8 / 100}
+          mortgageAmount={mortgageAmount}
+          mortgageLength={length}
+        />
       </div>
     );
   }

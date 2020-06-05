@@ -3,11 +3,11 @@ import { CostsCalculator } from './CostsCalculator';
 import { BudgetRow } from './Common';
 
 const Repayments = (props) => {
-  const { interestRate, loanLength, loanAmount } = props;
+  const { interestRate, mortgageLength, mortgageAmount } = props;
 
-  const monthly = -CostsCalculator.RepaymentsMonthly(interestRate, loanLength, loanAmount);
-  const totalPaid = monthly * 12 * loanLength;
-  const totalInterestPaid = totalPaid - loanAmount;
+  const monthly = -CostsCalculator.RepaymentsMonthly(interestRate, mortgageLength, mortgageAmount);
+  const totalPaid = monthly * 12 * mortgageLength;
+  const totalInterestPaid = totalPaid - mortgageAmount;
 
   return (
     <div>

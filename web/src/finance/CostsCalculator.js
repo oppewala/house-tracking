@@ -24,7 +24,7 @@ export class CostsCalculator {
 
     const repayments = CostsCalculator.PMT(
       interestRate / 12, // Interest Rate is annual, convert to months
-      loanLength * 12, // Loan Length is in years, convert to months
+      loanLength * 12, // Mortgage Length is in years, convert to months
       loanValue,
       0,
       0,
