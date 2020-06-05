@@ -36,6 +36,23 @@ class Budget extends Component {
     localStorage.setItem(`Budget.firstHomeBuyer`, value);
   };
 
+  formReset = () => {
+    this.setState({
+      housePrice: 0,
+      savings: 0,
+      interestRate: 0.03,
+      length: 30,
+      monthlyLivingCosts: 0,
+      firstHomeBuyer: false,
+    });
+    localStorage.setItem(`Budget.housePrice`, 0);
+    localStorage.setItem(`Budget.savings`, 0);
+    localStorage.setItem(`Budget.interestRate`, 0.03);
+    localStorage.setItem(`Budget.length`, 30);
+    localStorage.setItem(`Budget.monthlyLivingCosts`, 0);
+    localStorage.setItem(`Budget.firstHomeBuyer`, 'false');
+  };
+
   render() {
     const {
       housePrice,
@@ -107,6 +124,11 @@ class Budget extends Component {
             name="firstHomeBuyer"
             onChange={this.fhbHandler}
           />
+        </div>
+        <div>
+          <button type="button" onClick={this.formReset}>
+            Reset
+          </button>
         </div>
         <Costs
           price={housePrice}
