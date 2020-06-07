@@ -49,7 +49,7 @@ func queueHandler() {
 
 			res, err := houseRequestMediator(houseRequest)
 			if err != nil {
-				log.Printf("%s: %s", "Failed to handle request", err)
+				log.Printf("Failed to handle request: %s", err)
 			}
 
 			log.Printf("Handled with response: %s", res)

@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/url"
 
-	"github.com/oppewala/house-tracking/cmd/scraper/domain"
-	"github.com/oppewala/house-tracking/cmd/scraper/rea"
 	"github.com/oppewala/house-tracking/cmd/scraper/shared"
 	eh "github.com/oppewala/house-tracking/internal/errhandler"
+	"github.com/oppewala/house-tracking/internal/scraping/domain"
+	"github.com/oppewala/house-tracking/internal/scraping/rea"
 	"github.com/pkg/errors"
 )
 
