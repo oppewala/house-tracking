@@ -51,9 +51,9 @@ class NewProperty extends Component {
     });
   };
 
-  addressFieldChangeHandler = (e) => {
+  addressFieldChangeHandler = (address) => {
     const { house } = this.state;
-    house.address[e.target.name] = e.target.value;
+    house.address = address;
 
     this.setState({
       house,

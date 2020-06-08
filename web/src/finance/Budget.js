@@ -13,11 +13,19 @@ const Budget = () => {
   const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
     const [value, setValue] = useState(localStorage.getItem(localStorageKey) || defaultValue);
 
+    let v = value;
+    if (v === 'false') {
+      v = false;
+    }
+    if (v === 'true') {
+      v = true;
+    }
+
     useEffect(() => {
       localStorage.setItem(localStorageKey, value);
     }, [localStorageKey, value]);
 
-    return [value, setValue];
+    return [v, setValue];
   };
 
   const [housePrice, setPrice] = useStateWithLocalStorage('Budget.housePrice', 0);
