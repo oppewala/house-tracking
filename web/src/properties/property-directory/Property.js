@@ -28,7 +28,7 @@ export class Property extends Component {
     const listingUrl = house.References[0].URL;
 
     return (
-      <div>
+      <div className="property">
         <h4>{address}</h4>
         <p>{houseLayout}</p>
         <Score rawscore={house.RawScore} />

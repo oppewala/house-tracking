@@ -1,21 +1,46 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { Link, useRouteMatch } from 'react-router-dom';
 import { Property } from './Property';
-import { HouseType } from '../House';
 
-const PropertyDirectory = (props) => {
-  const { houses } = props;
+const PropertyDirectory = () => {
+  const [isLoaded, setLoaded] = useState(false);
+  const [houses, setHouses] = useState();
+  const [error, setError] = useState();
+
+  const match = useRouteMatch();
+  const controller = new AbortController();
+  const { signal } = controller;
+
+  useEffect(() => {
+    fetch('https://api.house.crackedjar.com', { signal })
+      .then((r) => r.json())
+      .then((r) => {
+        console.log('JSON', r);
+        setHouses(r);
+        setLoaded(true);
+      })
+      .catch((e) => {
+        setError(e);
+        setLoaded(true);
+      });
+    return () => controller.abort();
+  }, []);
+
+  if (error) {
+    return <div>Failed to load: {error.message}</div>;
+  }
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
   const houseEls = houses.map((h) => <Property key={h.ID} house={h} />);
 
-  return <div>{houseEls}</div>;
-};
-
-PropertyDirectory.propTypes = {
-  houses: PropTypes.arrayOf(HouseType.isRequired),
-};
-
-PropertyDirectory.defaultProps = {
-  houses: [],
+  return (
+    <div className="property-directory">
+      <div className="properties">{houseEls}</div>
+      <Link to={`${match.url}/add`}>Add new</Link>
+    </div>
+  );
 };
 
 export default PropertyDirectory;
