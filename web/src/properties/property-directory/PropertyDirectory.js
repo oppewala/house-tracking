@@ -15,7 +15,6 @@ const PropertyDirectory = () => {
     fetch('https://api.house.crackedjar.com', { signal })
       .then((r) => r.json())
       .then((r) => {
-        console.log('JSON', r);
         setHouses(r);
         setLoaded(true);
       })
@@ -24,6 +23,7 @@ const PropertyDirectory = () => {
         setLoaded(true);
       });
     return () => controller.abort();
+    // eslint-disable-next-line
   }, []);
 
   if (error) {
