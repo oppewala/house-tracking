@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Address from './Address';
+import Address from '../common/Address';
 import { ScoreInput } from './Score';
 
 class NewProperty extends Component {

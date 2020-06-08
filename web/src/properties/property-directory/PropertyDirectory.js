@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
 import { Property } from './Property';
 
 const PropertyDirectory = () => {
@@ -7,7 +6,6 @@ const PropertyDirectory = () => {
   const [houses, setHouses] = useState();
   const [error, setError] = useState();
 
-  const match = useRouteMatch();
   const controller = new AbortController();
   const { signal } = controller;
 
@@ -38,7 +36,6 @@ const PropertyDirectory = () => {
   return (
     <div className="property-directory">
       <div className="properties">{houseEls}</div>
-      <Link to={`${match.url}/add`}>Add new</Link>
     </div>
   );
 };
