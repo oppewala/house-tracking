@@ -11,7 +11,7 @@ import (
 )
 
 func queueHandler() {
-	var url string = "amqp://guest:guest@rabbitmq:5672/"
+	var url = "amqp://guest:guest@rabbitmq:5672/"
 
 	conn, err := amqp.Dial(url)
 	eh.Fatal(err, "Failed to connect to amqp")

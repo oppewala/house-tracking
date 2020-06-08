@@ -28,20 +28,8 @@ content-type: application/json
 
 ###
 
-{
-	"Price": "750000-820000",
-	"Address": {
-		"Street":   "37 Camera Walk",
-	    "Suburb":   "Coburg North",
-		"Postcode": "3058"
-	},
-	"Bedrooms":  4,
-	"Bathrooms": 2,
-	"Parking":   2,
-	"References": [
-	    {
-	        "Source": "Domain",
-	        "URL":    "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139",
-	    }],
-	"Tags": ["omg", "nice"],
-}
+GET http://localhost:5000/nbn?Street=37%20Camera%20Walk&suburb=Coburg%20North HTTP/1.1
+
+###
+
+GET http://localhost:5000/nbn/LOC000140347733 HTTP/1.1

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/oppewala/house-tracking/internal/scraping/nbn"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -23,7 +24,29 @@ import (
 var database *mongo.Database
 var ctx context.Context
 
-func allContents(w http.ResponseWriter, r *http.Request) {
+func main() {
+	log.Print("Starting 'management' on :8080")
+
+	config, err := htconfig.Retrieve()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Config: %v", config)
+	disconnect, db := htdb.Connect(config)
+	database = db
+	defer disconnect()
+
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", allContents).Methods("GET")
+	router.HandleFunc("/nbn", nbnSearch).Methods("GET")
+	router.HandleFunc("/nbn/{id}", nbnLookup).Methods("GET")
+	router.HandleFunc("/house", newHouse).Methods("POST")
+	router.HandleFunc("/house/{id}/inspection", newInspection).Methods("POST")
+
+	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func allContents(w http.ResponseWriter, _ *http.Request) {
 	var propertiesCollection = database.Collection("properties")
 	// var inspectionsCollection = database.Collection("inspections")
 
@@ -41,8 +64,8 @@ func allContents(w http.ResponseWriter, r *http.Request) {
 
 	s, err := json.Marshal(properties)
 	if err != nil {
-		log.Fatalf("Failed to marshal response")
-		http.Error(w, err.Error(), 500)
+		err = fmt.Errorf("failed to marshal response: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -50,8 +73,8 @@ func allContents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	_, err = w.Write(s)
 	if err != nil {
-		log.Fatalf("Failed to write response body")
-		http.Error(w, err.Error(), 500)
+		err = fmt.Errorf("failed to write response body: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
@@ -89,7 +112,7 @@ func newHouse(w http.ResponseWriter, r *http.Request) {
 	_, err = propertiesCollection.InsertOne(ctx, property)
 	if err != nil {
 		eh.Print(err, "Failed to insert property")
-		writeBadRequestResponse(w, err)
+		writeBadRequestResponse(w)
 		return
 	}
 
@@ -114,27 +137,57 @@ func newInspection(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "{ 'id': '%v' }", inspectionsResult.InsertedIDs)
 }
 
-func main() {
-	log.Print("Starting 'management' on :8080")
-
-	config, err := htconfig.Retrieve()
-	if err != nil {
-		log.Fatal(err)
+func nbnSearch(w http.ResponseWriter, r *http.Request) {
+	qs := r.URL.Query()
+	a := shared.Address{
+		Street:   qs.Get("Street"),
+		Suburb:   qs.Get("Suburb"),
+		Postcode: qs.Get("Postcode"),
+		State:    qs.Get("State"),
 	}
-	log.Printf("Config: %v", config)
-	disconnect, db := htdb.Connect(config)
-	database = db
-	defer disconnect()
 
-	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", allContents).Methods("GET")
-	router.HandleFunc("/house", newHouse).Methods("POST")
-	router.HandleFunc("/house/{id}/inspection", newInspection).Methods("POST")
+	sugs, err := nbn.Search(a)
+	if err != nil {
+		eh.Print(err, "Failed to search nbn")
+		writeBadRequestResponse(w)
+		return
+	}
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	s, err := json.Marshal(sugs)
+	if err != nil {
+		eh.Print(err, "Failed to marshall json")
+		writeBadRequestResponse(w)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("content-type", "application/json")
+	_, err = w.Write(s)
 }
 
-func writeBadRequestResponse(w http.ResponseWriter, err error) {
+func nbnLookup(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	a, err := nbn.Lookup(id)
+	if err != nil {
+		eh.Print(err, "Failed to search nbn")
+		writeBadRequestResponse(w)
+		return
+	}
+
+	j, err := json.Marshal(a)
+	if err != nil {
+		eh.Print(err, "Failed to marshall json")
+		writeBadRequestResponse(w)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("content-type", "application/json")
+	_, err = w.Write(j)
+}
+
+func writeBadRequestResponse(w http.ResponseWriter) {
 	w.WriteHeader(http.StatusBadRequest)
 	w.Header().Set("content-type", "application/json")
 }
@@ -143,7 +196,7 @@ func getRequestedHouse(w http.ResponseWriter, r *http.Request) (shared.Property,
 	reqBody, err := ioutil.ReadAll(r.Body)
 	eh.Print(err, "Failed to read body of request")
 	if err != nil {
-		writeBadRequestResponse(w, err)
+		writeBadRequestResponse(w)
 		return shared.Property{}, err
 	}
 
@@ -151,29 +204,9 @@ func getRequestedHouse(w http.ResponseWriter, r *http.Request) (shared.Property,
 	err = json.Unmarshal(reqBody, &property)
 	eh.Print(err, "Failed to unmarshal request")
 	if err != nil {
-		writeBadRequestResponse(w, err)
+		writeBadRequestResponse(w)
 		return shared.Property{}, err
 	}
-
-	// property := shared.Property{
-	// 	Price: "750000-820000",
-	//  PublicId:
-	// 	Address: shared.Address{
-	// 		Street:   "37 Camera Walk",
-	// 		Suburb:   "Coburg North",
-	// 		Postcode: "3058",
-	// 	},
-	// 	Bedrooms:  4,
-	// 	Bathrooms: 2,
-	// 	Parking:   2,
-	// 	References: []shared.Reference{
-	// 		shared.Reference{
-	// 			Source: "Domain",
-	// 			URL:    "https://www.domain.com.au/37-camera-walk-coburg-north-vic-3058-2016127139",
-	// 		},
-	// 	},
-	// 	Tags: []string{"omg", "nice"},
-	// }
 
 	if property.Address.Postcode == "" ||
 		property.Address.State == "" ||
@@ -181,7 +214,7 @@ func getRequestedHouse(w http.ResponseWriter, r *http.Request) (shared.Property,
 		err = errors.New("Invalid Address")
 		eh.Print(err, "Invalid Address")
 		if err != nil {
-			writeBadRequestResponse(w, err)
+			writeBadRequestResponse(w)
 			return shared.Property{}, err
 		}
 	}

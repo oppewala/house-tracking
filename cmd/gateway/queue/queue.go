@@ -13,7 +13,7 @@ type houseRequest struct {
 
 // Queue url for processing
 func Queue(url string) (string, error) {
-	var qu string = "amqp://guest:guest@rabbitmq:5672/"
+	var qu = "amqp://guest:guest@rabbitmq:5672/"
 
 	conn, err := amqp.Dial(qu)
 	handleError(err, "Failed to connect to amqp")
