@@ -1,174 +1,138 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Costs from './Costs';
 import Savings from './Savings';
 import Mortgage from './Mortgage';
 import { CostsCalculator } from './CostsCalculator';
 import Repayments from './Repayments';
 
-class Budget extends Component {
-  constants = {
+const Budget = () => {
+  const constants = {
     mortgageApplicationFee: 130,
   };
 
-  constructor() {
-    super();
+  const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
+    const [value, setValue] = useState(localStorage.getItem(localStorageKey) || defaultValue);
 
-    this.state = {
-      housePrice: localStorage.getItem('Budget.housePrice') || 0,
-      savings: localStorage.getItem('Budget.savings') || 0,
-      interestRate: localStorage.getItem('Budget.interestRate') || 0.03,
-      length: localStorage.getItem('Budget.length') || 30,
-      monthlyLivingCosts: localStorage.getItem('Budget.monthlyLivingCosts') || 0,
-      firstHomeBuyer: localStorage.getItem('Budget.firstHomeBuyer') || false,
-    };
-  }
+    useEffect(() => {
+      localStorage.setItem(localStorageKey, value);
+    }, [localStorageKey, value]);
 
-  priceChangeHandler = (e) => {
-    const { value, name } = e.target;
-
-    this.setState({ [name]: value });
-    localStorage.setItem(`Budget.${name}`, value);
+    return [value, setValue];
   };
 
-  fhbHandler = (e) => {
-    const value = e.target.checked;
-    this.setState({ firstHomeBuyer: value });
-    localStorage.setItem(`Budget.firstHomeBuyer`, value);
+  const [housePrice, setPrice] = useStateWithLocalStorage('Budget.housePrice', 0);
+  const [savings, setSavings] = useStateWithLocalStorage('Budget.savings', 0);
+  const [interestRate, setInterestRate] = useStateWithLocalStorage('Budget.interestRate', 0.03);
+  const [length, setLength] = useStateWithLocalStorage('Budget.length', 30);
+  const [monthlyLivingCosts, setLivingCosts] = useStateWithLocalStorage(
+    'Budget.monthlyLivingCosts',
+    0,
+  );
+  const [firstHomeBuyer, setFirstHomeBuyer] = useStateWithLocalStorage(
+    'Budget.firstHomeBuyer',
+    false,
+  );
+
+  const onPriceChange = (e) => setPrice(e.target.value);
+  const onSavingsChange = (e) => setSavings(e.target.value);
+  const onInterestRateChange = (e) => setInterestRate(e.target.value);
+  const onLengthChange = (e) => setLength(e.target.value);
+  const onLivingCostsChange = (e) => setLivingCosts(e.target.value);
+  const onFirstHomeBuyerChange = (e) => setFirstHomeBuyer(e.target.checked);
+
+  const formReset = () => {
+    setPrice(0);
+    setSavings(0);
+    setInterestRate(0.03);
+    setLength(30);
+    setLivingCosts(0);
+    setFirstHomeBuyer(false);
   };
 
-  formReset = () => {
-    this.setState({
-      housePrice: 0,
-      savings: 0,
-      interestRate: 0.03,
-      length: 30,
-      monthlyLivingCosts: 0,
-      firstHomeBuyer: false,
-    });
-    localStorage.setItem(`Budget.housePrice`, 0);
-    localStorage.setItem(`Budget.savings`, 0);
-    localStorage.setItem(`Budget.interestRate`, 0.03);
-    localStorage.setItem(`Budget.length`, 30);
-    localStorage.setItem(`Budget.monthlyLivingCosts`, 0);
-    localStorage.setItem(`Budget.firstHomeBuyer`, 'false');
-  };
+  const stampDuty = CostsCalculator.StampDuty(housePrice, firstHomeBuyer);
+  const transferFee = CostsCalculator.TransferFee(housePrice);
+  const totalCosts = CostsCalculator.TotalCosts(
+    housePrice,
+    stampDuty,
+    transferFee,
+    constants.mortgageApplicationFee,
+  );
 
-  render() {
-    const {
-      housePrice,
-      savings,
-      length,
-      interestRate,
-      monthlyLivingCosts,
-      firstHomeBuyer,
-    } = this.state;
+  const isFirstHomeBuyerEligible = firstHomeBuyer && housePrice <= 600000;
+  const totalSavings = CostsCalculator.Savings(savings, isFirstHomeBuyerEligible);
+  const mortgageAmount = totalCosts - totalSavings;
 
-    const stampDuty = CostsCalculator.StampDuty(housePrice, firstHomeBuyer);
-    const transferFee = CostsCalculator.TransferFee(housePrice);
-    const totalCosts = CostsCalculator.TotalCosts(
-      housePrice,
-      stampDuty,
-      transferFee,
-      this.constants.mortgageApplicationFee,
-    );
+  const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, mortgageAmount);
 
-    const isFirstHomeBuyerEligible = firstHomeBuyer && housePrice <= 600000;
-    const totalSavings = CostsCalculator.Savings(savings, isFirstHomeBuyerEligible);
-    const mortgageAmount = totalCosts - totalSavings;
-
-    const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(
-      interestRate,
-      length,
-      mortgageAmount,
-    );
-
-    return (
+  return (
+    <div>
+      <h2>Budget</h2>
+      <h3>Inputs</h3>
+      <Input
+        desc="Property Price"
+        value={housePrice}
+        name="housePrice"
+        handleChange={onPriceChange}
+      />
+      <Input desc="Joint Savings" value={savings} name="savings" handleChange={onSavingsChange} />
+      <Input
+        desc="Interest Rates"
+        value={interestRate}
+        name="interestRate"
+        handleChange={onInterestRateChange}
+      />
+      <Input
+        desc="Mortgage Length (yrs)"
+        value={length}
+        name="length"
+        handleChange={onLengthChange}
+      />
+      <Input
+        desc="Monthly Living"
+        value={monthlyLivingCosts}
+        name="monthlyLivingCosts"
+        handleChange={onLivingCostsChange}
+      />
       <div>
-        <h2>Budget</h2>
-        <h3>Inputs</h3>
-        <Input
-          desc="Property Price"
-          value={housePrice}
-          name="housePrice"
-          handleChange={this.priceChangeHandler}
-        />
-        <Input
-          desc="Joint Savings"
-          value={savings}
-          name="savings"
-          handleChange={this.priceChangeHandler}
-        />
-        <Input
-          desc="Interest Rates"
-          value={interestRate}
-          name="interestRate"
-          handleChange={this.priceChangeHandler}
-        />
-        <Input
-          desc="Mortgage Length (yrs)"
-          value={length}
-          name="length"
-          handleChange={this.priceChangeHandler}
-        />
-        <Input
-          desc="Monthly Living"
-          value={monthlyLivingCosts}
-          name="monthlyLivingCosts"
-          handleChange={this.priceChangeHandler}
-        />
-        <div>
-          First Home Buyer
-          <input
-            type="checkbox"
-            checked={firstHomeBuyer}
-            name="firstHomeBuyer"
-            onChange={this.fhbHandler}
-          />
-        </div>
-        <div>
-          <button type="button" onClick={this.formReset}>
-            Reset
-          </button>
-        </div>
-        <Costs
-          price={housePrice}
-          stampDuty={stampDuty}
-          transferFee={transferFee}
-          applicationFee={this.constants.mortgageApplicationFee}
-          total={totalCosts}
-        />
-        <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
-        <Mortgage
-          housePrice={housePrice}
-          totalCost={totalCosts}
-          mortgageAmount={mortgageAmount}
-          monthlyRepayments={monthlyRepayment}
-          monthlyLivingCosts={monthlyLivingCosts}
-        />
-        <Repayments
-          interestRate={interestRate}
-          mortgageAmount={mortgageAmount}
-          mortgageLength={length}
-        />
-        <Repayments
-          interestRate={3 / 100}
-          mortgageAmount={mortgageAmount}
-          mortgageLength={length}
-        />
-        <Repayments
-          interestRate={5 / 100}
-          mortgageAmount={mortgageAmount}
-          mortgageLength={length}
-        />
-        <Repayments
-          interestRate={8 / 100}
-          mortgageAmount={mortgageAmount}
-          mortgageLength={length}
+        First Home Buyer
+        <input
+          type="checkbox"
+          checked={firstHomeBuyer}
+          name="firstHomeBuyer"
+          onChange={onFirstHomeBuyerChange}
         />
       </div>
-    );
-  }
-}
+      <div>
+        <button type="button" onClick={formReset}>
+          Reset
+        </button>
+      </div>
+      <Costs
+        price={housePrice}
+        stampDuty={stampDuty}
+        transferFee={transferFee}
+        applicationFee={constants.mortgageApplicationFee}
+        total={totalCosts}
+      />
+      <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
+      <Mortgage
+        housePrice={housePrice}
+        totalCost={totalCosts}
+        mortgageAmount={mortgageAmount}
+        monthlyRepayments={monthlyRepayment}
+        monthlyLivingCosts={monthlyLivingCosts}
+      />
+      <Repayments
+        interestRate={interestRate}
+        mortgageAmount={mortgageAmount}
+        mortgageLength={length}
+      />
+      <Repayments interestRate={3 / 100} mortgageAmount={mortgageAmount} mortgageLength={length} />
+      <Repayments interestRate={5 / 100} mortgageAmount={mortgageAmount} mortgageLength={length} />
+      <Repayments interestRate={8 / 100} mortgageAmount={mortgageAmount} mortgageLength={length} />
+    </div>
+  );
+};
 
 const Input = (props) => {
   const { desc, handleChange, name } = props;
