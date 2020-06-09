@@ -50,7 +50,6 @@ const Address = (props) => {
 
   return (
     <div>
-      <p>Address</p>
       <Autocomplete
         apiKey={`${process.env.REACT_APP_GOOGLE_APIKEY}`}
         onPlaceSelected={autocompleteHandler}
