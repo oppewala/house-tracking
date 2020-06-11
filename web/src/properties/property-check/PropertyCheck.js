@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Address from '../common/Address';
+import NbnDetails from './NbnDetails';
 
 const PropertyCheck = () => {
   const [address, setAddress] = useState({
@@ -9,18 +10,11 @@ const PropertyCheck = () => {
     postcode: '',
   });
 
-  const [nbnInfo, setNbnInfo] = useState({});
-
-  useEffect(() => {
-    if (!address.street || address.street === '') return;
-    setNbnInfo({ type: 'FTTP' });
-  }, [address, setNbnInfo]);
-
   return (
     <div>
       <h2>Property Check</h2>
       <Address address={address} changeHandler={setAddress} />
-      <div>Service Type: {JSON.stringify(nbnInfo)}</div>
+      <NbnDetails address={address} />
     </div>
   );
 };

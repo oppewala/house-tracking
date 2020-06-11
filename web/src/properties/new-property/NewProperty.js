@@ -52,7 +52,7 @@ class NewProperty extends Component {
 
   scoreSliderChangeHandler = (e) => {
     const { house } = this.state;
-    house.rawscore[e.target.name] = Number(e.target.value);
+    house.rawscore[e.currentTarget.name] = Number(e.currentTarget.value);
 
     this.setState({
       house,
@@ -61,7 +61,7 @@ class NewProperty extends Component {
 
   scoreCheckboxChangeHandler = (e) => {
     const { house } = this.state;
-    house.rawscore[e.target.name] = e.target.checked;
+    house.rawscore[e.currentTarget.name] = e.currentTarget.checked;
 
     this.setState({
       house,
@@ -79,7 +79,7 @@ class NewProperty extends Component {
 
   onPriceChange = (e) => {
     const { house } = this.state;
-    house[e.target.name] = e.target.value;
+    house[e.currentTarget.name] = e.currentTarget.value;
 
     this.setState({
       house,
@@ -88,7 +88,7 @@ class NewProperty extends Component {
 
   onRoomChange = (e) => {
     const { house } = this.state;
-    house[e.target.name] = Number(e.target.value);
+    house[e.currentTarget.name] = Number(e.currentTarget.value);
 
     this.setState({
       house,
@@ -125,7 +125,9 @@ class NewProperty extends Component {
     fetch('https://api.house.crackedjar.com/house', {
       method: 'POST',
       body: JSON.stringify(house),
-    });
+    })
+      .then((r) => console.log('Success', r))
+      .catch((ex) => console.error('Failed', ex));
   };
 
   render() {
