@@ -164,7 +164,10 @@ const Budget = () => {
       </div>
       <div className="pt-4">
         <h3 className="text-gray-900 font-bold text-xl mb-2">Different Interest Rates</h3>
-        <div className="flex flex-col md:flex-row">
+        <div
+          className="pb-2 flex flex-col md:flex-row
+        space-y-2 md:space-y-0 md:space-x-2 items-start"
+        >
           <Repayments
             interestRate={3 / 100}
             mortgageAmount={mortgageAmount}

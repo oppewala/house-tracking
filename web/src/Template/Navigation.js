@@ -14,9 +14,6 @@ function Navigation() {
         <nav className="sm:ml-auto flex-wrap text-base items-center justify-center">
           <ul className="flex flex-col sm:flex-row">
             <li className="sm:p-4">
-              <Link to="/">Home</Link>
-            </li>
-            <li className="sm:p-4">
               <Link to="/Budget">Budget</Link>
             </li>
             <li className="sm:p-4">
