@@ -10,7 +10,12 @@
     "browser": true,
     "jest": true
   },
-  "ignorePatterns": ["**/build/*.js"],
+  "ignorePatterns": [
+    "**/build/*.js",
+    "**/index.css",
+    "tailwind.js",
+    "postcss.config.js"
+  ],
   "rules": {
     "max-len": ["error", {"code": 100}],
     "prefer-promise-reject-errors": ["off"],

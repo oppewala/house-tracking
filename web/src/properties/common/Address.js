@@ -50,16 +50,37 @@ const Address = (props) => {
 
   return (
     <div>
-      <Autocomplete
-        apiKey={`${process.env.REACT_APP_GOOGLE_APIKEY}`}
-        onPlaceSelected={autocompleteHandler}
-        types={['address']}
-        componentRestrictions={{ country: 'au' }}
-      />
-      <SimpleAddressInput desc="Street" val={address.street} />
-      <SimpleAddressInput desc="Suburb" val={address.suburb} />
-      <SimpleAddressInput desc="Postcode" val={address.postcode} />
-      <SimpleAddressInput desc="State" val={address.state} />
+      <div className="py-2">
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+        <label>
+          <span className="input-label block">Address</span>
+          <Autocomplete
+            apiKey={`${process.env.REACT_APP_GOOGLE_APIKEY}`}
+            onPlaceSelected={autocompleteHandler}
+            types={['address']}
+            componentRestrictions={{ country: 'au' }}
+            className="input-plain focus:outline-none focus:shadow-outline"
+          />
+        </label>
+      </div>
+      <div className="py-2">
+        <label htmlFor="Street">
+          <span className="input-label block">Street</span>
+          <input
+            className="input-plain"
+            disabled
+            type="text"
+            name="Street"
+            placeholder="Waiting for search..."
+            defaultValue={address.street}
+          />
+        </label>
+      </div>
+      <div className="flex flex-col -mx-2 md:flex-row md:flex-wrap">
+        <SimpleAddressInput desc="Suburb" val={address.suburb} />
+        <SimpleAddressInput desc="Postcode" val={address.postcode} />
+        <SimpleAddressInput desc="State" val={address.state} />
+      </div>
     </div>
   );
 };
@@ -73,9 +94,18 @@ const SimpleAddressInput = (props) => {
   const { desc, val } = props;
 
   return (
-    <div>
-      <label htmlFor={desc}>{desc}</label>
-      <input disabled type="text" name={desc} defaultValue={val} />
+    <div className="w-full p-2 md:w-1/3">
+      <label htmlFor={desc}>
+        <span className="input-label block">{desc}</span>
+      </label>
+      <input
+        className="input-plain"
+        disabled
+        type="text"
+        name={desc}
+        placeholder="Waiting for search..."
+        defaultValue={val}
+      />
     </div>
   );
 };

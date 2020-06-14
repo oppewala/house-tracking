@@ -11,11 +11,11 @@ const PropertyCheck = () => {
   });
 
   return (
-    <div>
-      <h2>Property Check</h2>
+    <section className="container w-full">
+      <h2 className="font-bold text-xl">Property Check</h2>
       <Address address={address} changeHandler={setAddress} />
       <NbnDetails address={address} />
-    </div>
+    </section>
   );
 };
 

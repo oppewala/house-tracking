@@ -1,0 +1,16 @@
+/*noinspection CssInvalidAtRule*/
+@tailwind base;
+
+/*noinspection CssInvalidAtRule*/
+@tailwind components;
+
+.input-plain {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
+}
+
+.input-label {
+  @apply text-gray-700 text-sm font-bold mb-2;
+}
+
+/*noinspection CssInvalidAtRule*/
+@tailwind utilities;

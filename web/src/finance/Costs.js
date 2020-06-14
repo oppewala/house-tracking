@@ -6,7 +6,7 @@ const Costs = (props) => {
 
   return (
     <div>
-      <h3>Costs</h3>
+      <h3 className="font-bold text-l">Costs</h3>
       <BudgetRow desc="Property Price" val={price} format="currency" />
       <BudgetRow desc="Stamp Duty" val={stampDuty} format="currency" />
       <BudgetRow desc="Transfer Fee" val={transferFee} format="currency" />

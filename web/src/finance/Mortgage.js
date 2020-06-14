@@ -15,7 +15,7 @@ const Mortgage = (props) => {
 
   return (
     <div>
-      <h3>Mortgage Details</h3>
+      <h3 className="font-bold text-l">Mortgage Details</h3>
       <BudgetRow desc="Total Mortgage" val={mortgageAmount} format="currency" />
       <BudgetRow desc="LVR" val={lvr} format="percent" />
       <BudgetRow desc="Minimum Deposit for 80% LVR" val={minimum} format="currency" />

@@ -10,7 +10,7 @@ const Savings = (props) => {
 
   return (
     <div>
-      <h3>Savings</h3>
+      <h3 className="font-bold text-l">Savings</h3>
       <BudgetRow desc="Joint" val={joint} format="currency" />
       <BudgetRow desc="First Home Buyers Grant" val={firstHomeBuyer} format="currency" />
       <BudgetSubTotal desc="Total Deposit" val={totalSavings} format="currency" />
