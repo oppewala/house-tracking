@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const ScoreInput = (props) => {
-  const { score, sliderChangeHandler, checkboxChangeHandler } = props;
+  const { score, sliderChangeHandler } = props;
 
   return (
     <div>
@@ -30,17 +30,6 @@ export const ScoreInput = (props) => {
       />
       <Slider desc="Locale" name="localarea" score={score} changeHandler={sliderChangeHandler} />
       <Slider desc="NBN" name="nbn" score={score} changeHandler={sliderChangeHandler} />
-      <div>
-        <label htmlFor="extrarooms">
-          Has Extra Rooms
-          <input
-            type="checkbox"
-            checked={score.extrarooms}
-            name="extrarooms"
-            onChange={checkboxChangeHandler}
-          />
-        </label>
-      </div>
     </div>
   );
 };

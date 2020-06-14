@@ -77,7 +77,7 @@ const Address = (props) => {
           />
         </label>
       </div>
-      <div className="flex flex-col -mx-2 md:flex-row md:flex-wrap">
+      <div className="flex flex-col space-x-0 space-y-2 md:space-x-2 md:flex-row md:space-y-0">
         <SimpleAddressInput desc="Suburb" val={address.suburb} />
         <SimpleAddressInput desc="Postcode" val={address.postcode} />
         <SimpleAddressInput desc="State" val={address.state} />
@@ -95,7 +95,7 @@ const SimpleAddressInput = (props) => {
   const { desc, val } = props;
 
   return (
-    <div className="w-full p-2 md:w-1/3">
+    <div className="w-full">
       <label htmlFor={desc}>
         <span className="input-label block">{desc}</span>
       </label>

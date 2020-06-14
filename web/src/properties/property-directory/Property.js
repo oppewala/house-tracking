@@ -27,14 +27,20 @@ export class Property extends Component {
     const houseLayout = this.BuildHouseLayout(house);
     const listingUrl = house.References[0].URL;
 
+    const encodedAddress = encodeURIComponent(address);
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+
     return (
-      <div className="property">
-        <h4>{address}</h4>
+      <div className="property py-2">
+        <h4 className="header">{address}</h4>
         <p>{houseLayout}</p>
         <Score rawscore={house.RawScore} />
         <Tags tags={house.Tags} />
-        <p>
-          <a href="https://www.google.com">Open in Maps</a> <a href={listingUrl}>See Listing</a>
+        <p className="flex space-x-4">
+          <a href={mapUrl} className="block text-purple-400 hover:text-purple-700">
+            Open in Maps
+          </a>{' '}
+          <a href={listingUrl}>See Listing</a>
         </p>
       </div>
     );

@@ -11,7 +11,6 @@ class NewProperty extends Component {
     const initScore = {
       bathrooms: 1,
       bedrooms: 1,
-      extrarooms: false,
       kitchen: 1,
       livingarea: 1,
       localarea: 1,
@@ -33,6 +32,7 @@ class NewProperty extends Component {
         bathrooms: 0,
         bedrooms: 0,
         parking: 0,
+        extrarooms: false,
         price: '',
         rawscore: initScore,
         references: [
@@ -59,9 +59,9 @@ class NewProperty extends Component {
     });
   };
 
-  scoreCheckboxChangeHandler = (e) => {
+  extraRoomsHandler = (e) => {
     const { house } = this.state;
-    house.rawscore[e.currentTarget.name] = e.currentTarget.checked;
+    house[e.currentTarget.name] = e.currentTarget.checked;
 
     this.setState({
       house,
@@ -126,8 +126,10 @@ class NewProperty extends Component {
       method: 'POST',
       body: JSON.stringify(house),
     })
-      .then((r) => console.log('Success', r))
-      .catch((ex) => console.error('Failed', ex));
+      // eslint-disable-next-line no-console
+      .then((r) => console.log('Success', r)) // TODO: Handle properly
+      // eslint-disable-next-line no-console
+      .catch((ex) => console.error('Failed', ex)); // TODO: Handle properly
   };
 
   render() {
@@ -135,31 +137,47 @@ class NewProperty extends Component {
 
     return (
       <div>
-        <h3>Add new property</h3>
+        <h3 className="mb-8">
+          <span className="header-xl">Properties / </span>
+          <span className="header header-xl">Add new property</span>
+        </h3>
         <form>
-          <h4>Address</h4>
-          <Address changeHandler={this.addressFieldChangeHandler} address={house.address} />
-          <h4>Property Details</h4>
-          <PropertyDetails
-            house={house}
-            onPriceChange={this.onPriceChange}
-            onRoomChange={this.onRoomChange}
-          />
-          <h4>Score</h4>
-          <ScoreInput
-            score={house.rawscore}
-            sliderChangeHandler={this.scoreSliderChangeHandler}
-            checkboxChangeHandler={this.scoreCheckboxChangeHandler}
-          />
-          <h4>Links</h4>
-          <References
-            references={house.references}
-            addHandler={this.addReferenceHandler}
-            deleteHandler={this.deleteReferenceHandler}
-          />
+          <div className="my-4">
+            <h4 className="header header-lg mb-2">Address</h4>
+            <Address changeHandler={this.addressFieldChangeHandler} address={house.address} />
+          </div>
+          <div className="my-4 py-2">
+            <h4 className="header header-lg mb-2">Property Details</h4>
+            <PropertyDetails
+              house={house}
+              onPriceChange={this.onPriceChange}
+              onRoomChange={this.onRoomChange}
+              onExtraRoomsChecked={this.extraRoomsHandler}
+            />
+          </div>
+          <div className="my-4">
+            <h4 className="header header-lg mb-2">Score</h4>
+            <ScoreInput
+              score={house.rawscore}
+              sliderChangeHandler={this.scoreSliderChangeHandler}
+            />
+          </div>
+          <div className="my-4">
+            <h4 className="header header-lg mb-2">Links</h4>
+            <References
+              references={house.references}
+              addHandler={this.addReferenceHandler}
+              deleteHandler={this.deleteReferenceHandler}
+            />
+          </div>
         </form>
         <br />
-        <button type="submit" onClick={this.submitForm}>
+        <button
+          className="btn bg-purple-200 border-purple-600 shadow
+            hover:bg-purple-600 hover:text-white"
+          type="submit"
+          onClick={this.submitForm}
+        >
           Submit
         </button>
       </div>

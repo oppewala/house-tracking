@@ -120,7 +120,7 @@ const Budget = () => {
           </div>
           <div className="py-4 text-gray-700">
             <button
-              className="hover:bg-gray-200 font-bold rounded border-gray-200 border-2 py-2 px-4"
+              className="btn hover:bg-gray-200 border-gray-200"
               type="button"
               onClick={formReset}
             >

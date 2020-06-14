@@ -35,6 +35,7 @@ const PropertyDirectory = () => {
 
   return (
     <div className="property-directory">
+      <h3 className="header header-xl">Properties</h3>
       <div className="properties">{houseEls}</div>
     </div>
   );
