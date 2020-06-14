@@ -7,6 +7,7 @@ const Address = (props) => {
 
   const autocompleteHandler = (place) => {
     const selectedAddress = {
+      placeId: place.place_id,
       street: '',
       suburb: '',
       postcode: '',
