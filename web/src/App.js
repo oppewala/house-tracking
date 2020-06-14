@@ -6,7 +6,7 @@ import Navigation from './Template/Navigation';
 
 function App() {
   return (
-    <div className="w-full">
+    <div className="w-full max-w-screen-lg">
       <Router>
         <Navigation />
         <div className="mx-2">
@@ -22,6 +22,9 @@ function App() {
             </Route>
           </Switch>
         </div>
+        <footer className="bg-gray-200 mt-5">
+          <div className="container px-5 py-5 mx-auto">House Tracker</div>
+        </footer>
       </Router>
     </div>
   );

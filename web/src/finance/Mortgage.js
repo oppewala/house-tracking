@@ -14,8 +14,8 @@ const Mortgage = (props) => {
   const minimumSixMo = minimum + totalLivingCosts + totalRepayments;
 
   return (
-    <div>
-      <h3 className="font-bold text-l">Mortgage Details</h3>
+    <div className="budget-box w-full">
+      <h3 className="text-gray-900 font-bold text-lg mb-2">Mortgage Details</h3>
       <BudgetRow desc="Total Mortgage" val={mortgageAmount} format="currency" />
       <BudgetRow desc="LVR" val={lvr} format="percent" />
       <BudgetRow desc="Minimum Deposit for 80% LVR" val={minimum} format="currency" />

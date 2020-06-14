@@ -12,7 +12,7 @@ const PropertyCheck = () => {
 
   return (
     <section className="container w-full">
-      <h2 className="font-bold text-xl">Property Check</h2>
+      <h2 className="font-bold text-lg">Property Check</h2>
       <Address address={address} changeHandler={setAddress} />
       <NbnDetails address={address} />
     </section>

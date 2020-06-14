@@ -10,8 +10,8 @@ const Repayments = (props) => {
   const totalInterestPaid = totalPaid - mortgageAmount;
 
   return (
-    <div>
-      <h3 className="font-bold text-l">Repayments ({interestRate * 100}%)</h3>
+    <div className="budget-box w-full">
+      <h3 className="text-gray-900 font-bold text-lg mb-2">Repayments ({interestRate * 100}%)</h3>
       <BudgetRow desc="Monthly" val={monthly} format="currency" />
       <BudgetRow desc="Total Paid" val={totalPaid} format="currency" />
       <BudgetRow desc="Total Interest Paid" val={totalInterestPaid} format="currency" />

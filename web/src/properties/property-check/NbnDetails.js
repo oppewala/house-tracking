@@ -44,7 +44,7 @@ const NbnDetails = (props) => {
       .then((r) => r.json())
       .then((j) => setNbnInfo(j))
       .catch((e) => console.error(e));
-  }, [selectedLoc]);
+  }, [selectedLoc, setNbnInfo]);
 
   const searchResultElements = nbnSearch.map((s) => (
     <NbnSearchResult
@@ -56,16 +56,16 @@ const NbnDetails = (props) => {
   ));
 
   return (
-    <div>
-      <h3>NBN Details</h3>
+    <div className="py-2">
+      <h3 className="font-bold text-md">NBN Details</h3>
       <div>
-        <h4>Matching NBN results</h4>
+        <h4 className="font-bold">Matching NBN results</h4>
         <table>
           <tbody>{searchResultElements}</tbody>
         </table>
       </div>
-      <div>
-        <h4>LOC Service Type</h4>
+      <div className="py-2">
+        <h4 className="font-bold">LOC Service Type</h4>
         <NbnInfo nbnInfo={nbnInfo} />
       </div>
     </div>

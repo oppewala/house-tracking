@@ -26,10 +26,10 @@ export function BudgetRow(props) {
   val = formatter(val, format);
 
   return (
-    <div className="max-w-md my-2">
+    <div className="my-2">
       <div className="flex">
-        <div className="w-2/3">{desc}</div>
-        <div className="w-32 text-right">{val}</div>
+        <div className="w-2/3 flex-1 flex-shrink">{desc}</div>
+        <div className="w-1/3 flex-none text-right">{val}</div>
       </div>
     </div>
   );
@@ -42,10 +42,10 @@ export function BudgetSubTotal(props) {
   val = formatter(val, format);
 
   return (
-    <div className="max-w-md border-t-2 my-2">
+    <div className="border-t-2 my-2">
       <div className="flex">
-        <div className="w-2/3">{desc}</div>
-        <div className="w-32 text-right">{val}</div>
+        <div className="w-2/3 flex-1 flex-shrink">{desc}</div>
+        <div className="w-1/3 flex-none text-right">{val}</div>
       </div>
     </div>
   );

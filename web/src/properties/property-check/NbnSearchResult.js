@@ -8,7 +8,7 @@ export const NbnSearchResult = (props) => {
   };
 
   return (
-    <tr onClick={onClick}>
+    <tr className="border-2 bg-gray-100" onClick={onClick}>
       <td>{id}</td>
       <td>{formattedAddress}</td>
     </tr>

@@ -73,76 +73,115 @@ const Budget = () => {
   const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, mortgageAmount);
 
   return (
-    <section className="container">
-      <h2>Budget</h2>
-      <h3>Inputs</h3>
-      <Input
-        desc="Property Price"
-        value={housePrice}
-        name="housePrice"
-        handleChange={onPriceChange}
-      />
-      <Input desc="Joint Savings" value={savings} name="savings" handleChange={onSavingsChange} />
-      <Input
-        desc="Interest Rates"
-        value={interestRate}
-        name="interestRate"
-        handleChange={onInterestRateChange}
-      />
-      <Input
-        desc="Mortgage Length (yrs)"
-        value={length}
-        name="length"
-        handleChange={onLengthChange}
-      />
-      <Input
-        desc="Monthly Living"
-        value={monthlyLivingCosts}
-        name="monthlyLivingCosts"
-        handleChange={onLivingCostsChange}
-      />
+    <section className="">
+      <h2 className="text-gray-900 font-bold text-2xl mb-2">Budget</h2>
       <div>
-        <span className="input-label inline">First Home Buyer</span>
-        <input
-          className="ml-2"
-          type="checkbox"
-          checked={firstHomeBuyer}
-          name="firstHomeBuyer"
-          onChange={onFirstHomeBuyerChange}
-        />
+        <h3 className="text-gray-900 font-bold text-xl mb-2">Inputs</h3>
+        <div>
+          <Input
+            desc="Property Price"
+            value={housePrice}
+            name="housePrice"
+            handleChange={onPriceChange}
+          />
+          <Input
+            desc="Joint Savings"
+            value={savings}
+            name="savings"
+            handleChange={onSavingsChange}
+          />
+          <Input
+            desc="Interest Rates"
+            value={interestRate}
+            name="interestRate"
+            handleChange={onInterestRateChange}
+          />
+          <Input
+            desc="Mortgage Length (yrs)"
+            value={length}
+            name="length"
+            handleChange={onLengthChange}
+          />
+          <Input
+            desc="Monthly Living Costs (excl repayments)"
+            value={monthlyLivingCosts}
+            name="monthlyLivingCosts"
+            handleChange={onLivingCostsChange}
+          />
+          <div className="py-2">
+            <span className="input-label inline">First Home Buyer</span>
+            <input
+              className="ml-2"
+              type="checkbox"
+              checked={firstHomeBuyer}
+              name="firstHomeBuyer"
+              onChange={onFirstHomeBuyerChange}
+            />
+          </div>
+          <div className="py-4 text-gray-700">
+            <button
+              className="hover:bg-gray-200 font-bold rounded border-gray-200 border-2 py-2 px-4"
+              type="button"
+              onClick={formReset}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="py-4 text-gray-700 py-2 px-4">
-        <button
-          className="bg-white hover:bg-gray-200 font-bold rounded border-gray-200 border-2"
-          type="button"
-          onClick={formReset}
+      <div className="pt-4">
+        <h3 className="text-gray-900 font-bold text-xl mb-2">Output</h3>
+        <div
+          className="pb-2 flex flex-col
+        sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 items-start"
         >
-          Reset
-        </button>
+          <Costs
+            price={housePrice}
+            stampDuty={stampDuty}
+            transferFee={transferFee}
+            applicationFee={constants.mortgageApplicationFee}
+            total={totalCosts}
+          />
+          <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
+        </div>
+        <div
+          className="pb-2 flex flex-col sm:flex-row
+        space-y-2 sm:space-y-0 sm:space-x-2 items-start"
+        >
+          <Mortgage
+            housePrice={housePrice}
+            totalCost={totalCosts}
+            mortgageAmount={mortgageAmount}
+            monthlyRepayments={monthlyRepayment}
+            monthlyLivingCosts={monthlyLivingCosts}
+          />
+          <Repayments
+            interestRate={interestRate}
+            mortgageAmount={mortgageAmount}
+            mortgageLength={length}
+          />
+        </div>
       </div>
-      <Costs
-        price={housePrice}
-        stampDuty={stampDuty}
-        transferFee={transferFee}
-        applicationFee={constants.mortgageApplicationFee}
-        total={totalCosts}
-      />
-      <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
-      <Mortgage
-        housePrice={housePrice}
-        totalCost={totalCosts}
-        mortgageAmount={mortgageAmount}
-        monthlyRepayments={monthlyRepayment}
-        monthlyLivingCosts={monthlyLivingCosts}
-      />
-      <Repayments
-        interestRate={interestRate}
-        mortgageAmount={mortgageAmount}
-        mortgageLength={length}
-      />
-      <Repayments interestRate={3 / 100} mortgageAmount={mortgageAmount} mortgageLength={length} />
-      <Repayments interestRate={5 / 100} mortgageAmount={mortgageAmount} mortgageLength={length} />
-      <Repayments interestRate={8 / 100} mortgageAmount={mortgageAmount} mortgageLength={length} />
+      <div className="pt-4">
+        <h3 className="text-gray-900 font-bold text-xl mb-2">Different Interest Rates</h3>
+        <div className="flex flex-col md:flex-row">
+          <Repayments
+            interestRate={3 / 100}
+            mortgageAmount={mortgageAmount}
+            mortgageLength={length}
+          />
+          <Repayments
+            interestRate={5 / 100}
+            mortgageAmount={mortgageAmount}
+            mortgageLength={length}
+          />
+          <Repayments
+            interestRate={8 / 100}
+            mortgageAmount={mortgageAmount}
+            mortgageLength={length}
+          />
+        </div>
+      </div>
     </section>
   );
 };
@@ -155,7 +194,7 @@ const Input = (props) => {
   }
 
   return (
-    <div>
+    <div className="py-2">
       <label htmlFor={name}>
         <span className="input-label block">{desc}</span>
         <input
