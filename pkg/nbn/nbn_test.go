@@ -1,12 +1,11 @@
 package nbn
 
 import (
-	"github.com/oppewala/house-tracking/cmd/management/shared"
 	"testing"
 )
 
 func TestSearch(t *testing.T) {
-	address := shared.Address{
+	address := Address{
 		Street:   "37 Camera Walk",
 		Suburb:   "Coburg North",
 		Postcode: "3058",

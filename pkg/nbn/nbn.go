@@ -3,7 +3,6 @@ package nbn
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/oppewala/house-tracking/cmd/management/shared"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,16 +11,30 @@ import (
 	"time"
 )
 
-type PropertyInfo struct {
-	Id   string
-	Type string
+// Address is input for the initial search
+type Address struct {
+	Street   string
+	Suburb   string
+	Postcode string
+	State    string
 }
 
+// Suggestion is returned from the initial search with potential matches
 type Suggestion struct {
 	Id               string
 	FormattedAddress string
 	Latitude         float64
 	Longitude        float64
+}
+
+// AddressDetail is returned from the final lookup with details on the LOC
+type AddressDetail struct {
+	AddressStatus         string
+	ServiceType           string
+	ServiceStatus         string
+	TechType              string
+	ServiceabilityMessage string
+	StatusMessage         string
 }
 
 type searchResponse struct {
@@ -34,43 +47,7 @@ type lookupResponse struct {
 	AddressDetail AddressDetail
 }
 
-type AddressDetail struct {
-	AddressStatus         string
-	ServiceType           string
-	ServiceStatus         string
-	TechType              string
-	ServiceabilityMessage string
-	StatusMessage         string
-}
-
-func Lookup(id string) (*AddressDetail, error) {
-	u := "https://places.nbnco.net.au/places/v1/details/" + id
-
-	client := &http.Client{}
-	req, _ := http.NewRequest("GET", u, nil)
-	req.Header.Add("Referer", "https://www.nbnco.com.au/")
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	defer res.Body.Close()
-
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	var l lookupResponse
-	err = json.Unmarshal(body, &l)
-	if err != nil {
-		err = fmt.Errorf("Failed to unmarshal json: %v \n Body: %v", err, string(body))
-		return nil, err
-	}
-
-	return &l.AddressDetail, nil
-}
-
-func Search(address shared.Address) ([]Suggestion, error) {
+func Search(address Address) ([]Suggestion, error) {
 	s, err := addressToString(address)
 	if err != nil {
 		return nil, err
@@ -113,7 +90,34 @@ func Search(address shared.Address) ([]Suggestion, error) {
 	return l.Suggestions, nil
 }
 
-func addressToString(a shared.Address) (string, error) {
+func Lookup(id string) (*AddressDetail, error) {
+	u := "https://places.nbnco.net.au/places/v1/details/" + id
+
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", u, nil)
+	req.Header.Add("Referer", "https://www.nbnco.com.au/")
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	var l lookupResponse
+	err = json.Unmarshal(body, &l)
+	if err != nil {
+		err = fmt.Errorf("Failed to unmarshal json: %v \n Body: %v", err, string(body))
+		return nil, err
+	}
+
+	return &l.AddressDetail, nil
+}
+
+func addressToString(a Address) (string, error) {
 	builder := strings.Builder{}
 	if a.Street == "" {
 		return "", fmt.Errorf("no street address provided: %+v", a)

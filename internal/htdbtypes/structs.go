@@ -1,4 +1,4 @@
-package shared
+package htdbtypes
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -12,6 +12,7 @@ type Property struct {
 	Bedrooms   int32              `bson:"bedrooms,omitempty"`
 	Bathrooms  int32              `bson:"bathrooms,omitempty"`
 	Parking    int32              `bson:"parking,omitempty"`
+	ExtraRooms bool               `bson:"extrarooms,omitempty"`
 	RawScore   PropertyScore      `bson:"rawscore,omitempty"`
 	References []Reference        `bson:"references,omitempty"`
 	Tags       []string           `bson:"tags,omitempty"`
@@ -37,11 +38,10 @@ type PropertyScore struct {
 	Bathrooms       int32
 	LocalArea       int32
 	NBN             int32
-	ExtraRooms      bool
 }
 
 // Reference is
 type Reference struct {
-	Source string
-	URL    string
+	Type  string
+	Value string
 }

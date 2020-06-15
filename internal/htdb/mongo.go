@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	htconfig "github.com/oppewala/house-tracking/internal/config"
+	htconfig "github.com/oppewala/house-tracking/internal/htconfig"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -25,14 +25,13 @@ func Connect(config *htconfig.Configuration) (disconnect func(), db *mongo.Datab
 	if err != nil {
 		log.Fatal(err)
 	}
-	// defer client.Disconnect(ctx)
 
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Print("Connected to db")
+	log.Print("Connected to htdb")
 
 	return func() {
 		client.Disconnect(ctx)

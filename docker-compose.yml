@@ -11,37 +11,6 @@ services:
         networks: 
             - internal
             - public
-    gateway: 
-        build: 
-            context: .
-            dockerfile: ./cmd/gateway/Dockerfile
-        ports:
-            - "5001:8080"
-        networks: 
-            - internal
-            - public
-    scraper: 
-        build: 
-            context: .
-            dockerfile: ./cmd/scraper/Dockerfile
-        env_file:
-          - "./.env"
-        networks: 
-            - internal
-        depends_on: 
-            - rabbitmq
-    rabbitmq:
-        image: rabbitmq:3-management
-        hostname: rabbitmq-ht
-        networks: 
-            - internal
-            - public
-        # volumes: # Config if required
-        #     - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
-        #     - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
-        #     - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
-        ports:
-            - 5010:15672
 
 networks:
     internal:

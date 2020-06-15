@@ -1,1 +1,0 @@
-docker run -p 5000:5000 -d oppewala/ht-gateway:latest
