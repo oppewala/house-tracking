@@ -37,10 +37,12 @@ export class Property extends Component {
         <Score rawscore={house.RawScore} />
         <Tags tags={house.Tags} />
         <p className="flex space-x-4">
-          <a href={mapUrl} className="block text-purple-400 hover:text-purple-700">
+          <a href={mapUrl} className="link">
             Open in Maps
           </a>{' '}
-          <a href={listingUrl}>See Listing</a>
+          <a href={listingUrl} className="link">
+            See Listing
+          </a>
         </p>
       </div>
     );

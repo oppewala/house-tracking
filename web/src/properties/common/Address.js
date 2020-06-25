@@ -12,6 +12,10 @@ const Address = (props) => {
       suburb: '',
       postcode: '',
       state: '',
+      point: {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      },
     };
 
     const streetParts = {

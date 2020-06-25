@@ -19,8 +19,12 @@ const Properties = () => {
         <Route path={match.path}>
           <PropertyDirectory />
           <div className="flex space-x-4">
-            <Link to={`${match.url}/add`}>Add new</Link>
-            <Link to={`${match.url}/check`}>Check Existing</Link>
+            <Link to={`${match.url}/add`} className="link">
+              Add new
+            </Link>
+            <Link to={`${match.url}/check`} className="link">
+              Check Existing
+            </Link>
           </div>
         </Route>
       </Switch>

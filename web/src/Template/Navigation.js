@@ -19,6 +19,9 @@ function Navigation() {
             <li className="sm:p-4">
               <Link to="/Properties">Properties</Link>
             </li>
+            <li className="sm:p-4">
+              <Link to="/Resources">Resources</Link>
+            </li>
           </ul>
         </nav>
       </div>
