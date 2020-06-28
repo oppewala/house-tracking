@@ -1,16 +1,34 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { CssBaseline, Container, ThemeProvider } from '@material-ui/core';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { blue } from '@material-ui/core/colors';
 import Budget from './finance/Budget';
 import Properties from './properties/Properties';
 import Navigation from './Template/Navigation';
 import Resources from './resources/Resources';
 
+const htTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: blue[500],
+    },
+  },
+});
+
+const useStyles = makeStyles(() => ({
+  content: {},
+}));
+
 function App() {
+  const classes = useStyles();
+
   return (
-    <div className="w-full container mx-auto max-w-screen-lg">
+    <ThemeProvider theme={htTheme}>
+      <CssBaseline />
       <Router>
         <Navigation />
-        <div className="mx-2">
+        <Container className={classes.content}>
           <Switch>
             <Route path="/Budget">
               <Budget />
@@ -25,12 +43,12 @@ function App() {
               <Budget />
             </Route>
           </Switch>
-        </div>
-        <footer className="bg-gray-200 mt-5">
-          <div className="container px-5 py-5 mx-auto">House Tracker</div>
+        </Container>
+        <footer>
+          <div>House Tracker</div>
         </footer>
       </Router>
-    </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,31 +1,74 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Link } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  appBar: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    backgroundColor: 'white',
+  },
+  toolbar: {
+    flexWrap: 'wrap',
+  },
+  title: {
+    flexGrow: 1,
+    textDecorationLine: 'none',
+  },
+  link: {
+    margin: theme.spacing(1, 1.5),
+  },
+}));
 
 function Navigation() {
+  const classes = useStyles();
+
   return (
-    <header className="text-gray-700">
-      <div className="flex p-5 flex-col sm:flex-row">
-        <Link
-          className="flex title-font font-medium items-center text-gray-900 mb-4 sm:mb-0"
-          to="/"
-        >
-          <span className="ml-3 text-xl">House Tracker</span>
-        </Link>
-        <nav className="sm:ml-auto flex-wrap text-base items-center justify-center">
-          <ul className="flex flex-col sm:flex-row">
-            <li className="sm:p-4">
-              <Link to="/Budget">Budget</Link>
-            </li>
-            <li className="sm:p-4">
-              <Link to="/Properties">Properties</Link>
-            </li>
-            <li className="sm:p-4">
-              <Link to="/Resources">Resources</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <>
+      <AppBar position="sticky" color="default" elevation={0} className={classes.appBar}>
+        <Toolbar className={classes.toolbar}>
+          <Typography
+            variant="h6"
+            color="primary"
+            noWrap
+            className={classes.title}
+            component={RouterLink}
+            to="/"
+          >
+            House Trackr
+          </Typography>
+          <nav>
+            <Link
+              variant="button"
+              color="textPrimary"
+              className={classes.link}
+              component={RouterLink}
+              to="/Budget"
+            >
+              Budget
+            </Link>
+            <Link
+              variant="button"
+              color="textPrimary"
+              className={classes.link}
+              component={RouterLink}
+              to="/Properties"
+            >
+              Properties
+            </Link>
+            <Link
+              variant="button"
+              color="textPrimary"
+              className={classes.link}
+              component={RouterLink}
+              to="/Resources"
+            >
+              Resources
+            </Link>
+          </nav>
+        </Toolbar>
+      </AppBar>
+    </>
   );
 }
 
