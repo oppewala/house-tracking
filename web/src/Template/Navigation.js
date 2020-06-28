@@ -4,12 +4,10 @@ import { AppBar, Toolbar, Typography, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  appBar: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    backgroundColor: 'white',
-  },
+  appBar: {},
   toolbar: {
     flexWrap: 'wrap',
+    backgroundColor: 'white',
   },
   title: {
     flexGrow: 1,
@@ -25,7 +23,7 @@ function Navigation() {
 
   return (
     <>
-      <AppBar position="sticky" color="default" elevation={0} className={classes.appBar}>
+      <AppBar position="sticky" color="default" elevation={4} className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
           <Typography
             variant="h6"

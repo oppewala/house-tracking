@@ -1,5 +1,6 @@
 import React from 'react';
-import { CostsCalculator } from './CostsCalculator';
+import { Card } from '@material-ui/core';
+import { CostsCalculator } from '../CostsCalculator';
 import { BudgetRow } from './Common';
 
 const Repayments = (props) => {
@@ -10,12 +11,12 @@ const Repayments = (props) => {
   const totalInterestPaid = totalPaid - mortgageAmount;
 
   return (
-    <div className="budget-box w-full">
+    <Card>
       <h3 className="text-gray-900 font-bold text-lg mb-2">Repayments ({interestRate * 100}%)</h3>
       <BudgetRow desc="Monthly" val={monthly} format="currency" />
       <BudgetRow desc="Total Paid" val={totalPaid} format="currency" />
       <BudgetRow desc="Total Interest Paid" val={totalInterestPaid} format="currency" />
-    </div>
+    </Card>
   );
 };
 

@@ -1,14 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import Costs from './Costs';
-import Savings from './Savings';
-import Mortgage from './Mortgage';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Button, Box, Typography } from '@material-ui/core';
+import Costs from './Outputs/Costs';
+import Savings from './Outputs/Savings';
+import Mortgage from './Outputs/Mortgage';
 import { CostsCalculator } from './CostsCalculator';
-import Repayments from './Repayments';
+import Repayments from './Outputs/Repayments';
+import Inputs from './Inputs/Inputs';
+import OutputCard from './Outputs/OutputCard';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100%',
+  },
+  inputContainer: {
+    backgroundColor: 'white',
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+  input: {
+    // maxWidth: theme.spacing() * 60,
+    padding: `0 ${theme.spacing() * 2}`,
+  },
+  sectionTitle: {
+    height: theme.spacing() * 8,
+    marginBottom: theme.spacing() * 3,
+  },
+  subSectionTitle: {
+    verticalAlign: 'bottom',
+  },
+}));
 
 const Budget = () => {
   const constants = {
     mortgageApplicationFee: 130,
   };
+  const classes = useStyles();
 
   const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
     const [value, setValue] = useState(localStorage.getItem(localStorageKey) || defaultValue);
@@ -73,142 +99,107 @@ const Budget = () => {
   const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, mortgageAmount);
 
   return (
-    <section className="">
-      <h2 className="text-gray-900 font-bold text-2xl mb-2">Budget</h2>
-      <div>
-        <h3 className="text-gray-900 font-bold text-xl mb-2">Inputs</h3>
-        <div>
-          <Input
-            desc="Property Price"
-            value={housePrice}
-            name="housePrice"
-            handleChange={onPriceChange}
-          />
-          <Input
-            desc="Joint Savings"
-            value={savings}
-            name="savings"
-            handleChange={onSavingsChange}
-          />
-          <Input
-            desc="Interest Rates"
-            value={interestRate}
-            name="interestRate"
-            handleChange={onInterestRateChange}
-          />
-          <Input
-            desc="Mortgage Length (yrs)"
-            value={length}
-            name="length"
-            handleChange={onLengthChange}
-          />
-          <Input
-            desc="Monthly Living Costs (excl repayments)"
-            value={monthlyLivingCosts}
-            name="monthlyLivingCosts"
-            handleChange={onLivingCostsChange}
-          />
-          <div className="py-2">
-            <span className="input-label inline">First Home Buyer</span>
-            <input
-              className="ml-2"
-              type="checkbox"
-              checked={firstHomeBuyer}
-              name="firstHomeBuyer"
-              onChange={onFirstHomeBuyerChange}
-            />
-          </div>
-          <div className="py-4 text-gray-700">
-            <button
-              className="btn hover:bg-gray-200 border-gray-200"
-              type="button"
-              onClick={formReset}
-            >
-              Reset
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="pt-4">
-        <h3 className="text-gray-900 font-bold text-xl mb-2">Output</h3>
-        <div
-          className="pb-2 flex flex-col
-        sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 items-start"
-        >
-          <Costs
-            price={housePrice}
-            stampDuty={stampDuty}
-            transferFee={transferFee}
-            applicationFee={constants.mortgageApplicationFee}
-            total={totalCosts}
-          />
-          <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
-        </div>
-        <div
-          className="pb-2 flex flex-col sm:flex-row
-        space-y-2 sm:space-y-0 sm:space-x-2 items-start"
-        >
-          <Mortgage
+    <Grid container spacing={2} direction="row" className={classes.root}>
+      <Grid item xs={12} sm={6} md={4} className={classes.inputContainer}>
+        <Box className={classes.input}>
+          <Grid
+            container
+            justify="space-between"
+            alignItems="center"
+            className={classes.sectionTitle}
+          >
+            <Grid item>
+              <Typography variant="h3">Budget</Typography>
+            </Grid>
+            <Grid item>
+              <Button onClick={formReset} color="secondary">
+                Reset
+              </Button>
+            </Grid>
+          </Grid>
+          <Inputs
             housePrice={housePrice}
-            totalCost={totalCosts}
-            mortgageAmount={mortgageAmount}
-            monthlyRepayments={monthlyRepayment}
-            monthlyLivingCosts={monthlyLivingCosts}
-          />
-          <Repayments
+            onPriceChange={onPriceChange}
+            firstHomeBuyer={firstHomeBuyer}
+            onFirstHomeBuyerChange={onFirstHomeBuyerChange}
+            savings={savings}
+            onSavingsChange={onSavingsChange}
             interestRate={interestRate}
-            mortgageAmount={mortgageAmount}
-            mortgageLength={length}
+            onInterestRateChange={onInterestRateChange}
+            length={length}
+            onLengthChange={onLengthChange}
+            monthlyLivingCosts={monthlyLivingCosts}
+            onLivingCostsChange={onLivingCostsChange}
           />
-        </div>
-      </div>
-      <div className="pt-4">
-        <h3 className="text-gray-900 font-bold text-xl mb-2">Different Interest Rates</h3>
-        <div
-          className="pb-2 flex flex-col md:flex-row
-        space-y-2 md:space-y-0 md:space-x-2 items-start"
-        >
-          <Repayments
-            interestRate={3 / 100}
-            mortgageAmount={mortgageAmount}
-            mortgageLength={length}
-          />
-          <Repayments
-            interestRate={5 / 100}
-            mortgageAmount={mortgageAmount}
-            mortgageLength={length}
-          />
-          <Repayments
-            interestRate={8 / 100}
-            mortgageAmount={mortgageAmount}
-            mortgageLength={length}
-          />
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Input = (props) => {
-  const { desc, handleChange, name } = props;
-  let { value } = props;
-  if (Number.isNaN(value)) {
-    value = 0.0;
-  }
-
-  return (
-    <div className="py-2">
-      <label htmlFor={name}>
-        <span className="input-label block">{desc}</span>
-        <input
-          type="number"
-          value={value}
-          name={name}
-          onChange={handleChange}
-          className="input-plain focus:outline-none focus:shadow-outline"
-        />
-      </label>
-    </div>
+        </Box>
+      </Grid>
+      <Grid item xs sm={6} md={8} container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h5" className={`${classes.sectionTitle} ${classes.subSectionTitle}`}>
+            <span className={classes.subSectionTitle}>Result</span>
+          </Typography>
+          <Grid container direction="column" spacing={2}>
+            <Grid item>
+              <OutputCard />
+            </Grid>
+            <Grid item>
+              <Costs
+                price={housePrice}
+                stampDuty={stampDuty}
+                transferFee={transferFee}
+                applicationFee={constants.mortgageApplicationFee}
+                total={totalCosts}
+              />
+            </Grid>
+            <Grid item>
+              <Mortgage
+                housePrice={housePrice}
+                totalCost={totalCosts}
+                mortgageAmount={mortgageAmount}
+                monthlyRepayments={monthlyRepayment}
+                monthlyLivingCosts={monthlyLivingCosts}
+              />
+            </Grid>
+            <Grid item>
+              <Repayments
+                interestRate={interestRate}
+                mortgageAmount={mortgageAmount}
+                mortgageLength={length}
+              />
+            </Grid>
+            <Grid item>
+              <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography variant="h5">Different Interest Rates</Typography>
+          <Grid container direction="column" spacing={3}>
+            <Grid item>
+              <Repayments
+                interestRate={3 / 100}
+                mortgageAmount={mortgageAmount}
+                mortgageLength={length}
+              />
+            </Grid>
+            <Grid item>
+              <Repayments
+                interestRate={5 / 100}
+                mortgageAmount={mortgageAmount}
+                mortgageLength={length}
+              />
+            </Grid>
+            <Grid item>
+              <Repayments
+                interestRate={8 / 100}
+                mortgageAmount={mortgageAmount}
+                mortgageLength={length}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 
