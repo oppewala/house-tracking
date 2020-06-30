@@ -1,12 +1,6 @@
-name: Publish Backend
+name: Publish Backend (test)
 
 on:
-  push:
-    paths-ignore: 
-    - 'web/**'
-    - '.idea/**'
-    - '.github/**'
-    branches: [ master ]
   pull_request:
     paths-ignore: 
     - 'web/**'
