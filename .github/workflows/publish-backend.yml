@@ -1,25 +1,33 @@
-name: Docker Image CI
+name: Publish Backend (live)
 
 on:
   push:
+    paths-ignore: 
+    - 'web/**'
+    - '.idea/**'
+    - '.github/**'
     branches: [ master ]
   pull_request:
+    paths-ignore: 
+    - 'web/**'
+    - '.idea/**'
+    - '.github/**'
+    types: [closed]
     branches: [ master ]
 
 env:
   DOCKER_REPOSITORY: oppewala/house-tracking
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file ./cmd/management/Dockerfile --tag house-tracking:latest
-    
+
+    # Push golang code to docker
+    #- name: Build the Docker image
+    #  run: docker build . --file ./cmd/management/Dockerfile --tag house-tracking:latest
     - name: Build and push Docker images
       uses: docker/build-push-action@v1.1.0
       with:

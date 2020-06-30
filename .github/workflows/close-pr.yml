@@ -1,0 +1,42 @@
+name: Close Pull Request (destroy azure resources)
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+    - master
+
+jobs:
+  close_pull_request_job:
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+    - name: Close Pull Request
+      id: closepullrequest
+      uses: Azure/static-web-apps-deploy@v0.0.1-preview
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ZEALOUS_BAY_0858BA500 }}
+        action: 'close'
+
+  release:
+    runs-on: ubuntu-latest
+    name: Create github release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v0.4.0
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
