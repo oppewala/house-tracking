@@ -25,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     flex: 1,
+    overflowX: 'hidden',
   },
   offset: theme.mixins.toolbar,
   content: {
     height: `calc(100vh - 64px)`, // Viewport - Header size
-    padding: `0 ${theme.spacing()}px`,
-    marginTop: theme.spacing(), // TODO: Why is this required?
+    // marginTop: theme.spacing(), // TODO: Why is this required?
   },
   footer: {
     position: 'fixed',

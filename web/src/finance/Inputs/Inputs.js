@@ -13,7 +13,7 @@ const Inputs = (props) => {
 
   return (
     <>
-      <Grid container spacing={4} direction="column">
+      <Grid container spacing={5} direction="column">
         <Grid item>
           <CheckboxInput
             checked={firstHomeBuyer}

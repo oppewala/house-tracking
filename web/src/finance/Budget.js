@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Box, Typography } from '@material-ui/core';
+import clsx from 'clsx';
 import Costs from './Outputs/Costs';
-import Savings from './Outputs/Savings';
 import Mortgage from './Outputs/Mortgage';
 import { CostsCalculator } from './CostsCalculator';
 import Repayments from './Outputs/Repayments';
 import Inputs from './Inputs/Inputs';
-import OutputCard from './Outputs/OutputCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
   },
+  container: {
+    padding: `${theme.spacing() * 6}px ${theme.spacing() * 5}px 0`,
+  },
   inputContainer: {
     backgroundColor: 'white',
     borderRight: `1px solid ${theme.palette.divider}`,
+    boxSizing: 'border-box',
   },
-  input: {
-    // maxWidth: theme.spacing() * 60,
-    padding: `0 ${theme.spacing() * 2}`,
-  },
+  outputContainer: {},
   sectionTitle: {
-    height: theme.spacing() * 8,
+    height: theme.spacing() * 7,
     marginBottom: theme.spacing() * 3,
+    verticalAlign: 'bottom',
   },
   subSectionTitle: {
-    verticalAlign: 'bottom',
+    display: 'table-cell',
   },
 }));
 
@@ -99,8 +100,8 @@ const Budget = () => {
   const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, mortgageAmount);
 
   return (
-    <Grid container spacing={2} direction="row" className={classes.root}>
-      <Grid item xs={12} sm={6} md={4} className={classes.inputContainer}>
+    <Grid container spacing={0} direction="row" className={classes.root}>
+      <Grid item xs={12} sm={6} md={4} className={clsx(classes.container, classes.inputContainer)}>
         <Box className={classes.input}>
           <Grid
             container
@@ -133,68 +134,76 @@ const Budget = () => {
           />
         </Box>
       </Grid>
-      <Grid item xs sm={6} md={8} container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h5" className={`${classes.sectionTitle} ${classes.subSectionTitle}`}>
-            <span className={classes.subSectionTitle}>Result</span>
-          </Typography>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <OutputCard />
-            </Grid>
-            <Grid item>
-              <Costs
-                price={housePrice}
-                stampDuty={stampDuty}
-                transferFee={transferFee}
-                applicationFee={constants.mortgageApplicationFee}
-                total={totalCosts}
-              />
-            </Grid>
-            <Grid item>
-              <Mortgage
-                housePrice={housePrice}
-                totalCost={totalCosts}
-                mortgageAmount={mortgageAmount}
-                monthlyRepayments={monthlyRepayment}
-                monthlyLivingCosts={monthlyLivingCosts}
-              />
-            </Grid>
-            <Grid item>
-              <Repayments
-                interestRate={interestRate}
-                mortgageAmount={mortgageAmount}
-                mortgageLength={length}
-              />
-            </Grid>
-            <Grid item>
-              <Savings joint={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
+      <Grid item xs={12} sm={6} md={8} className={clsx(classes.container, classes.outputContainer)}>
+        <Grid container spacing={5}>
+          <Grid item xs={12} md={6}>
+            <Box className={classes.sectionTitle}>
+              <Typography
+                variant="h5"
+                className={clsx(classes.sectionTitle, classes.subSectionTitle)}
+              >
+                Result
+              </Typography>
+            </Box>
+            <Grid container direction="column" spacing={5}>
+              <Grid item>
+                <Costs
+                  price={housePrice}
+                  stampDuty={stampDuty}
+                  transferFee={transferFee}
+                  applicationFee={constants.mortgageApplicationFee}
+                  total={totalCosts}
+                />
+              </Grid>
+              <Grid item>
+                <Mortgage
+                  housePrice={housePrice}
+                  totalCost={totalCosts}
+                  mortgageAmount={mortgageAmount}
+                  monthlyRepayments={monthlyRepayment}
+                  monthlyLivingCosts={monthlyLivingCosts}
+                />
+              </Grid>
+              <Grid item>
+                <Repayments
+                  interestRate={interestRate}
+                  mortgageAmount={mortgageAmount}
+                  mortgageLength={length}
+                />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h5">Different Interest Rates</Typography>
-          <Grid container direction="column" spacing={3}>
-            <Grid item>
-              <Repayments
-                interestRate={3 / 100}
-                mortgageAmount={mortgageAmount}
-                mortgageLength={length}
-              />
-            </Grid>
-            <Grid item>
-              <Repayments
-                interestRate={5 / 100}
-                mortgageAmount={mortgageAmount}
-                mortgageLength={length}
-              />
-            </Grid>
-            <Grid item>
-              <Repayments
-                interestRate={8 / 100}
-                mortgageAmount={mortgageAmount}
-                mortgageLength={length}
-              />
+          <Grid item xs={12} md={6}>
+            <Box className={classes.sectionTitle}>
+              <Typography
+                variant="h5"
+                className={clsx(classes.sectionTitle, classes.subSectionTitle)}
+              >
+                Different Interest Rates
+              </Typography>
+            </Box>
+            <Grid container direction="column" spacing={5}>
+              <Grid item>
+                <Repayments
+                  interestRate={3 / 100}
+                  mortgageAmount={mortgageAmount}
+                  mortgageLength={length}
+                />
+              </Grid>
+              <Grid item>
+                <Repayments
+                  interestRate={5 / 100}
+                  mortgageAmount={mortgageAmount}
+                  mortgageLength={length}
+                />
+              </Grid>
+              <Grid item>
+                <Repayments
+                  interestRate={8 / 100}
+                  mortgageAmount={mortgageAmount}
+                  mortgageLength={length}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
