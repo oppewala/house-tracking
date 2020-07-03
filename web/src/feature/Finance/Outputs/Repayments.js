@@ -1,4 +1,5 @@
 import React from 'react';
+import { Round } from '_helpers/round';
 import { CostsCalculator } from '../CostsCalculator';
 import OutputCard from './OutputCard';
 
@@ -16,7 +17,13 @@ const Repayments = (props) => {
 
   const total = { label: 'Total Paid', value: totalPaid, format: 'currency' };
 
-  return <OutputCard title={`Repayments (${interestRate * 100}%)`} items={items} total={total} />;
+  return (
+    <OutputCard
+      title={`Repayments (${Round(interestRate * 100, 3)}%)`}
+      items={items}
+      total={total}
+    />
+  );
 };
 
 export default Repayments;

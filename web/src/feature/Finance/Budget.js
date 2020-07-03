@@ -70,7 +70,6 @@ const Budget = () => {
 
   const onPriceChange = (e) => setPrice(e.target.value);
   const onSavingsChange = (e) => setSavings(e.target.value);
-  const onInterestRateChange = (e) => setInterestRate(e.target.value);
   const onLengthChange = (e) => setLength(e.target.value);
   const onLivingCostsChange = (e) => setLivingCosts(e.target.value);
   const onFirstHomeBuyerChange = (e) => setFirstHomeBuyer(e.target.checked);
@@ -126,7 +125,7 @@ const Budget = () => {
             savings={savings}
             onSavingsChange={onSavingsChange}
             interestRate={interestRate}
-            onInterestRateChange={onInterestRateChange}
+            onInterestRateChange={setInterestRate}
             length={length}
             onLengthChange={onLengthChange}
             monthlyLivingCosts={monthlyLivingCosts}

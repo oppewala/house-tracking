@@ -1,5 +1,4 @@
 import React from 'react';
-import { BudgetRow } from './Common';
 import { CostsCalculator } from '../CostsCalculator';
 import OutputCard from './OutputCard';
 
@@ -21,15 +20,7 @@ const Mortgage = (props) => {
     { label: 'Minimum Deposit + 6mo Living Costs', value: minimumSixMo, format: 'currency' },
   ];
 
-  return (
-    <OutputCard title="Mortgage Details" items={items}>
-      <h3 className="text-gray-900 font-bold text-lg mb-2">Mortgage Details</h3>
-      <BudgetRow desc="Total Mortgage" val={mortgageAmount} format="currency" />
-      <BudgetRow desc="LVR" val={lvr} format="percent" />
-      <BudgetRow desc="Minimum Deposit for 80% LVR" val={minimum} format="currency" />
-      <BudgetRow desc="Minimum Deposit + 6mo Living Costs" val={minimumSixMo} format="currency" />
-    </OutputCard>
-  );
+  return <OutputCard title="Mortgage Details" items={items} />;
 };
 
 export default Mortgage;

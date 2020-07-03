@@ -20,6 +20,11 @@ const Resources = () => {
             Nbn Map (nbnmtm.australiaeast.cloudapp.azure.com/)
           </a>
         </li>
+        <li>
+          <a href="https://www.loans.com.au/calculators/offset-calculator" className="link">
+            Offset Calculator
+          </a>
+        </li>
       </ul>
     </div>
   );

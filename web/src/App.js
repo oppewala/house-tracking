@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { CssBaseline, Box, ThemeProvider } from '@material-ui/core';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { blue } from '@material-ui/core/colors';
-import Budget from './finance/Budget';
-import Properties from './properties/Properties';
-import Navigation from './Template/Navigation';
-import Resources from './resources/Resources';
+import Budget from './feature/Finance/Budget';
+import Properties from './feature/Properties/Properties';
+import Navigation from './components/Navigation/Navigation';
+import Resources from './feature/Resources/Resources';
 
 const htTheme = createMuiTheme({
   palette: {

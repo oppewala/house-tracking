@@ -1,7 +1,7 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
 
-const PropertyValueInput = (props) => {
+const CashInput = (props) => {
   const { desc, handleChange, name } = props;
   let { value } = props;
   if (Number.isNaN(value)) {
@@ -20,4 +20,4 @@ const PropertyValueInput = (props) => {
   );
 };
 
-export default PropertyValueInput;
+export default CashInput;

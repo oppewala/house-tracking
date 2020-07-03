@@ -1,7 +1,8 @@
 import React from 'react';
-import { TextField, Grid } from '@material-ui/core';
-import PropertyValueInput from './PropertyValueInput';
-import CheckboxInput from './CheckboxInput';
+import { Grid } from '@material-ui/core';
+import CheckboxInput from 'components/CheckboxInput/CheckboxInput';
+import CashInput from 'components/CashInput/CashInput';
+import PercentageInput from 'components/PercentageInput/PercentageInput';
 
 const Inputs = (props) => {
   const { firstHomeBuyer, onFirstHomeBuyerChange } = props;
@@ -23,7 +24,7 @@ const Inputs = (props) => {
           />
         </Grid>
         <Grid item>
-          <PropertyValueInput
+          <CashInput
             desc="Property Price"
             value={housePrice}
             name="housePrice"
@@ -39,7 +40,7 @@ const Inputs = (props) => {
           />
         </Grid>
         <Grid item>
-          <CashInput
+          <PercentageInput
             desc="Interest Rates"
             value={interestRate}
             name="interestRate"
@@ -64,25 +65,6 @@ const Inputs = (props) => {
         </Grid>
       </Grid>
     </>
-  );
-};
-
-const CashInput = (props) => {
-  const { desc, handleChange, name } = props;
-  let { value } = props;
-  if (Number.isNaN(value)) {
-    value = 0.0;
-  }
-
-  return (
-    <TextField
-      fullWidth
-      name={name}
-      label={desc}
-      variant="outlined"
-      value={value}
-      onChange={handleChange}
-    />
   );
 };
 
