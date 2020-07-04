@@ -7,6 +7,7 @@ import Mortgage from './Outputs/Mortgage';
 import { CostsCalculator } from './CostsCalculator';
 import Repayments from './Outputs/Repayments';
 import Inputs from './Inputs/Inputs';
+import Deposit from './Outputs/Deposit';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -153,6 +154,9 @@ const Budget = () => {
                   applicationFee={constants.mortgageApplicationFee}
                   total={totalCosts}
                 />
+              </Grid>
+              <Grid item>
+                <Deposit savings={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
               </Grid>
               <Grid item>
                 <Mortgage

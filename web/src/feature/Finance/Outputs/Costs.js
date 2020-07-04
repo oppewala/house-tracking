@@ -1,9 +1,7 @@
 import React from 'react';
 import OutputCard from './OutputCard';
 
-const Costs = (props) => {
-  const { price, stampDuty, transferFee, applicationFee, total } = props;
-
+const Costs = ({ price, stampDuty, transferFee, applicationFee, total }) => {
   const items = [
     { label: 'Property Price', value: price, format: 'currency' },
     { label: 'Stamp Duty', value: stampDuty, format: 'currency' },

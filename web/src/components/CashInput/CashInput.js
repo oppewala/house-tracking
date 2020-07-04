@@ -1,11 +1,10 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
 
-const CashInput = (props) => {
-  const { desc, handleChange, name } = props;
-  let { value } = props;
+export const CashInput = ({ desc, handleChange, name, value, subText }) => {
+  let initValue = value;
   if (Number.isNaN(value)) {
-    value = 0.0;
+    initValue = 0.0;
   }
 
   return (
@@ -14,10 +13,11 @@ const CashInput = (props) => {
       name={name}
       label={desc}
       variant="outlined"
-      value={value}
+      value={initValue}
       onChange={handleChange}
+      inputMode="decimal"
+      type="number"
+      helperText={subText}
     />
   );
 };
-
-export default CashInput;

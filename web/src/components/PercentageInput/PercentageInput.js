@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { TextField } from '@material-ui/core';
 
-const PercentageInput = (props) => {
-  const { desc, handleChange, name } = props;
-  let { value } = props;
+const PercentageInput = ({ desc, handleChange, name, value }) => {
+  let initValue = value;
   if (Number.isNaN(value)) {
-    value = 0.0;
+    initValue = 0.0;
   }
 
-  const [displayValue, setDisplayValue] = useState(value * 100);
+  const [displayValue, setDisplayValue] = useState(initValue * 100);
   useEffect(() => {
     handleChange(displayValue / 100);
   }, [displayValue]);
