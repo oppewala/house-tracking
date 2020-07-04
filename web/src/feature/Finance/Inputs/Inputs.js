@@ -1,8 +1,9 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import CheckboxInput from 'components/CheckboxInput/CheckboxInput';
+import { CheckboxInput } from 'components/CheckboxInput';
 import { CashInput } from 'components/CashInput';
-import PercentageInput from 'components/PercentageInput/PercentageInput';
+import { PercentageInput } from 'components/PercentageInput';
+import { NumberInput } from 'components/NumberInput';
 
 const Inputs = (props) => {
   const { firstHomeBuyer, onFirstHomeBuyerChange } = props;
@@ -48,7 +49,7 @@ const Inputs = (props) => {
           />
         </Grid>
         <Grid item>
-          <CashInput
+          <NumberInput
             desc="Mortgage Length (yrs)"
             value={length}
             name="length"
@@ -57,7 +58,7 @@ const Inputs = (props) => {
         </Grid>
         <Grid item>
           <CashInput
-            desc="Monthly Living Costs)"
+            desc="Monthly Living Costs"
             value={monthlyLivingCosts}
             name="monthlyLivingCosts"
             handleChange={onLivingCostsChange}

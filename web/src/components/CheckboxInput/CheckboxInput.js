@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 
-const CheckboxInput = ({ checked, onChange, label, name }) => {
+export const CheckboxInput = ({ checked, onChange, label, name }) => {
   return (
     <>
       <FormControlLabel
@@ -11,5 +11,3 @@ const CheckboxInput = ({ checked, onChange, label, name }) => {
     </>
   );
 };
-
-export default CheckboxInput;
