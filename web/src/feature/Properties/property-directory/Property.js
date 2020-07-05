@@ -1,4 +1,15 @@
 import React, { Component } from 'react';
+import { Card, Typography } from '@material-ui/core';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = (theme) => ({
+  pageTitle: {
+    margin: `${theme.spacing() * 5}px`,
+  },
+});
 
 export class Property extends Component {
   BuildAddress = (property) => {
@@ -21,7 +32,8 @@ export class Property extends Component {
   };
 
   render() {
-    const { house } = this.props;
+    const { classes, house } = this.props;
+    console.log(classes);
 
     const address = this.BuildAddress(house);
     const houseLayout = this.BuildHouseLayout(house);
@@ -31,20 +43,22 @@ export class Property extends Component {
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
 
     return (
-      <div className="property py-2">
-        <h4 className="header">{address}</h4>
-        <p>{houseLayout}</p>
-        <Score rawscore={house.RawScore} />
-        <Tags tags={house.Tags} />
-        <p className="flex space-x-4">
-          <a href={mapUrl} className="link">
+      <Card>
+        <CardContent>
+          <Typography variant="h5">{address}</Typography>
+          <p>{houseLayout}</p>
+          <Score rawscore={house.RawScore} />
+          <Tags tags={house.Tags} />
+        </CardContent>
+        <CardActions>
+          <Button size="small" href={mapUrl}>
             Open in Maps
-          </a>{' '}
-          <a href={listingUrl} className="link">
+          </Button>
+          <Button size="small" href={listingUrl}>
             See Listing
-          </a>
-        </p>
-      </div>
+          </Button>
+        </CardActions>
+      </Card>
     );
   }
 }
@@ -71,4 +85,4 @@ const Tags = (props) => {
   );
 };
 
-export default Property;
+export default withStyles(styles)(Property);

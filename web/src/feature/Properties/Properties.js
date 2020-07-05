@@ -1,14 +1,22 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch, Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import PropertyDirectory from './property-directory/PropertyDirectory';
 import NewProperty from './new-property/NewProperty';
 import PropertyCheck from './property-check/PropertyCheck';
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: `${theme.spacing() * 6}px ${theme.spacing() * 5}px 0`,
+  },
+}));
+
 const Properties = () => {
   const match = useRouteMatch();
+  const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.container}>
       <Switch>
         <Route path={`${match.path}/add`}>
           <NewProperty />

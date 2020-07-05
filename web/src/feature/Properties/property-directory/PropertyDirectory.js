@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Grid, Typography } from '@material-ui/core';
 import { Property } from './Property';
 
 const PropertyDirectory = () => {
@@ -31,12 +32,18 @@ const PropertyDirectory = () => {
     return <div>Loading...</div>;
   }
 
-  const houseEls = houses.map((h) => <Property key={h.ID} house={h} />);
+  const houseEls = houses.map((h) => (
+    <Grid item>
+      <Property key={h.ID} house={h} />
+    </Grid>
+  ));
 
   return (
-    <div className="property-directory">
-      <h3 className="header header-xl">Properties</h3>
-      <div className="properties">{houseEls}</div>
+    <div>
+      <Typography variant="h3">Properties</Typography>
+      <Grid container spacing={5} direction="column" className="properties">
+        {houseEls}
+      </Grid>
     </div>
   );
 };
