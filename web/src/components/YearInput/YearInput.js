@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 
-export const CashInput = ({ desc, handleChange, name, value, subText }) => {
+export const YearInput = ({ desc, handleChange, name, value, subText }) => {
   let initValue = value;
   if (Number.isNaN(value)) {
     initValue = 0.0;
@@ -23,7 +23,7 @@ export const CashInput = ({ desc, handleChange, name, value, subText }) => {
         label={desc}
         value={initValue}
         onChange={handleChange}
-        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+        endAdornment={<InputAdornment position="end">years</InputAdornment>}
         type="number"
       />
       {subTextEl}

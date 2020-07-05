@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 import { CheckboxInput } from 'components/CheckboxInput';
 import { CashInput } from 'components/CashInput';
 import { PercentageInput } from 'components/PercentageInput';
-import { NumberInput } from 'components/NumberInput';
+import { YearInput } from '../../../components/YearInput';
 
 const Inputs = (props) => {
   const { firstHomeBuyer, onFirstHomeBuyerChange } = props;
@@ -49,8 +49,8 @@ const Inputs = (props) => {
           />
         </Grid>
         <Grid item>
-          <NumberInput
-            desc="Mortgage Length (yrs)"
+          <YearInput
+            desc="Mortgage Length"
             value={length}
             name="length"
             handleChange={onLengthChange}

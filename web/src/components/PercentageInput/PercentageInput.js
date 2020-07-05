@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField } from '@material-ui/core';
+import { FormControl, InputAdornment, InputLabel, OutlinedInput } from '@material-ui/core';
 
 export const PercentageInput = ({ desc, handleChange, name, value }) => {
   let initValue = value;
@@ -15,13 +15,16 @@ export const PercentageInput = ({ desc, handleChange, name, value }) => {
   const onValueChange = (e) => setDisplayValue(e.target.value);
 
   return (
-    <TextField
-      fullWidth
-      name={name}
-      label={desc}
-      variant="outlined"
-      value={displayValue}
-      onChange={onValueChange}
-    />
+    <FormControl fullWidth variant="outlined">
+      <InputLabel htmlFor={name}>{desc}</InputLabel>
+      <OutlinedInput
+        name={name}
+        label={desc}
+        value={displayValue}
+        onChange={onValueChange}
+        endAdornment={<InputAdornment position="end">%</InputAdornment>}
+        type="number"
+      />
+    </FormControl>
   );
 };
