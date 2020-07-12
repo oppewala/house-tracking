@@ -32,8 +32,10 @@ export class Property extends Component {
   };
 
   render() {
+    // todo: style
+    // eslint-disable-next-line no-unused-vars
     const { classes, house } = this.props;
-    console.log(classes);
+    // console.log(classes, house);
 
     const address = this.BuildAddress(house);
     const houseLayout = this.BuildHouseLayout(house);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Grid from '@material-ui/core/Grid';
 import Address from '../common/Address';
 import { ScoreInput } from './Score';
 import PropertyDetails from './PropertyDetails';
@@ -142,34 +143,38 @@ class NewProperty extends Component {
           <span className="header header-xl">Add new property</span>
         </h3>
         <form>
-          <div className="my-4">
-            <h4 className="header header-lg mb-2">Address</h4>
-            <Address changeHandler={this.addressFieldChangeHandler} address={house.address} />
-          </div>
-          <div className="my-4 py-2">
-            <h4 className="header header-lg mb-2">Property Details</h4>
-            <PropertyDetails
-              house={house}
-              onPriceChange={this.onPriceChange}
-              onRoomChange={this.onRoomChange}
-              onExtraRoomsChecked={this.extraRoomsHandler}
-            />
-          </div>
-          <div className="my-4">
-            <h4 className="header header-lg mb-2">Score</h4>
-            <ScoreInput
-              score={house.rawscore}
-              sliderChangeHandler={this.scoreSliderChangeHandler}
-            />
-          </div>
-          <div className="my-4">
-            <h4 className="header header-lg mb-2">Links</h4>
-            <References
-              references={house.references}
-              addHandler={this.addReferenceHandler}
-              deleteHandler={this.deleteReferenceHandler}
-            />
-          </div>
+          <Grid container>
+            <Grid item xs={3}>
+              <div>
+                <h4 className="header header-lg mb-2">Address</h4>
+                <Address changeHandler={this.addressFieldChangeHandler} address={house.address} />
+              </div>
+              <div>
+                <h4 className="header header-lg mb-2">Property Details</h4>
+                <PropertyDetails
+                  house={house}
+                  onPriceChange={this.onPriceChange}
+                  onRoomChange={this.onRoomChange}
+                  onExtraRoomsChecked={this.extraRoomsHandler}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={3}>
+              <h4 className="header header-lg mb-2">Score</h4>
+              <ScoreInput
+                score={house.rawscore}
+                sliderChangeHandler={this.scoreSliderChangeHandler}
+              />
+            </Grid>
+            <Grid item>
+              <h4 className="header header-lg mb-2">Links</h4>
+              <References
+                references={house.references}
+                addHandler={this.addReferenceHandler}
+                deleteHandler={this.deleteReferenceHandler}
+              />
+            </Grid>
+          </Grid>
         </form>
         <br />
         <button

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Autocomplete from 'react-google-autocomplete';
+import GoogleAutocomplete from './Autocomplete';
 
 const Address = (props) => {
   const { address, changeHandler } = props;
@@ -59,13 +59,7 @@ const Address = (props) => {
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           <span className="input-label block">Address</span>
-          <Autocomplete
-            apiKey={`${process.env.REACT_APP_GOOGLE_APIKEY}`}
-            onPlaceSelected={autocompleteHandler}
-            types={['address']}
-            componentRestrictions={{ country: 'au' }}
-            className="input-plain focus:outline-none focus:shadow-outline"
-          />
+          <GoogleAutocomplete selectionHandler={autocompleteHandler} />
         </label>
       </div>
       <div className="py-2">
