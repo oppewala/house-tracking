@@ -5,52 +5,67 @@ import GoogleAutocomplete from './Autocomplete';
 const Address = (props) => {
   const { address, changeHandler } = props;
 
-  const autocompleteHandler = (place) => {
-    const selectedAddress = {
-      placeId: place.place_id,
-      street: '',
-      suburb: '',
-      postcode: '',
-      state: '',
-      point: {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-      },
-    };
+  const autocompleteHandler = (placeId) => {
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ placeId }, (results, status) => {
+      if (status !== 'OK') {
+        console.error('Failed to retrieve place data');
+        return;
+      }
 
-    const streetParts = {
-      number: '',
-      street: '',
-    };
-    place.address_components.forEach((c) => {
-      const [type] = c.types;
-      switch (type) {
-        case 'street_number':
-          streetParts.number = c.short_name;
-          break;
-        case 'route':
+      if (results.length === 0) {
+        console.error('Could not find matching place');
+        return;
+      }
+
+      const place = results[0];
+
+      const selectedAddress = {
+        placeId: place.place_id,
+        street: '',
+        suburb: '',
+        postcode: '',
+        state: '',
+        point: {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        },
+      };
+
+      const streetParts = {
+        number: '',
+        street: '',
+      };
+      place.address_components.forEach((c) => {
+        const [type] = c.types;
+        switch (type) {
+          case 'street_number':
+            streetParts.number = c.short_name;
+            break;
+          case 'route':
+            streetParts.street = c.short_name;
+            break;
+          case 'locality':
+            selectedAddress.suburb = c.short_name;
+            break;
+          case 'postal_code':
+            selectedAddress.postcode = c.short_name;
+            break;
+          case 'administrative_area_level_1':
+            selectedAddress.state = c.short_name;
+            break;
+          default:
+            break;
+        }
+        if (type === 'route') {
           streetParts.street = c.short_name;
-          break;
-        case 'locality':
-          selectedAddress.suburb = c.short_name;
-          break;
-        case 'postal_code':
-          selectedAddress.postcode = c.short_name;
-          break;
-        case 'administrative_area_level_1':
-          selectedAddress.state = c.short_name;
-          break;
-        default:
-          break;
-      }
-      if (type === 'route') {
-        streetParts.street = c.short_name;
-      }
+        }
+      });
+
+      selectedAddress.street = `${streetParts.number} ${streetParts.street}`;
+
+      changeHandler(selectedAddress);
     });
-
-    selectedAddress.street = `${streetParts.number} ${streetParts.street}`;
-
-    changeHandler(selectedAddress);
   };
 
   return (

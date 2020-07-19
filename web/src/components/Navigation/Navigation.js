@@ -71,7 +71,6 @@ function Navigation() {
                   Resources
                 </Link>
                 <Button
-                  variant="small"
                   onClick={login}
                   style={{
                     display: !isLoggedIn ? 'inline-flex' : 'none',
@@ -80,7 +79,6 @@ function Navigation() {
                   Login
                 </Button>
                 <Button
-                  variant="small"
                   onClick={logout}
                   style={{
                     display: isLoggedIn ? 'inline-flex' : 'none',

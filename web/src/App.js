@@ -42,6 +42,7 @@ class App extends React.Component {
     super(props);
 
     this.login = () => {
+      localStorage.setItem('auth', 'fakejwt');
       this.setState((state) => ({
         ...state,
         userState: {
@@ -52,6 +53,7 @@ class App extends React.Component {
     };
 
     this.logout = () => {
+      localStorage.removeItem('auth');
       this.setState((state) => ({
         ...state,
         userState: {
@@ -63,7 +65,7 @@ class App extends React.Component {
 
     this.state = {
       userState: {
-        isLoggedIn: false,
+        isLoggedIn: localStorage.getItem('auth') || false,
         login: this.login,
         logout: this.logout,
       },

@@ -70,7 +70,10 @@ const Score = (props) => {
 
   return (
     <div>
-      <p>Score: {JSON.stringify(rawscore)}</p>
+      <p>
+        Score:
+        <br /> <pre>{JSON.stringify(rawscore, null, 2)}</pre>
+      </p>
     </div>
   );
 };

@@ -52,21 +52,15 @@ const PropertyDirectory = () => {
     </Grid>
   ));
 
-  const smallButton = React.forwardRef((props) => (
-    <Button size="small" href={props.href}>
-      {props.children}
-    </Button>
-  ));
-
   return (
     <div>
       <div className={classes.childNav}>
-        <Link to={`${match.url}/add`} component={smallButton}>
+        <Button size="small" component={Link} to={`${match.url}/add`}>
           Add new
-        </Link>
-        <Link to={`${match.url}/check`} component={smallButton}>
+        </Button>
+        <Button size="small" component={Link} to={`${match.url}/check`}>
           Check Existing
-        </Link>
+        </Button>
       </div>
       <Grid container spacing={5} direction="column" className={classes.directoryContainer}>
         {houseEls}
