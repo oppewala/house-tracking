@@ -48,7 +48,7 @@ export default function GoogleAutocomplete(props) {
   const [suggestions, setSuggestions] = React.useState([]);
   const loaded = React.useRef(false);
 
-  const { selectionHandler } = props;
+  const { selectionHandler, label } = props;
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
@@ -156,7 +156,7 @@ export default function GoogleAutocomplete(props) {
       }}
       renderInput={(params) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <TextField {...params} label="Add a location" variant="outlined" fullWidth />
+        <TextField {...params} label={label ?? 'Add a location'} variant="outlined" fullWidth />
       )}
       PopperComponent={Dropdown}
       renderOption={(option) => {

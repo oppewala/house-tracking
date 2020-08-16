@@ -37,7 +37,7 @@ const Reference = (props) => {
 };
 
 const ReferenceInput = (props) => {
-  const { addHandler, existingSources } = props;
+  const { existingSources } = props;
 
   const filterSources = (filter) => {
     const sources = ['Domain', 'Realestate'];
@@ -61,25 +61,11 @@ const ReferenceInput = (props) => {
 
   if (filteredSources.length === 0) return <div>All options already filled</div>;
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (url.trim() === '') {
-      // TODO: Validate properly
-      console.warn('URL Empty');
-      return;
-    }
-    addHandler(source, url);
-
-    setSource('');
-    setUrl('');
-  };
-
   return (
-    <form onSubmit={onSubmit}>
+    <>
       <SourceSelector value={source} onChange={onSourceChange} options={filteredSources} />
       <input type="textbox" placeholder="Paste URL" value={url} onChange={onUrlChange} />
-      <button type="submit">Add</button>
-    </form>
+    </>
   );
 };
 

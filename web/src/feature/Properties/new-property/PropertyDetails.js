@@ -1,64 +1,41 @@
 import React from 'react';
+import { NumberInput } from 'components/NumberInput';
+import { Grid } from '@material-ui/core';
+import { CheckboxInput } from '../../../components/CheckboxInput';
 
 const PropertyDetails = (props) => {
-  const { house, onPriceChange, onRoomChange, onExtraRoomsChecked } = props;
+  const { house, onRoomChange, onExtraRoomsChecked } = props;
 
   return (
-    <div>
-      <SimpleInput desc="Price" name="price" val={house.price} changeHandler={onPriceChange} />
-      <div className="flex flex-col py-2 space-y-2 sm:space-y-0 sm:space-x-2 sm:flex-row">
-        <SimpleInput
+    <Grid container direction="row" spacing={5}>
+      <Grid item xs={12} sm={4} lg={3}>
+        <NumberInput
           desc="Bedrooms"
           name="bedrooms"
-          val={house.bedrooms}
-          changeHandler={onRoomChange}
+          value={house.bedrooms}
+          handleChange={onRoomChange}
         />
-        <SimpleInput
+      </Grid>
+      <Grid item xs={12} sm={4} lg={3}>
+        <NumberInput
           desc="Bathrooms"
           name="bathrooms"
-          val={house.bathrooms}
-          changeHandler={onRoomChange}
+          value={house.bathrooms}
+          handleChange={onRoomChange}
         />
-        <SimpleInput
+      </Grid>
+      <Grid item xs={12} sm={4} lg={3}>
+        <NumberInput
           desc="Parking"
           name="parking"
-          val={house.parking}
-          changeHandler={onRoomChange}
+          value={house.parking}
+          handleChange={onRoomChange}
         />
-      </div>
-      <div>
-        <label htmlFor="extrarooms">
-          <span className="input-label inline">Has Extra Rooms</span>
-          <input
-            className="ml-4"
-            type="checkbox"
-            checked={house.extrarooms}
-            name="extrarooms"
-            onChange={onExtraRoomsChecked}
-          />
-        </label>
-      </div>
-    </div>
-  );
-};
-
-const SimpleInput = (props) => {
-  const { name, desc, val, changeHandler } = props;
-
-  return (
-    <div className="w-full">
-      <label htmlFor={name}>
-        <span className="input-label block">{desc}</span>
-        <input
-          className="input-plain"
-          type="text"
-          id={name}
-          name={name}
-          value={val}
-          onChange={changeHandler}
-        />
-      </label>
-    </div>
+      </Grid>
+      <Grid item xs={12} lg={3}>
+        <CheckboxInput label="Extra Rooms" onChange={onExtraRoomsChecked} />
+      </Grid>
+    </Grid>
   );
 };
 

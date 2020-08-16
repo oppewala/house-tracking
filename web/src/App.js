@@ -19,6 +19,16 @@ const htTheme = createMuiTheme({
       height: '64px',
     },
   },
+  props: {
+    MuiTypography: {
+      variantMapping: {
+        h3: 'h1',
+        h4: 'h2',
+        h5: 'h3',
+        h6: 'h4',
+      },
+    },
+  },
 });
 
 const styles = (theme) => ({

@@ -10,6 +10,11 @@ const useStyles = makeStyles((theme) => ({
   container: {
     padding: `${theme.spacing() * 6}px ${theme.spacing() * 5}px 0`,
   },
+  sectionTitle: {
+    height: theme.spacing() * 7,
+    marginBottom: theme.spacing() * 3,
+    verticalAlign: 'bottom',
+  },
 }));
 
 const Properties = () => {
@@ -18,7 +23,9 @@ const Properties = () => {
 
   return (
     <div className={classes.container}>
-      <Typography variant="h3">Properties</Typography>
+      <Typography variant="h3" className={classes.sectionTitle}>
+        Properties
+      </Typography>
       <Switch>
         <Route path={`${match.path}/add`}>
           <NewProperty />

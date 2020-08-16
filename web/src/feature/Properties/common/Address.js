@@ -9,11 +9,13 @@ const Address = (props) => {
     const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ placeId }, (results, status) => {
       if (status !== 'OK') {
+        // eslint-disable-next-line
         console.error('Failed to retrieve place data');
         return;
       }
 
       if (results.length === 0) {
+        // eslint-disable-next-line
         console.error('Could not find matching place');
         return;
       }
@@ -68,15 +70,26 @@ const Address = (props) => {
     });
   };
 
+  const enableDebug = false;
+
   return (
-    <div>
-      <div className="py-2">
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label>
-          <span className="input-label block">Address</span>
-          <GoogleAutocomplete selectionHandler={autocompleteHandler} />
-        </label>
-      </div>
+    <>
+      <GoogleAutocomplete selectionHandler={autocompleteHandler} label="Address" />
+      {enableDebug ? <DebugAddress address={address} /> : null}
+    </>
+  );
+};
+
+Address.propTypes = {
+  address: PropTypes.shape().isRequired,
+  changeHandler: PropTypes.func.isRequired,
+};
+
+const DebugAddress = (props) => {
+  const { address } = props;
+
+  return (
+    <>
       <div className="py-2">
         <label htmlFor="Street">
           <span className="input-label block">Street</span>
@@ -95,13 +108,8 @@ const Address = (props) => {
         <SimpleAddressInput desc="Postcode" val={address.postcode} />
         <SimpleAddressInput desc="State" val={address.state} />
       </div>
-    </div>
+    </>
   );
-};
-
-Address.propTypes = {
-  address: PropTypes.shape().isRequired,
-  changeHandler: PropTypes.func.isRequired,
 };
 
 const SimpleAddressInput = (props) => {

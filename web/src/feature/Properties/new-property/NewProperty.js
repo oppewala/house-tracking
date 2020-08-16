@@ -1,9 +1,31 @@
 import React, { Component } from 'react';
-import Grid from '@material-ui/core/Grid';
+import {
+  Grid,
+  Hidden,
+  Typography,
+  Card,
+  CardContent,
+  Link,
+  TextField,
+  withStyles,
+  Button,
+  MenuItem,
+  Select,
+} from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+import { TextInput } from 'components/TextInput';
 import Address from '../common/Address';
-import { ScoreInput } from './Score';
 import PropertyDetails from './PropertyDetails';
 import References from './References';
+
+const styles = (theme) => ({
+  breadcrumb: {
+    marginBottom: theme.spacing() * 3,
+  },
+  urlSelect: {
+    width: '100%',
+  },
+});
 
 class NewProperty extends Component {
   constructor() {
@@ -135,59 +157,99 @@ class NewProperty extends Component {
 
   render() {
     const { house } = this.state;
+    const { classes } = this.props;
 
     return (
       <div>
-        <h3 className="mb-8">
-          <span className="header-xl">Properties / </span>
-          <span className="header header-xl">Add new property</span>
-        </h3>
-        <form>
-          <Grid container>
-            <Grid item xs={3}>
-              <div>
-                <h4 className="header header-lg mb-2">Address</h4>
+        <Typography variant="subtitle1" className={classes.breadcrumb}>
+          <Link variant="button" color="textPrimary" component={RouterLink} to="/Properties">
+            Properties
+          </Link>{' '}
+          / Add new property
+        </Typography>
+        <Grid container spacing={5}>
+          <Grid item xs={12} md={6}>
+            <Grid container spacing={5}>
+              <Grid item xs={12}>
                 <Address changeHandler={this.addressFieldChangeHandler} address={house.address} />
-              </div>
-              <div>
-                <h4 className="header header-lg mb-2">Property Details</h4>
+              </Grid>
+              <Grid item xs={12}>
+                <TextInput
+                  desc="Price"
+                  name="price"
+                  value={house.price}
+                  handleChange={this.onPriceChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <PropertyDetails
                   house={house}
-                  onPriceChange={this.onPriceChange}
                   onRoomChange={this.onRoomChange}
                   onExtraRoomsChecked={this.extraRoomsHandler}
                 />
-              </div>
-            </Grid>
-            <Grid item xs={3}>
-              <h4 className="header header-lg mb-2">Score</h4>
-              <ScoreInput
-                score={house.rawscore}
-                sliderChangeHandler={this.scoreSliderChangeHandler}
-              />
-            </Grid>
-            <Grid item>
-              <h4 className="header header-lg mb-2">Links</h4>
-              <References
-                references={house.references}
-                addHandler={this.addReferenceHandler}
-                deleteHandler={this.deleteReferenceHandler}
-              />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h5">Tags</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h5">Links</Typography>
+                <Grid container spacing={1}>
+                  {house.references.map((h) => {
+                    return (
+                      <Grid key={h.url} container item xs={12} spacing={1}>
+                        <Grid item xs>
+                          <Select value={h.source} variant="outlined" className={classes.urlSelect}>
+                            <MenuItem value="Domain">Domain</MenuItem>
+                            <MenuItem value="Realestate">Realestate</MenuItem>
+                          </Select>
+                        </Grid>
+                        <Grid item xs={9}>
+                          <TextInput value={h.url} desc="URL" />
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+                  <Grid item xs={12}>
+                    <Button variant="text" color="secondary">
+                      Add
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h5">Links</Typography>
+                <References
+                  references={house.references}
+                  addHandler={this.addReferenceHandler}
+                  deleteHandler={this.deleteReferenceHandler}
+                />
+              </Grid>
             </Grid>
           </Grid>
-        </form>
+          <Grid item xs={12} md={6}>
+            <Grid container direction="column" spacing={5}>
+              <Hidden smDown>
+                <Grid item xs={12}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h5">Map</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Hidden>
+              <Grid item xs={12}>
+                <TextField multiline label="Notes" variant="outlined" fullWidth rows={6} />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
         <br />
-        <button
-          className="btn bg-purple-200 border-purple-600 shadow
-            hover:bg-purple-600 hover:text-white"
-          type="submit"
-          onClick={this.submitForm}
-        >
+        <Button type="submit" onClick={this.submitForm} variant="text" color="primary">
           Submit
-        </button>
+        </Button>
       </div>
     );
   }
 }
 
-export default NewProperty;
+export default withStyles(styles)(NewProperty);
