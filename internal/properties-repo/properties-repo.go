@@ -24,6 +24,7 @@ type propertyRepo struct {
 type PropertyRepository interface {
 	All() ([]htdbtypes.Property, error)
 	Add(property htdbtypes.Property) (*primitive.ObjectID, error)
+	Get(id primitive.ObjectID) (htdbtypes.Property, error)
 	Close()
 }
 
@@ -58,6 +59,10 @@ func newRepo() PropertyRepository {
 			client.Disconnect(ctx)
 		},
 	}
+}
+
+func (repo *propertyRepo) Close() {
+	repo.disconnect()
 }
 
 func (repo *propertyRepo) All() ([]htdbtypes.Property, error) {
@@ -99,6 +104,17 @@ func (repo *propertyRepo) Add(property htdbtypes.Property) (*primitive.ObjectID,
 
 	return &property.ID, nil
 }
-func (repo *propertyRepo) Close() {
-	repo.disconnect()
+
+func (repo *propertyRepo) Get(id primitive.ObjectID) (htdbtypes.Property, error) {
+	var propertiesCollection = repo.db.Collection("properties")
+
+	var existingProperty htdbtypes.Property
+	err := propertiesCollection.FindOne(context.TODO(), bson.M{
+		"_id": id}).Decode(&existingProperty)
+
+	if err != nil {
+		return existingProperty, fmt.Errorf("property with id (%v) does not exist", id)
+	}
+
+	return existingProperty, nil
 }

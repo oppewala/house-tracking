@@ -13,7 +13,9 @@ type Property struct {
 	Bathrooms  int32              `bson:"bathrooms,omitempty"`
 	Parking    int32              `bson:"parking,omitempty"`
 	ExtraRooms bool               `bson:"extrarooms,omitempty"`
+	Nbn        Nbn                `bson:"nbn,omitempty"`
 	RawScore   PropertyScore      `bson:"rawscore,omitempty"`
+	PlaceId    string             `bson:"placeid,omitempty"`
 	References []Reference        `bson:"references,omitempty"`
 	Tags       []string           `bson:"tags,omitempty"`
 }
@@ -37,7 +39,6 @@ type PropertyScore struct {
 	LivingArea      int32
 	Bathrooms       int32
 	LocalArea       int32
-	NBN             int32
 }
 
 // Reference is
@@ -45,3 +46,15 @@ type Reference struct {
 	Type  string
 	Value string
 }
+
+// Nbn is
+type Nbn string
+
+const (
+	FTTP    Nbn = "FTTP"
+	FTTN        = "FTTN"
+	FTTC        = "FTTC"
+	FTTB        = "FTTB"
+	HFC         = "HFC"
+	Unknown     = "Unknown"
+)

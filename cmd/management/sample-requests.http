@@ -4,6 +4,14 @@ GET http://localhost:5000/
 
 ###
 
+GET http://localhost:5000/house
+
+###
+
+GET http://localhost:5000/house/5e9c4f0731ea9ad729e9414d
+
+####
+
 POST http://localhost:5000/house HTTP/1.1
 content-type: application/json
 
