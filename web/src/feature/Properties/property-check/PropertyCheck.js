@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import Address from '../common/Address';
+import { AddressInput } from 'components/AddressInput';
 import NbnDetails from './NbnDetails';
 import Nearby from './Nearby';
+import { config } from '_helpers/config';
 
 const PropertyCheck = () => {
   const [address, setAddress] = useState({
@@ -23,12 +24,12 @@ const PropertyCheck = () => {
   const embeddedMap = !address.placeId
     ? ''
     : // eslint-disable-next-line max-len
-      `https://www.google.com/maps/embed/v1/place?q=place_id:${address.placeId}&key=${process.env.REACT_APP_GOOGLE_APIKEY}`;
+      `https://www.google.com/maps/embed/v1/place?q=place_id:${address.placeId}&key=${config.GoogleApiKey}`;
 
   return (
     <section className="w-full">
       <h2 className="font-bold text-lg">Property Check</h2>
-      <Address address={address} changeHandler={onAutoComplete} />
+      <AddressInput address={address} changeHandler={onAutoComplete} />
       <div hidden={!address.placeId}>
         <iframe
           title="Property Map"

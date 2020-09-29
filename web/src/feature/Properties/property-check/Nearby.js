@@ -1,4 +1,5 @@
 import React from 'react';
+import { config } from '_helpers/config';
 
 const Nearby = (props) => {
   const { address } = props;
@@ -8,7 +9,7 @@ const Nearby = (props) => {
     ?${formattedLocation}
     &rankby=distance
     &type=train_station
-    &key=${process.env.REACT_APP_GOOGLE_APIKEY}`;
+    &key=${config.GoogleApiKey}`;
 
   fetch(fetchUrl).then((r) => console.log(r));
 

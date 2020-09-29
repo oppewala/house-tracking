@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GoogleAutocomplete from './Autocomplete';
 
-const Address = (props) => {
+export const AddressInput = (props) => {
   const { address, changeHandler } = props;
 
   const autocompleteHandler = (placeId) => {
@@ -74,13 +74,13 @@ const Address = (props) => {
 
   return (
     <>
-      <GoogleAutocomplete selectionHandler={autocompleteHandler} label="Address" />
+      <GoogleAutocomplete selectionHandler={autocompleteHandler} label="AddressInput" />
       {enableDebug ? <DebugAddress address={address} /> : null}
     </>
   );
 };
 
-Address.propTypes = {
+AddressInput.propTypes = {
   address: PropTypes.shape().isRequired,
   changeHandler: PropTypes.func.isRequired,
 };
@@ -131,5 +131,3 @@ const SimpleAddressInput = (props) => {
     </div>
   );
 };
-
-export default Address;

@@ -1,11 +1,15 @@
 import React from 'react';
 import { NumberInput } from 'components/NumberInput';
 import { Grid } from '@material-ui/core';
-import { CheckboxInput } from '../../../components/CheckboxInput';
+import { CheckboxInput } from 'components/CheckboxInput';
 
-const PropertyDetails = (props) => {
-  const { house, onRoomChange, onExtraRoomsChecked } = props;
+interface Props {
+  house: any;
+  onRoomChange: any;
+  onExtraRoomsChecked: any;
+}
 
+const PropertyDetails = ({ house, onRoomChange, onExtraRoomsChecked }: Props): JSX.Element => {
   return (
     <Grid container direction="row" spacing={5}>
       <Grid item xs={12} sm={4} lg={3}>
@@ -14,6 +18,7 @@ const PropertyDetails = (props) => {
           name="bedrooms"
           value={house.bedrooms}
           handleChange={onRoomChange}
+          subText=""
         />
       </Grid>
       <Grid item xs={12} sm={4} lg={3}>
@@ -22,6 +27,7 @@ const PropertyDetails = (props) => {
           name="bathrooms"
           value={house.bathrooms}
           handleChange={onRoomChange}
+          subText=""
         />
       </Grid>
       <Grid item xs={12} sm={4} lg={3}>
@@ -30,10 +36,16 @@ const PropertyDetails = (props) => {
           name="parking"
           value={house.parking}
           handleChange={onRoomChange}
+          subText=""
         />
       </Grid>
       <Grid item xs={12} lg={3}>
-        <CheckboxInput label="Extra Rooms" onChange={onExtraRoomsChecked} />
+        <CheckboxInput
+          checked={house.extraRooms}
+          name="extrarooms"
+          label="Extra Rooms"
+          onChange={onExtraRoomsChecked}
+        />
       </Grid>
     </Grid>
   );

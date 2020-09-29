@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export class CostsCalculator {
   static StampDuty = (housePrice, firstHomeBuyer) => {
     if (firstHomeBuyer && housePrice <= 600000) return 0;

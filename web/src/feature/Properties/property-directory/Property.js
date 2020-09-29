@@ -33,13 +33,13 @@ export class Property extends Component {
 
   render() {
     // todo: style
-    // eslint-disable-next-line no-unused-vars
-    const { classes, house } = this.props;
-    // console.log(classes, house);
+    const { house } = this.props;
 
     const address = this.BuildAddress(house);
     const houseLayout = this.BuildHouseLayout(house);
-    const listingUrl = house.References[0].URL;
+
+    const listingUrl = house.References?.[0].URL;
+    console.log(house.References, listingUrl);
 
     const encodedAddress = encodeURIComponent(address);
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
@@ -56,9 +56,11 @@ export class Property extends Component {
           <Button size="small" href={mapUrl}>
             Open in Maps
           </Button>
-          <Button size="small" href={listingUrl}>
-            See Listing
-          </Button>
+          {listingUrl ? (
+            <Button size="small" href={listingUrl}>
+              See Listing
+            </Button>
+          ) : null}
         </CardActions>
       </Card>
     );
@@ -80,7 +82,7 @@ const Score = (props) => {
 
 const Tags = (props) => {
   const { tags } = props;
-  const tagEls = tags.map((t) => <li key={t}>{t}</li>);
+  const tagEls = tags?.map((t) => <li key={t}>{t}</li>);
 
   return (
     <div>

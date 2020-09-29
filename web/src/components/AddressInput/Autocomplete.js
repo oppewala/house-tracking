@@ -9,6 +9,7 @@ import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 import Popper from '@material-ui/core/Popper';
 import clsx from 'clsx';
+import { config } from '_helpers/config';
 
 function loadScript(src, position, id) {
   if (!position) {
@@ -54,7 +55,7 @@ export default function GoogleAutocomplete(props) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
         `https://maps.googleapis.com/maps/api/js?key=
-          ${process.env.REACT_APP_GOOGLE_APIKEY}&libraries=places`,
+          ${config.GoogleApiKey}&libraries=places`,
         document.querySelector('head'),
         'google-maps',
       );
@@ -145,7 +146,7 @@ export default function GoogleAutocomplete(props) {
       includeInputInList
       filterSelectedOptions
       value={selectedValue}
-      noOptionsText="Address not found"
+      noOptionsText="AddressInput not found"
       onChange={(event, newValue) => {
         selectSuggestion(newValue);
         setSuggestions(newValue ? [newValue, ...suggestions] : suggestions);
