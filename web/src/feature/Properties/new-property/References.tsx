@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
-import { PropertyReference } from '../common/PropertyReference';
+import { PropertyReference } from '../types';
 import { TextInput } from 'components/TextInput/TextInput';
 
 interface Props {

@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Property } from '../common/Property';
-import { Address } from '../common/Address';
-import { PropertyReference } from '../common/PropertyReference';
-import { PropertyConfiguration } from '../common/PropertyConfiguration';
+import { Property, Address, PropertyReference, PropertyConfiguration } from '../types';
 
 export type NewPropertySliceState = {
   isAddressSet: boolean;
