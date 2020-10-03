@@ -27,6 +27,7 @@ export interface PropertyConfiguration {
   bathrooms: number;
   parking: number;
   hasExtraRooms: boolean;
+  nbn: string;
 }
 
 export interface PropertyReference {

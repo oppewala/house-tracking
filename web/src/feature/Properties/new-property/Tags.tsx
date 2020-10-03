@@ -39,7 +39,6 @@ export const Tags: FunctionComponent<Props> = ({ tags, addTag, removeTag }) => {
   };
 
   const handleSubmit = (e: React.KeyboardEvent) => {
-    console.log(e, e.key);
     if (e.key === 'Enter' && newTag && newTag !== '') {
       addTag(newTag);
       newTagUpdate('');
@@ -62,7 +61,7 @@ export const Tags: FunctionComponent<Props> = ({ tags, addTag, removeTag }) => {
       </FormControl>
       <div className={classes.chipContainer}>
         {tags.map((t) => (
-          <Chip key={t} label={t} onDelete={() => removeTag(t)} />
+          <Chip key={t} label={t} onDelete={() => removeTag(t)} aria-label={t} />
         ))}
       </div>
     </Grid>

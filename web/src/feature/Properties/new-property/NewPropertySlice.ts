@@ -25,6 +25,7 @@ const initialState: NewPropertySliceState = {
       bedrooms: 0,
       parking: 0,
       hasExtraRooms: false,
+      nbn: 'Unknown',
     },
     price: '',
     /* rawscore: {
