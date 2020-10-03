@@ -1,18 +1,18 @@
 
 
-GET http://localhost:5000/
+GET http://localhost:8080/
 
 ###
 
-GET http://localhost:5000/house
+GET http://localhost:8080/house
 
 ###
 
-GET http://localhost:5000/house/5e9c4f0731ea9ad729e9414d
+GET http://localhost:8080/house/5f787f5a1aa273f1ab852373
 
 ####
 
-POST http://localhost:5000/house HTTP/1.1
+POST http://localhost:8080/house HTTP/1.1
 content-type: application/json
 
 {
@@ -36,8 +36,8 @@ content-type: application/json
 
 ###
 
-GET http://localhost:5000/nbn?Street=37%20Camera%20Walk&suburb=Coburg%20North HTTP/1.1
+GET http://localhost:8080/nbn?Street=37%20Camera%20Walk&suburb=Coburg%20North HTTP/1.1
 
 ###
 
-GET http://localhost:5000/nbn/LOC000140347733 HTTP/1.1
+GET http://localhost:8080/nbn/LOC000140347733 HTTP/1.1

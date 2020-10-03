@@ -2,50 +2,45 @@ import React from 'react';
 import { NumberInput } from 'components/NumberInput';
 import { Grid } from '@material-ui/core';
 import { CheckboxInput } from 'components/CheckboxInput';
+import { FieldErrors } from 'react-hook-form';
 
 interface Props {
-  house: any;
-  onRoomChange: any;
-  onExtraRoomsChecked: any;
+  inputRef: React.Ref<any>;
+  errors: FieldErrors<any>;
 }
 
-const PropertyDetails = ({ house, onRoomChange, onExtraRoomsChecked }: Props): JSX.Element => {
+const PropertyDetails = ({ inputRef, errors }: Props): JSX.Element => {
   return (
     <Grid container direction="row" spacing={5}>
       <Grid item xs={12} sm={4} lg={3}>
         <NumberInput
           desc="Bedrooms"
           name="bedrooms"
-          value={house.bedrooms}
-          handleChange={onRoomChange}
           subText=""
+          inputRef={inputRef}
+          error={!!errors.bedrooms}
         />
       </Grid>
       <Grid item xs={12} sm={4} lg={3}>
         <NumberInput
           desc="Bathrooms"
           name="bathrooms"
-          value={house.bathrooms}
-          handleChange={onRoomChange}
           subText=""
+          inputRef={inputRef}
+          error={!!errors.bathrooms}
         />
       </Grid>
       <Grid item xs={12} sm={4} lg={3}>
         <NumberInput
           desc="Parking"
           name="parking"
-          value={house.parking}
-          handleChange={onRoomChange}
           subText=""
+          inputRef={inputRef}
+          error={!!errors.parking}
         />
       </Grid>
       <Grid item xs={12} lg={3}>
-        <CheckboxInput
-          checked={house.extraRooms}
-          name="extrarooms"
-          label="Extra Rooms"
-          onChange={onExtraRoomsChecked}
-        />
+        <CheckboxInput label="Extra Rooms" name="extrarooms" inputRef={inputRef} />
       </Grid>
     </Grid>
   );

@@ -49,7 +49,7 @@ export default function GoogleAutocomplete(props) {
   const [suggestions, setSuggestions] = React.useState([]);
   const loaded = React.useRef(false);
 
-  const { selectionHandler, label } = props;
+  const { selectionHandler, label, error } = props;
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
@@ -115,9 +115,8 @@ export default function GoogleAutocomplete(props) {
     };
   }, [selectedValue, inputValue, fetchSuggestions]);
 
-  // eslint-disable-next-line no-unused-vars
   const selectSuggestion = (suggestion) => {
-    selectionHandler(suggestion.place_id);
+    selectionHandler(suggestion?.place_id);
   };
 
   const Dropdown = (p) => {
@@ -145,19 +144,30 @@ export default function GoogleAutocomplete(props) {
       autoHighlight
       includeInputInList
       filterSelectedOptions
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') e.preventDefault();
+      }}
       value={selectedValue}
-      noOptionsText="AddressInput not found"
+      noOptionsText="Address not found"
       onChange={(event, newValue) => {
         selectSuggestion(newValue);
         setSuggestions(newValue ? [newValue, ...suggestions] : suggestions);
         setSelectedValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
+        selectSuggestion({ placeId: '' });
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <TextField {...params} label={label ?? 'Add a location'} variant="outlined" fullWidth />
+        <TextField
+          {...params}
+          label={label ?? 'Add a location'}
+          variant="outlined"
+          fullWidth
+          error={!!error}
+          helperText={error?.message}
+        />
       )}
       PopperComponent={Dropdown}
       renderOption={(option) => {

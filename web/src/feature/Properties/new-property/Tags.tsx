@@ -39,6 +39,7 @@ export const Tags: FunctionComponent<Props> = ({ tags, addTag, removeTag }) => {
   };
 
   const handleSubmit = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') e.preventDefault();
     if (e.key === 'Enter' && newTag && newTag !== '') {
       addTag(newTag);
       newTagUpdate('');

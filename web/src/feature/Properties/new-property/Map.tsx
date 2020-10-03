@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Card, CardContent, Grid } from '@material-ui/core';
-import { MapEmbed } from 'components/MapEmbed/MapEmbed';
+import { MapEmbed } from 'feature/Properties/components/MapEmbed/MapEmbed';
 
 interface Props {
   placeId: string;

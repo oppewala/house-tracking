@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddressInput } from 'components/AddressInput';
+import { AddressInput } from 'feature/Properties/components/AddressInput';
 import NbnDetails from './NbnDetails';
 import Nearby from './Nearby';
 import { config } from '_helpers/config';

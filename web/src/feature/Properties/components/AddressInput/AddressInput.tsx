@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import GoogleAutocomplete from './Autocomplete';
+import { Address } from '../../types';
 
-export const AddressInput = (props) => {
-  const { address, changeHandler } = props;
+interface AddressError {
+  message: string;
+}
 
-  const autocompleteHandler = (placeId) => {
+interface AddressInputProps {
+  changeHandler(address?: Address): void;
+  error: any;
+}
+
+export const AddressInput: FunctionComponent<AddressInputProps> = ({ changeHandler, error }) => {
+  const autocompleteHandler = (placeId: string) => {
+    if (!placeId || placeId === '') {
+      changeHandler();
+      return;
+    }
+
     const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ placeId }, (results, status) => {
       if (status !== 'OK') {
@@ -22,7 +35,7 @@ export const AddressInput = (props) => {
 
       const place = results[0];
 
-      const selectedAddress = {
+      const selectedAddress: Address = {
         placeId: place.place_id,
         street: '',
         suburb: '',
@@ -70,64 +83,12 @@ export const AddressInput = (props) => {
     });
   };
 
-  const enableDebug = false;
-
   return (
-    <>
-      <GoogleAutocomplete selectionHandler={autocompleteHandler} label="AddressInput" />
-      {enableDebug ? <DebugAddress address={address} /> : null}
-    </>
+    <GoogleAutocomplete selectionHandler={autocompleteHandler} label="Address" error={error} />
   );
 };
 
 AddressInput.propTypes = {
-  address: PropTypes.shape().isRequired,
   changeHandler: PropTypes.func.isRequired,
-};
-
-const DebugAddress = (props) => {
-  const { address } = props;
-
-  return (
-    <>
-      <div className="py-2">
-        <label htmlFor="Street">
-          <span className="input-label block">Street</span>
-          <input
-            className="input-plain"
-            disabled
-            type="text"
-            name="Street"
-            placeholder="Waiting for search..."
-            defaultValue={address.street}
-          />
-        </label>
-      </div>
-      <div className="flex flex-col space-x-0 space-y-2 md:space-x-2 md:flex-row md:space-y-0">
-        <SimpleAddressInput desc="Suburb" val={address.suburb} />
-        <SimpleAddressInput desc="Postcode" val={address.postcode} />
-        <SimpleAddressInput desc="State" val={address.state} />
-      </div>
-    </>
-  );
-};
-
-const SimpleAddressInput = (props) => {
-  const { desc, val } = props;
-
-  return (
-    <div className="w-full">
-      <label htmlFor={desc}>
-        <span className="input-label block">{desc}</span>
-      </label>
-      <input
-        className="input-plain"
-        disabled
-        type="text"
-        name={desc}
-        placeholder="Waiting for search..."
-        defaultValue={val}
-      />
-    </div>
-  );
+  error: PropTypes.any,
 };

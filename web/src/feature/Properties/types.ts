@@ -32,7 +32,8 @@ export interface PropertyConfiguration {
 
 export interface PropertyReference {
   id: number;
-  url: string;
+  type?: string;
+  value: string;
 }
 
 export interface RawScore {
@@ -51,4 +52,13 @@ export interface RawScore {
 export interface Tag {
   id: number;
   tag: string;
+}
+
+export enum Nbn {
+  FTTP = 'FTTP',
+  FTTN = 'FTTN',
+  FTTC = 'FTTC',
+  FTTB = 'FTTB',
+  HFC = 'HFC',
+  Unknown = 'Unknown',
 }

@@ -25,6 +25,8 @@ type PropertyRepository interface {
 	All() ([]htdbtypes.Property, error)
 	Add(property htdbtypes.Property) (*primitive.ObjectID, error)
 	Get(id primitive.ObjectID) (htdbtypes.Property, error)
+	Delete(id primitive.ObjectID) error
+	GetByPlaceId(placeId string) (htdbtypes.Property, error)
 	Close()
 }
 
@@ -117,4 +119,31 @@ func (repo *propertyRepo) Get(id primitive.ObjectID) (htdbtypes.Property, error)
 	}
 
 	return existingProperty, nil
+}
+
+func (repo *propertyRepo) GetByPlaceId(placeId string) (htdbtypes.Property, error) {
+	var propertiesCollection = repo.db.Collection("properties")
+
+	var existingProperty htdbtypes.Property
+	err := propertiesCollection.FindOne(context.TODO(), bson.M{
+		"location.placeid": placeId}).Decode(&existingProperty)
+
+	if err != nil {
+		return existingProperty, fmt.Errorf("property with placeId (%v) does not exist", placeId)
+	}
+
+	return existingProperty, nil
+}
+
+func (repo *propertyRepo) Delete(id primitive.ObjectID) error {
+	_, err := repo.Get(id)
+	if err != nil {
+		return err
+	}
+
+	var propertiesCollection = repo.db.Collection("properties")
+	_, err = propertiesCollection.DeleteOne(context.TODO(), bson.M{
+		"_id": id})
+
+	return err
 }

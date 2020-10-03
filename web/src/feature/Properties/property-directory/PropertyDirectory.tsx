@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Property } from './Property';
+import { RetrieveAllProperties } from '../../../_services/ApiService/houseApi';
 
 const useStyles = makeStyles((theme) => ({
   directoryContainer: {
@@ -14,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PropertyDirectory = () => {
-  const [isLoaded, setLoaded] = useState(false);
-  const [houses, setHouses] = useState();
-  const [error, setError] = useState();
+const PropertyDirectory: FunctionComponent = () => {
+  const [isLoaded, setLoaded] = useState<boolean>(false);
+  const [houses, setHouses] = useState<any>();
+  const [error, setError] = useState<any>();
 
   const controller = new AbortController();
   const { signal } = controller;
@@ -25,7 +26,7 @@ const PropertyDirectory = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    fetch('https://api.house.crackedjar.com', { signal })
+    RetrieveAllProperties({ signal })
       .then((r) => r.json())
       .then((r) => {
         setHouses(r);

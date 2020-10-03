@@ -29,8 +29,8 @@ export const References: FunctionComponent<Props> = ({
             <Grid key={h.id} container item xs={12} spacing={1}>
               <Grid item xs={10}>
                 <TextInput
-                  name={h.url}
-                  value={h.url}
+                  name={h.value}
+                  value={h.value}
                   desc="URL"
                   handleChange={(e) => onUpdateReference(e, h.id)}
                 />
