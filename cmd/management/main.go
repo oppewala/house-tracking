@@ -10,12 +10,12 @@ import (
 	"github.com/oppewala/house-tracking/internal/properties-repo"
 )
 
-var propRepo properties_repo.PropertyRepository
+var propRepo propertiesrepo.PropertyRepository
 
 func main() {
 	log.Print("Starting 'management' on :8080")
 
-	propRepo = properties_repo.Repo
+	propRepo = propertiesrepo.Repo
 	defer propRepo.Close()
 
 	router := mux.NewRouter().StrictSlash(true)

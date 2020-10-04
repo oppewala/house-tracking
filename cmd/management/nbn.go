@@ -35,7 +35,7 @@ func nbnSearch(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("content-type", "application/json")
-	_, err = w.Write(s)
+	w.Write(s)
 }
 
 func nbnLookup(w http.ResponseWriter, r *http.Request) {
@@ -57,5 +57,5 @@ func nbnLookup(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("content-type", "application/json")
-	_, err = w.Write(j)
+	w.Write(j)
 }

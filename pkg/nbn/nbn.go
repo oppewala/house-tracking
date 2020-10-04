@@ -21,7 +21,7 @@ type Address struct {
 
 // Suggestion is returned from the initial search with potential matches
 type Suggestion struct {
-	Id               string
+	ID               string
 	FormattedAddress string
 	Latitude         float64
 	Longitude        float64
@@ -47,6 +47,7 @@ type lookupResponse struct {
 	AddressDetail AddressDetail
 }
 
+// Search for address, returning nbnco suggestions
 func Search(address Address) ([]Suggestion, error) {
 	s, err := addressToString(address)
 	if err != nil {
@@ -64,11 +65,11 @@ func Search(address Address) ([]Suggestion, error) {
 	req.Header.Add("Referer", "https://www.nbnco.com.au/")
 	res, err := client.Do(req)
 	if err != nil {
-		err = fmt.Errorf("Failed to execute request: %v \n Url: %v", err, u)
+		err = fmt.Errorf("failed to execute request: %v \n Url: %v", err, u)
 		return nil, err
 	}
 	if res.StatusCode != http.StatusOK {
-		err = fmt.Errorf("Received unexpected status code: %v \n Url: %v", res.StatusCode, u)
+		err = fmt.Errorf("received unexpected status code: %v \n Url: %v", res.StatusCode, u)
 		return nil, err
 	}
 
@@ -76,13 +77,13 @@ func Search(address Address) ([]Suggestion, error) {
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		err = fmt.Errorf("Failed to read body: %v \n Url: %v \n Body: %v", err, u, string(body))
+		err = fmt.Errorf("failed to read body: %v \n Url: %v \n Body: %v", err, u, string(body))
 		return nil, err
 	}
 	var l searchResponse
 	err = json.Unmarshal(body, &l)
 	if err != nil {
-		err = fmt.Errorf("Failed to unmarshal json: %v \n Url: %v \n Body: %v", err, u, string(body))
+		err = fmt.Errorf("failed to unmarshal json: %v \n Url: %v \n Body: %v", err, u, string(body))
 		return nil, err
 	}
 	log.Printf("Response: %+v", l)
@@ -90,6 +91,7 @@ func Search(address Address) ([]Suggestion, error) {
 	return l.Suggestions, nil
 }
 
+// Lookup based on NBNco ID
 func Lookup(id string) (*AddressDetail, error) {
 	u := "https://places.nbnco.net.au/places/v1/details/" + id
 
@@ -110,7 +112,7 @@ func Lookup(id string) (*AddressDetail, error) {
 	var l lookupResponse
 	err = json.Unmarshal(body, &l)
 	if err != nil {
-		err = fmt.Errorf("Failed to unmarshal json: %v \n Body: %v", err, string(body))
+		err = fmt.Errorf("failed to unmarshal json: %v \n Body: %v", err, string(body))
 		return nil, err
 	}
 

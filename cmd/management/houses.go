@@ -86,7 +86,7 @@ func readPropertyFromBody(r *http.Request) (htdbtypes.Property, error) {
 func getHouse(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
-	objId, err := primitive.ObjectIDFromHex(id)
+	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		eh.Print(err, "failed to convert hex to object id")
 		err = errors.New("invalid property id")
@@ -94,7 +94,7 @@ func getHouse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	prop, err := propRepo.Get(objId)
+	prop, err := propRepo.Get(objID)
 	if err != nil {
 		eh.Print(err, "failed to get house")
 		http.NotFound(w, r)
@@ -122,7 +122,7 @@ func searchHouse(w http.ResponseWriter, r *http.Request) {
 	searchQueries, ok := qs["placeId"]
 
 	if ok {
-		property, err := propRepo.GetByPlaceId(searchQueries[0])
+		property, err := propRepo.GetByPlaceID(searchQueries[0])
 		if err != nil {
 			err = fmt.Errorf("failed to retrieve property for requested placeId: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -132,7 +132,7 @@ func searchHouse(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("content-type", "application/json")
 		s, _ := json.Marshal(property)
-		_, err = w.Write(s)
+		w.Write(s)
 
 		return
 	}
@@ -141,7 +141,7 @@ func searchHouse(w http.ResponseWriter, r *http.Request) {
 func deleteHouse(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
-	objId, err := primitive.ObjectIDFromHex(id)
+	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		eh.Print(err, "failed to convert hex to object id")
 		err = errors.New("invalid property id")
@@ -149,7 +149,7 @@ func deleteHouse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = propRepo.Delete(objId)
+	err = propRepo.Delete(objID)
 	if err != nil {
 		err = fmt.Errorf("failed to delete property for requested id: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)

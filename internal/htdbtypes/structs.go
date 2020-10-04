@@ -17,6 +17,7 @@ type Property struct {
 	Notes      string                `bson:"notes,omitempty"`
 }
 
+// PropertyConfiguration is
 type PropertyConfiguration struct {
 	Bedrooms   int32 `bson:"bedrooms,omitempty"`
 	Bathrooms  int32 `bson:"bathrooms,omitempty"`
