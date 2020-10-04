@@ -14,71 +14,22 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  #validate-backend:
-    #name: Validate backend
-    #runs-on: ubuntu-latest
-    #steps:
-    #- name: Set up Go 1.13
-    #  uses: actions/setup-go@v2
-
-    #- name: Check out code
-    #  uses: actions/checkout@v2
-
-    #- name: Get dependencies
-    #  run: |
-    #    go get -v -t -d ./...
-    #    if [ -f Gopkg.toml ]; then
-    #        curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    #        dep ensure
-    #    fi
-
-    #- name: Build
-    #  run: make validate
-
-  validate-backend:
-    name: Validate backend
+  golangci:
+    name: Lint golang
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Check - imports
-      if: always()
-      uses: grandcolline/golang-github-actions@v1.1.0
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v2
       with:
-        run: imports
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check - errcheck
-      if: always()
-      uses: grandcolline/golang-github-actions@v1.1.0
-      with:
-        run: errcheck
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check - lint
-      if: always()
-      uses: grandcolline/golang-github-actions@v1.1.0
-      with:
-        run: lint
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check - shadow
-      if: always()
-      uses: grandcolline/golang-github-actions@v1.1.0
-      with:
-        run: shadow
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check - staticcheck
-      if: always()
-      uses: grandcolline/golang-github-actions@v1.1.0
-      with:
-        run: staticcheck
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check - sec
-      if: always()
-      uses: grandcolline/golang-github-actions@v1.1.0
-      with:
-        run: sec
-        token: ${{ secrets.GITHUB_TOKEN }}
-        flags: "-exclude=G104"
+        version: v1.29
+        # Optional: working directory, useful for monorepos
+        # working-directory: somedir
+        # Optional: golangci-lint command line arguments.
+        # args: --issues-exit-code=0
+        # Optional: show only new issues if it's a pull request. The default value is `false`.
+        # only-new-issues: true
     
-
   validate-frontend:
     name: Validate frontend
     runs-on: ubuntu-latest
@@ -89,3 +40,4 @@ jobs:
       uses: reviewdog/action-eslint@v1
       with:
         workdir: './web'
+        eslint_flags: 'src/'

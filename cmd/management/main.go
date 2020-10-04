@@ -29,7 +29,7 @@ func main() {
 	router.HandleFunc("/nbn/{id}", nbnLookup).Methods("GET")
 
 	handler := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://house.crackedjar.com", "http://localhost:3000"},
+		AllowedOrigins: []string{"https://house.crackedjar.com", "http://localhost:3000"},
 	}).Handler(router)
 	log.Fatal(http.ListenAndServe(":8080", handler))
 }
