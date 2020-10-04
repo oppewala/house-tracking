@@ -4,14 +4,13 @@ import { config } from '_helpers/config';
 const Nearby = (props) => {
   const { address } = props;
 
-  const formattedLocation = `location=${address.point.lat}%2C${address.point.lng}`;
-  const fetchUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json
-    ?${formattedLocation}
-    &rankby=distance
-    &type=train_station
-    &key=${config.GoogleApiKey}`;
+  const fetchUrl = new URL('/maps/api/place/nearbysearch/json', 'https://maps.googleapis.com');
+  fetchUrl.searchParams.set('location', `${address.point.lat}%2C${address.point.lng}`);
+  fetchUrl.searchParams.set('rankby', 'distance');
+  fetchUrl.searchParams.set('type', 'train_station');
+  fetchUrl.searchParams.set('key', config.GoogleApiKey);
 
-  fetch(fetchUrl).then((r) => console.log(r));
+  fetch(fetchUrl.toString()).then((r) => console.log(r));
 
   return (
     <div className="py-2">
