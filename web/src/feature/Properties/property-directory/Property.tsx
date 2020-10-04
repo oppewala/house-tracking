@@ -3,7 +3,7 @@ import { Card, Typography } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { DeleteProperty } from '../../../_services/ApiService/houseApi';
 
 interface Props {
