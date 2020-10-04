@@ -1,6 +1,7 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch, Link } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import PropertyDirectory from './property-directory/PropertyDirectory';
 import NewProperty from './new-property/NewProperty';
 import PropertyCheck from './property-check/PropertyCheck';
@@ -9,14 +10,22 @@ const useStyles = makeStyles((theme) => ({
   container: {
     padding: `${theme.spacing() * 6}px ${theme.spacing() * 5}px 0`,
   },
+  sectionTitle: {
+    height: theme.spacing() * 7,
+    marginBottom: theme.spacing() * 3,
+    verticalAlign: 'bottom',
+  },
 }));
 
 const Properties = () => {
-  const match = useRouteMatch();
   const classes = useStyles();
+  const match = useRouteMatch();
 
   return (
     <div className={classes.container}>
+      <Typography variant="h3" className={classes.sectionTitle}>
+        Properties
+      </Typography>
       <Switch>
         <Route path={`${match.path}/add`}>
           <NewProperty />
@@ -26,14 +35,6 @@ const Properties = () => {
         </Route>
         <Route path={match.path}>
           <PropertyDirectory />
-          <div className="flex space-x-4">
-            <Link to={`${match.url}/add`} className="link">
-              Add new
-            </Link>
-            <Link to={`${match.url}/check`} className="link">
-              Check Existing
-            </Link>
-          </div>
         </Route>
       </Switch>
     </div>

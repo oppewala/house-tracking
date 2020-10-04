@@ -7,7 +7,15 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 
-export const CashInput = ({ desc, handleChange, name, value, subText }) => {
+interface Props {
+  desc: string;
+  handleChange: any;
+  name: string;
+  value: number;
+  subText?: string;
+}
+
+export const CashInput = ({ desc, handleChange, name, value, subText }: Props): JSX.Element => {
   let initValue = value;
   if (Number.isNaN(value)) {
     initValue = 0.0;

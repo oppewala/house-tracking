@@ -1,0 +1,8 @@
+.git
+.cache
+.github
+docs
+
+web/node_modules
+web/build
+**/.idea

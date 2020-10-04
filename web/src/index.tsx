@@ -1,15 +1,25 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import './styles/index.css';
 import * as Sentry from '@sentry/browser';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { config } from '_helpers/config';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './reducers';
+import { Provider } from 'react-redux';
 
-Sentry.init({ dsn: process.env.REACT_APP_SENTRY_DSN });
+Sentry.init({ dsn: config.SentryDsn });
 
-ReactDOM.render(
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

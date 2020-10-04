@@ -2,16 +2,16 @@ name: Publish web changes (prod)
 
 on:
   push:
-    paths: 
-    - 'web/**'
+    paths:
+      - "web/**"
     branches:
-    - master
+      - master
   pull_request:
-    paths: 
-    - 'web/**'
+    paths:
+      - "web/**"
     types: [closed]
     branches:
-    - master
+      - master
 
 env:
   SENTRY_ORG: arend-oppewal
@@ -22,26 +22,26 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-    - uses: actions/checkout@v1
-    - name: Create a Sentry.io release
-      uses: tclindner/sentry-releases-action@v1.2.0
-      env:
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: ${{ env.SENTRY_ORG }}
-        SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
-      with:
-        tagName: ${{ github.sha }}
-        environment: prod
-    - name: Build And Deploy
-      id: builddeploy
-      uses: Azure/static-web-apps-deploy@v0.0.1-preview
-      with:
-        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ZEALOUS_BAY_0858BA500 }}
-        repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-        action: 'upload'
-        ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
-        app_location: '/web' # App source code path
-        #api_location: 'api' # Api source code path - optional
-        #app_artifact_location: '' # Built app content directory - optional
-        app_build_command: REACT_APP_GOOGLE_APIKEY=${{ secrets.REACT_APP_GOOGLE_APIKEY }} REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} yarn build
-        ###### End of Repository/Build Configurations ######
+      - uses: actions/checkout@v1
+      - name: Create a Sentry.io release
+        uses: tclindner/sentry-releases-action@v1.2.0
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
+        with:
+          tagName: ${{ github.sha }}
+          environment: prod
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ZEALOUS_BAY_0858BA500 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
+          app_location: "/web" # App source code path
+          #api_location: 'api' # Api source code path - optional
+          #app_artifact_location: '' # Built app content directory - optional
+          app_build_command: REACT_APP_GOOGLE_APIKEY=${{ secrets.REACT_APP_GOOGLE_APIKEY }} REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} REACT_APP_API_ROOT=http://api.house.crackedjar.com/ yarn build
+          ###### End of Repository/Build Configurations ######

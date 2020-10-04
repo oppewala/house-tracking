@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export class CostsCalculator {
   static StampDuty = (housePrice, firstHomeBuyer) => {
     if (firstHomeBuyer && housePrice <= 600000) return 0;
@@ -20,6 +19,7 @@ export class CostsCalculator {
     0.2 * Number(housePrice) + Number(totalCost) - Number(housePrice);
 
   static RepaymentsMonthly = (interestRate, loanLength, loanValue) => {
+    // eslint-disable-next-line
     if (interestRate > 0.2) console.warn('Interest rate above 20% - potentially unexpected');
 
     const repayments = CostsCalculator.PMT(
@@ -54,4 +54,11 @@ export class CostsCalculator {
 
   static Savings = (deposit, isFirstHomeBuyerEligible) =>
     Number(deposit) + (isFirstHomeBuyerEligible ? 10000 : 0);
+
+  static lmi = (lvr) => {
+    if (lvr < 0.8) return 0;
+    if (lvr < 0.9) return 0.02;
+    if (lvr < 0.095) return 0.04;
+    return 0.1;
+  };
 }
