@@ -1,10 +1,11 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useRouteMatch, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import PropertyDirectory from './property-directory/PropertyDirectory';
 import NewProperty from './new-property/NewProperty';
 import PropertyCheck from './property-check/PropertyCheck';
+import Listing from './listing/Listing';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,12 +34,21 @@ const Properties = () => {
         <Route path={`${match.path}/check`}>
           <PropertyCheck />
         </Route>
+        <Route path={`${match.path}/:id`}>
+          <ListingRoute />
+        </Route>
         <Route path={match.path}>
           <PropertyDirectory />
         </Route>
       </Switch>
     </div>
   );
+};
+
+const ListingRoute = () => {
+  const { id } = useParams();
+
+  return <Listing id={id} />;
 };
 
 export default Properties;

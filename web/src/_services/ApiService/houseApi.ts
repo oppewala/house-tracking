@@ -29,3 +29,13 @@ export const DeleteProperty = (id: string): Promise<Response> => {
 
   return fetch(url.toString(), options);
 };
+
+export const RetrieveProperty = (id: string, options?: RequestInit): Promise<Response> => {
+  const url = new URL(`/house/${id}`, config.ApiRoot);
+  const opt: RequestInit = {
+    ...options,
+    method: 'GET',
+  };
+
+  return fetch(url.toString(), opt);
+};

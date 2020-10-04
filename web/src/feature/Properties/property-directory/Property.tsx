@@ -1,13 +1,15 @@
 import React, { FunctionComponent } from 'react';
-import { Card, Typography } from '@material-ui/core';
+import { Card, Link, Typography } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { DeleteProperty } from '../../../_services/ApiService/houseApi';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface Props {
   house: any;
+  detailsUrl: string;
 }
 
 // todo: style
@@ -17,7 +19,7 @@ const styles = (theme) => ({
   },
 });
 
-export const Property: FunctionComponent<Props> = ({ house }) => {
+export const Property: FunctionComponent<Props> = ({ house, detailsUrl }) => {
   const buildAddress = (property: any) => {
     const addressParts = [
       property.Address.Street,
@@ -66,6 +68,9 @@ export const Property: FunctionComponent<Props> = ({ house }) => {
             See Listing
           </Button>
         ) : null}
+        <Button size="small" component={RouterLink} to={detailsUrl}>
+          Details
+        </Button>
         <Button size="small" onClick={() => DeleteProperty(house.ID)} color="secondary">
           Delete
         </Button>
@@ -79,10 +84,8 @@ const Score = (props) => {
 
   return (
     <div>
-      <p>
-        Score:
-        <br /> <pre>{JSON.stringify(rawscore, null, 2)}</pre>
-      </p>
+      <p>Score:</p>
+      <pre>{JSON.stringify(rawscore, null, 2)}</pre>
     </div>
   );
 };

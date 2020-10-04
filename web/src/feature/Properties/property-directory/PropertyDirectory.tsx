@@ -49,7 +49,7 @@ const PropertyDirectory: FunctionComponent = () => {
 
   const houseEls = houses.map((h) => (
     <Grid key={h.ID} item xs>
-      <Property house={h} />
+      <Property house={h} detailsUrl={`${match.url}/${h.ID}`} />
     </Grid>
   ));
 
