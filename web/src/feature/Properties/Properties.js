@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, useRouteMatch, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import PropertyDirectory from './property-directory/PropertyDirectory';
+import ListingDirectory from './property-directory/ListingDirectory';
 import NewProperty from './new-property/NewProperty';
 import PropertyCheck from './property-check/PropertyCheck';
 import Listing from './listing/Listing';
@@ -38,7 +38,7 @@ const Properties = () => {
           <ListingRoute />
         </Route>
         <Route path={match.path}>
-          <PropertyDirectory />
+          <ListingDirectory />
         </Route>
       </Switch>
     </div>

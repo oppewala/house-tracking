@@ -14,7 +14,9 @@ const PropertyCheck = () => {
     point: { lat: 0, lng: 0 },
   });
 
-  const onAutoComplete = (autoRes) => {
+  const onAutoComplete = async (autoRes) => {
+    if (!autoRes) return;
+
     setAddress(autoRes);
   };
 

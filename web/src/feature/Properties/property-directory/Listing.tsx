@@ -6,9 +6,13 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { DeleteProperty } from '../../../_services/ApiService/houseApi';
 import { Link as RouterLink } from 'react-router-dom';
+import KingBedOutlinedIcon from '@material-ui/icons/KingBedOutlined';
+import BathtubOutlinedIcon from '@material-ui/icons/BathtubOutlined';
+import DriveEtaOutlinedIcon from '@material-ui/icons/DriveEtaOutlined';
+import { Property as PropertyType } from '../../../_services/ApiService/types';
 
 interface Props {
-  house: any;
+  house: PropertyType;
   detailsUrl: string;
 }
 
@@ -19,8 +23,10 @@ const styles = (theme) => ({
   },
 });
 
-export const Property: FunctionComponent<Props> = ({ house, detailsUrl }) => {
-  const buildAddress = (property: any) => {
+export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
+  const id: string = house.ID ?? '';
+
+  const buildAddress = (property: PropertyType) => {
     const addressParts = [
       property.Address.Street,
       property.Address.Suburb,
@@ -30,19 +36,19 @@ export const Property: FunctionComponent<Props> = ({ house, detailsUrl }) => {
     return addressParts.join(', ');
   };
 
-  const buildHouseLayout = (house: any) => {
-    const houseLayoutParts = [
-      `Bedrooms: ${house.Bedrooms}`,
-      `Bathrooms: ${house.Bathrooms}`,
-      `Parking: ${house.Parking}`,
-    ];
-    return houseLayoutParts.join(' | ');
+  const HouseLayout: React.FC<{ house: PropertyType }> = ({ house }) => {
+    return (
+      <p>
+        <KingBedOutlinedIcon fontSize={'inherit'} /> Bedrooms: {house?.Layout?.Bedrooms} |{' '}
+        <BathtubOutlinedIcon fontSize={'inherit'} /> Bathrooms: {house?.Layout?.Bathrooms} |{' '}
+        <DriveEtaOutlinedIcon fontSize={'inherit'} /> Parking: {house?.Layout?.Parking}
+      </p>
+    );
   };
 
   const address = buildAddress(house);
-  const houseLayout = buildHouseLayout(house);
 
-  const listingUrl = house.References?.[0].URL;
+  const listingUrl = house.References?.[0].Value;
   console.log(house.References, listingUrl);
 
   const encodedAddress = encodeURIComponent(address);
@@ -52,8 +58,8 @@ export const Property: FunctionComponent<Props> = ({ house, detailsUrl }) => {
     <Card>
       <CardContent>
         <Typography variant="h5">{address}</Typography>
-        <p>{houseLayout}</p>
-        <Score rawscore={house.RawScore} />
+        <HouseLayout house={house} />
+
         <Tags tags={house.Tags} />
         <div>
           <pre>{JSON.stringify(house, null, 2)}</pre>
@@ -71,22 +77,11 @@ export const Property: FunctionComponent<Props> = ({ house, detailsUrl }) => {
         <Button size="small" component={RouterLink} to={detailsUrl}>
           Details
         </Button>
-        <Button size="small" onClick={() => DeleteProperty(house.ID)} color="secondary">
+        <Button size="small" onClick={() => DeleteProperty(id)} color="secondary">
           Delete
         </Button>
       </CardActions>
     </Card>
-  );
-};
-
-const Score = (props) => {
-  const { rawscore } = props;
-
-  return (
-    <div>
-      <p>Score:</p>
-      <pre>{JSON.stringify(rawscore, null, 2)}</pre>
-    </div>
   );
 };
 
@@ -102,4 +97,4 @@ const Tags = (props) => {
   );
 };
 
-export default withStyles(styles)(Property);
+export default withStyles(styles)(Listing);

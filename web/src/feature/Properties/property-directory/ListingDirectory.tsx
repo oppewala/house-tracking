@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { Property } from './Property';
+import { Listing } from './Listing';
 import { RetrieveAllProperties } from '../../../_services/ApiService/houseApi';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PropertyDirectory: FunctionComponent = () => {
+const ListingDirectory: FunctionComponent = () => {
   const [isLoaded, setLoaded] = useState<boolean>(false);
   const [houses, setHouses] = useState<any>();
   const [error, setError] = useState<any>();
@@ -49,7 +49,7 @@ const PropertyDirectory: FunctionComponent = () => {
 
   const houseEls = houses.map((h) => (
     <Grid key={h.ID} item xs>
-      <Property house={h} detailsUrl={`${match.url}/${h.ID}`} />
+      <Listing house={h} detailsUrl={`${match.url}/${h.ID}`} />
     </Grid>
   ));
 
@@ -70,4 +70,4 @@ const PropertyDirectory: FunctionComponent = () => {
   );
 };
 
-export default PropertyDirectory;
+export default ListingDirectory;

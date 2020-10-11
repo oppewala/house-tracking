@@ -1,4 +1,5 @@
 export type Property = {
+  ID?: string;
   Address: Address;
   Location: Location;
   Price: string;
