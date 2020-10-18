@@ -8,6 +8,9 @@ import { config } from '_helpers/config';
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducers';
 import { Provider } from 'react-redux';
+import { Auth0Provider } from '@auth0/auth0-react';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 Sentry.init({ dsn: config.SentryDsn });
 
@@ -15,11 +18,25 @@ const store = configureStore({
   reducer: rootReducer,
 });
 
+export const history = createBrowserHistory();
+const onRedirectCallback = (appState) => {
+  history.replace(appState?.returnTo || window.location.pathname);
+};
+
 render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Auth0Provider
+      domain={config.Auth0.Domain ?? ''}
+      clientId={config.Auth0.ClientId ?? ''}
+      redirectUri={window.location.origin}
+      onRedirectCallback={onRedirectCallback}
+    >
+      <Router history={history}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </Router>
+    </Auth0Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
