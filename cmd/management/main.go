@@ -30,6 +30,7 @@ func main() {
 
 	handler := cors.New(cors.Options{
 		AllowedOrigins: []string{"https://house.crackedjar.com", "http://localhost:3000"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 	}).Handler(router)
 	log.Fatal(http.ListenAndServe(":8080", handler))
 }

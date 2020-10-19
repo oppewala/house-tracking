@@ -43,6 +43,5 @@ jobs:
           app_location: "/web" # App source code path
           #api_location: 'api' # Api source code path - optional
           #app_artifact_location: '' # Built app content directory - optional
-          app_build_command:
-            REACT_APP_GOOGLE_APIKEY=${{ secrets.REACT_APP_GOOGLE_APIKEY }} REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} REACT_APP_API_ROOT=https://api.house.crackedjar.com/ REACT_APP_AUTH0_DOMAIN=${{ secrets.REACT_APP_AUTH0_DOMAIN }} REACT_APP_AUTH0_CLIENTID=${{ secrets.REACT_APP_AUTH0_CLIENTID }} yarn build
+          app_build_command: REACT_APP_GOOGLE_APIKEY=${{ secrets.REACT_APP_GOOGLE_APIKEY }} REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} REACT_APP_API_ROOT=https://api.house.crackedjar.com/ REACT_APP_AUTH0_DOMAIN=${{ secrets.REACT_APP_AUTH0_DOMAIN }} REACT_APP_AUTH0_CLIENTID=${{ secrets.REACT_APP_AUTH0_CLIENTID }} yarn build
           ###### End of Repository/Build Configurations ######

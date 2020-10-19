@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Card, Typography } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
@@ -24,6 +25,9 @@ const styles = (theme) => ({
 });
 
 export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
+  const [deleting, setDeleting] = useState<boolean>(false);
+  const history = useHistory();
+
   const id: string = house.ID ?? '';
 
   const buildAddress = (property: PropertyType) => {
@@ -77,7 +81,15 @@ export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
         <Button size="small" component={RouterLink} to={detailsUrl}>
           Details
         </Button>
-        <Button size="small" onClick={() => DeleteProperty(id)} color="secondary">
+        <Button
+          size="small"
+          onClick={() => {
+            setDeleting(true);
+            DeleteProperty(id).then(() => history.go(0));
+          }}
+          color="secondary"
+          disabled={deleting}
+        >
           Delete
         </Button>
       </CardActions>

@@ -63,7 +63,16 @@ func newHouse(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("content-type", "application/json")
-	fmt.Fprintf(w, "{ 'status': 'added', 'id': '%v' }", id.String())
+
+	res := struct {
+		Status string
+		Id     string
+	}{
+		"Added",
+		id.Hex(),
+	}
+	s, _ := json.Marshal(res)
+	_, _ = w.Write(s)
 }
 
 func readPropertyFromBody(r *http.Request) (htdbtypes.Property, error) {
@@ -132,7 +141,7 @@ func searchHouse(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("content-type", "application/json")
 		s, _ := json.Marshal(property)
-		w.Write(s)
+		_, _ = w.Write(s)
 
 		return
 	}

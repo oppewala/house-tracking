@@ -1,6 +1,17 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import { Grid, Hidden, Typography, Link, TextField, Button } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import {
+  Grid,
+  Hidden,
+  Typography,
+  Link,
+  TextField,
+  Button,
+  CircularProgress,
+  Snackbar,
+  IconButton,
+} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { TextInput } from 'components/TextInput';
 import { AddressInput } from 'feature/Properties/components/AddressInput';
 import Tags from './Tags';
@@ -12,6 +23,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Address, Nbn, PropertyReference } from '../types';
 import { SubmitNewProperty } from '../../../_services/ApiService/houseApi';
 import { Property } from '../../../_services/ApiService/types';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   breadcrumb: {
@@ -35,10 +47,17 @@ type FormInputs = {
   nbn: Nbn;
 };
 
-export const NewProperty: FunctionComponent<NewPropertyProps> = (props) => {
-  const { register, handleSubmit, getValues, setValue, clearErrors, errors, watch } = useForm<
-    FormInputs
-  >({
+export const NewProperty: FunctionComponent = () => {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    clearErrors,
+    errors,
+    watch,
+    formState,
+  } = useForm<FormInputs>({
     defaultValues: {
       address: undefined,
       references: [],
@@ -53,7 +72,12 @@ export const NewProperty: FunctionComponent<NewPropertyProps> = (props) => {
     register({ name: 'address', type: 'custom' }, { required: 'Address is required' });
     register({ name: 'references', type: 'custom' });
     register({ name: 'tags', type: 'custom' });
+    register({ name: 'extrarooms', type: 'boolean' }, { required: false });
   });
+
+  const [failed, setFailed] = useState<string | undefined>();
+
+  const history = useHistory();
 
   const addressFieldChangeHandler = async (address) => {
     if (address || getValues('address') || errors.address) {
@@ -101,8 +125,6 @@ export const NewProperty: FunctionComponent<NewPropertyProps> = (props) => {
   };
 
   const onValid = async (data: FormInputs) => {
-    console.log(data);
-
     const property: Property = {
       Address: {
         Postcode: data.address.postcode,
@@ -131,11 +153,30 @@ export const NewProperty: FunctionComponent<NewPropertyProps> = (props) => {
       }),
       Tags: data.tags,
     };
-    const response = await SubmitNewProperty(property);
 
-    console.log(response);
+    try {
+      const response = await SubmitNewProperty(property);
+
+      if (!response.ok) {
+        const responseBody = await response.text();
+
+        let errorMessage = `${response.statusText}`;
+        if (responseBody) {
+          errorMessage += `\r\nResponse Body: ${responseBody}`;
+        }
+        console.error(errorMessage);
+      }
+
+      const responseObj = await response.json();
+      if (responseObj.Id) {
+        history.push(`/Properties/${responseObj.Id}`);
+      }
+    } catch (e) {
+      setFailed('Failed to submit new property');
+      console.error('Failed to submit new property', e);
+    }
   };
-  const onErrors = (e, er) => console.log(e, er);
+  const onErrors = (error, event) => console.error('Error during submit', error, event);
 
   return (
     <div>
@@ -192,16 +233,29 @@ export const NewProperty: FunctionComponent<NewPropertyProps> = (props) => {
           </Grid>
         </Grid>
         <br />
-        <Button type="submit" variant="text" color="primary">
-          Submit
-        </Button>
+        {formState.isSubmitting ? (
+          <CircularProgress />
+        ) : (
+          <Button type="submit" variant="text" color="primary">
+            Submit
+          </Button>
+        )}
+        <Snackbar open={failed !== undefined && failed !== ''}>
+          <Alert severity="error">
+            {failed}
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => setFailed(undefined)}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Alert>
+        </Snackbar>
       </form>
     </div>
   );
-};
-
-type NewPropertyProps = {
-  classes: any;
 };
 
 export default NewProperty;
