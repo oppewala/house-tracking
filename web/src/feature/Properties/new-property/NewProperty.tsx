@@ -152,6 +152,7 @@ export const NewProperty: FunctionComponent = () => {
         };
       }),
       Tags: data.tags,
+      Notes: data.notes,
     };
 
     try {

@@ -7,6 +7,7 @@ export type Property = {
   //RawScore?: PropertyScore;
   References: PropertyReference[];
   Tags: string[];
+  Notes: string;
 };
 
 export type Address = {
