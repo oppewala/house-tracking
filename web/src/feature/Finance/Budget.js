@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Box, Typography } from '@material-ui/core';
+import { useLocation } from 'react-router-dom';
+import { useClipboard } from 'use-clipboard-copy';
 import clsx from 'clsx';
 import Costs from './Outputs/Costs';
 import Mortgage from './Outputs/Mortgage';
@@ -35,11 +37,21 @@ const useStyles = makeStyles((theme) => ({
 const Budget = () => {
   const constants = {
     mortgageApplicationFee: 130,
+    incidentalCosts: 5000,
   };
   const classes = useStyles();
+  const location = useLocation();
+  const clipboard = useClipboard();
 
   const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
-    const [value, setValue] = useState(localStorage.getItem(localStorageKey) || defaultValue);
+    let initialState = localStorage.getItem(localStorageKey) || defaultValue;
+    if (location.search && location.search !== '') {
+      const urlParams = new URLSearchParams(location.search);
+      const queryState = urlParams.get(localStorageKey);
+
+      if (queryState) initialState = queryState;
+    }
+    const [value, setValue] = useState(initialState);
 
     let v = value;
     if (v === 'false') {
@@ -91,6 +103,7 @@ const Budget = () => {
     stampDuty,
     transferFee,
     constants.mortgageApplicationFee,
+    constants.incidentalCosts,
   );
 
   const isFirstHomeBuyerEligible = firstHomeBuyer && housePrice <= 600000;
@@ -98,6 +111,18 @@ const Budget = () => {
   const mortgageAmount = totalCosts - totalSavings;
 
   const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, mortgageAmount);
+
+  const shareForm = () => {
+    let url = new URL(window.location.href);
+
+    Object.keys(localStorage).forEach((key) => {
+      if (!key.startsWith('Budget')) return;
+
+      url.searchParams.set(key, localStorage.getItem(key));
+    });
+
+    clipboard.copy(url.href);
+  };
 
   return (
     <Grid container spacing={0} direction="row" className={classes.root}>
@@ -113,6 +138,9 @@ const Budget = () => {
               <Typography variant="h3">Budget</Typography>
             </Grid>
             <Grid item>
+              <Button onClick={shareForm} color="primary">
+                Share
+              </Button>
               <Button onClick={formReset} color="secondary">
                 Reset
               </Button>
@@ -152,6 +180,7 @@ const Budget = () => {
                   stampDuty={stampDuty}
                   transferFee={transferFee}
                   applicationFee={constants.mortgageApplicationFee}
+                  incidentalCosts={constants.incidentalCosts}
                   total={totalCosts}
                 />
               </Grid>
