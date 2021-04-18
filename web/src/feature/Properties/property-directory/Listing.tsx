@@ -1,15 +1,18 @@
 import React, { FunctionComponent, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { Card, Typography } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
-import { DeleteProperty } from '../../../_services/ApiService/houseApi';
-import { Link as RouterLink } from 'react-router-dom';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import KingBedOutlinedIcon from '@material-ui/icons/KingBedOutlined';
 import BathtubOutlinedIcon from '@material-ui/icons/BathtubOutlined';
 import DriveEtaOutlinedIcon from '@material-ui/icons/DriveEtaOutlined';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { withStyles } from '@material-ui/core/styles';
+import { DeleteProperty } from '../../../_services/ApiService/houseApi';
 import { Property as PropertyType } from '../../../_services/ApiService/types';
 
 interface Props {
@@ -65,17 +68,28 @@ export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
         <HouseLayout house={house} />
 
         <Tags tags={house.Tags} />
-        <div>
-          <pre>{JSON.stringify(house, null, 2)}</pre>
-        </div>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="rawdb-content"
+            id={'rawdb-header-' + house.ID}
+          >
+            Raw DB information
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <div>
+              <pre>{JSON.stringify(house, null, 2)}</pre>
+            </div>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </CardContent>
       <CardActions>
-        <Button size="small" href={mapUrl}>
+        <Button size="small" href={mapUrl} target="_blank">
           Open in Maps
         </Button>
         {listingUrl ? (
-          <Button size="small" href={listingUrl}>
-            See Listing
+          <Button size="small" href={listingUrl} target="_blank">
+            View Listing
           </Button>
         ) : null}
         <Button size="small" component={RouterLink} to={detailsUrl}>
