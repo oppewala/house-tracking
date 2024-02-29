@@ -1,15 +1,44 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import makeStyles from '@mui/styles/makeStyles';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 import Popper from '@mui/material/Popper';
 import clsx from 'clsx';
-import { config } from '_helpers/config';
+import { config } from '@/_helpers/config'
+
+const PREFIX = 'Autocomplete';
+
+const classes = {
+  icon: `${PREFIX}-icon`,
+  dropdown: `${PREFIX}-dropdown`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.icon}`]: {
+    color: theme.palette.text.secondary,
+    marginRight: theme.spacing(2),
+  },
+
+  [`& .${classes.dropdown}`]: {
+    '& ul:last-child:after': {
+      display: 'block',
+      content: '""',
+      background: `url('/google_attribution.png') top right ${theme.spacing(1/2)}px no-repeat`,
+      width: '100%',
+      height: `18px`,
+      marginTop: `${theme.spacing(1/2)}px`,
+    },
+  }
+}));
 
 function loadScript(src, position, id) {
   if (!position) {
@@ -25,25 +54,8 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    color: theme.palette.text.secondary,
-    marginRight: theme.spacing(2),
-  },
-  dropdown: {
-    '& ul:last-child:after': {
-      display: 'block',
-      content: '""',
-      background: `url('/google_attribution.png') top right ${theme.spacing() / 2}px no-repeat`,
-      width: '100%',
-      height: `18px`,
-      marginTop: `${theme.spacing() / 2}px`,
-    },
-  },
-}));
-
 export default function GoogleAutocomplete(props) {
-  const classes = useStyles();
+
   const [selectedValue, setSelectedValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
   const [suggestions, setSuggestions] = React.useState([]);
@@ -178,7 +190,7 @@ export default function GoogleAutocomplete(props) {
         );
 
         return (
-          <Grid container alignItems="center">
+          <StyledGrid container alignItems="center">
             <Grid item>
               <LocationOnIcon className={classes.icon} />
             </Grid>
@@ -194,7 +206,7 @@ export default function GoogleAutocomplete(props) {
                 {option.structured_formatting.secondary_text}
               </Typography>
             </Grid>
-          </Grid>
+          </StyledGrid>
         );
       }}
     />

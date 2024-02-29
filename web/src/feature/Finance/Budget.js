@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { Grid, Button, Box, Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { useClipboard } from 'use-clipboard-copy';
@@ -11,27 +11,47 @@ import Repayments from './Outputs/Repayments';
 import Inputs from './Inputs/Inputs';
 import Deposit from './Outputs/Deposit';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+const PREFIX = 'Budget';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  container: `${PREFIX}-container`,
+  inputContainer: `${PREFIX}-inputContainer`,
+  outputContainer: `${PREFIX}-outputContainer`,
+  sectionTitle: `${PREFIX}-sectionTitle`,
+  subSectionTitle: `${PREFIX}-subSectionTitle`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.root}`]: {
     height: '100%',
   },
-  container: {
+
+  [`& .${classes.container}`]: {
     padding: `${theme.spacing() * 6}px ${theme.spacing() * 5}px 0`,
   },
-  inputContainer: {
+
+  [`& .${classes.inputContainer}`]: {
     backgroundColor: 'white',
     borderRight: `1px solid ${theme.palette.divider}`,
     boxSizing: 'border-box',
   },
-  outputContainer: {},
-  sectionTitle: {
+
+  [`& .${classes.outputContainer}`]: {},
+
+  [`& .${classes.sectionTitle}`]: {
     height: theme.spacing() * 7,
     marginBottom: theme.spacing() * 3,
     verticalAlign: 'bottom',
   },
-  subSectionTitle: {
+
+  [`& .${classes.subSectionTitle}`]: {
     display: 'table-cell',
-  },
+  }
 }));
 
 const Budget = () => {
@@ -39,7 +59,7 @@ const Budget = () => {
     mortgageApplicationFee: 130,
     incidentalCosts: 5000,
   };
-  const classes = useStyles();
+
   const location = useLocation();
   const clipboard = useClipboard();
 
@@ -125,7 +145,7 @@ const Budget = () => {
   };
 
   return (
-    <Grid container spacing={0} direction="row" className={classes.root}>
+    <StyledGrid container spacing={0} direction="row" className={classes.root}>
       <Grid item xs={12} sm={6} md={4} className={clsx(classes.container, classes.inputContainer)}>
         <Box className={classes.input}>
           <Grid
@@ -240,7 +260,7 @@ const Budget = () => {
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 };
 

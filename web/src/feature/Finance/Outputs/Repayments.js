@@ -1,5 +1,5 @@
 import React from 'react';
-import { Round } from '_helpers/round';
+import { Round } from '@/_helpers/round';
 import { CostsCalculator } from '../CostsCalculator';
 import OutputCard from './OutputCard';
 

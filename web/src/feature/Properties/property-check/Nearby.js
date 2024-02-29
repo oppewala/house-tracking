@@ -1,5 +1,5 @@
 import React from 'react';
-import { config } from '_helpers/config';
+import { config } from '@/_helpers/config';
 
 const Nearby = (props) => {
   const { address } = props;

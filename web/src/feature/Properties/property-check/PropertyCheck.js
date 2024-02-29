@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AddressInput } from 'feature/Properties/components/AddressInput';
 import NbnDetails from './NbnDetails';
 import Nearby from './Nearby';
-import { config } from '_helpers/config';
+import { config } from '@/_helpers/config';
 
 const PropertyCheck = () => {
   const [address, setAddress] = useState({

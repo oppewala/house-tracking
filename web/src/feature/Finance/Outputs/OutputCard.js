@@ -1,19 +1,33 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import { Card, CardContent, Typography, Divider, Grid } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 
-const useStyles = makeStyles((theme) => ({
-  spacing: {
+const PREFIX = 'OutputCard';
+
+const classes = {
+  spacing: `${PREFIX}-spacing`,
+  title: `${PREFIX}-title`,
+  totalRow: `${PREFIX}-totalRow`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.spacing}`]: {
     padding: `${theme.spacing() * 1.5}px 0`,
   },
-  title: {
+
+  [`& .${classes.title}`]: {
     padding: `0 0 ${theme.spacing() * 1.5}px 0`,
   },
-  totalRow: {
+
+  [`&.${classes.totalRow}`]: {
     padding: `${theme.spacing() * 1.5}px 0 0 0`,
     fontWeight: 500,
-  },
+  }
 }));
 
 const formatter = (value, opt) => {
@@ -36,7 +50,7 @@ const formatter = (value, opt) => {
 
 const OutputCard = (props) => {
   const { title, items, total } = props;
-  const classes = useStyles();
+
 
   const elements = items.map((item) => (
     <StandardRow key={item.label} label={item.label} value={item.value} format={item.format} />
@@ -65,7 +79,7 @@ const OutputCard = (props) => {
 };
 
 const TotalRow = (props) => {
-  const classes = useStyles();
+
 
   const { label, value, format } = props;
 
@@ -73,7 +87,7 @@ const TotalRow = (props) => {
   const val = formatter(value, format);
 
   return (
-    <Grid
+    <StyledGrid
       container
       direction="row"
       alignContent="space-between"
@@ -83,12 +97,12 @@ const TotalRow = (props) => {
         {label}
       </Grid>
       <Grid item>{val}</Grid>
-    </Grid>
+    </StyledGrid>
   );
 };
 
 const StandardRow = (props) => {
-  const classes = useStyles();
+
 
   const { label, value, format } = props;
 
