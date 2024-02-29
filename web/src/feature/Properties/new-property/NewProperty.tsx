@@ -182,7 +182,12 @@ export const NewProperty: FunctionComponent = () => {
   return (
     <div>
       <Typography variant="subtitle1" className={classes.breadcrumb}>
-        <Link variant="button" color="textPrimary" component={RouterLink} to="/Properties">
+        <Link
+          variant="button"
+          color="textPrimary"
+          component={RouterLink}
+          to="/Properties"
+          underline="hover">
           Properties
         </Link>{' '}
         / Add new property

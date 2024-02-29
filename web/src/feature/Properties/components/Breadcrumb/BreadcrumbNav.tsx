@@ -25,14 +25,17 @@ export const BreadcrumbNav: React.FC<Props> = ({ crumbs, children }) => {
   const classes = useStyles();
 
   const crumbEls = crumbs.map((c) => {
-    return (
-      <>
-        <Link variant="button" color="textPrimary" component={RouterLink} to={c.route}>
-          {c.name}
-        </Link>{' '}
-        /{' '}
-      </>
-    );
+    return <>
+      <Link
+        variant="button"
+        color="textPrimary"
+        component={RouterLink}
+        to={c.route}
+        underline="hover">
+        {c.name}
+      </Link>{' '}
+      /{' '}
+    </>;
   });
 
   return (
