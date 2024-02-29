@@ -147,8 +147,8 @@ const Budget = () => {
   return (
     <StyledGrid container spacing={0} direction="row" className={classes.root}>
       <Grid item xs={12} sm={6} md={4} className={clsx(classes.container, classes.inputContainer)}>
-        <Box className={classes.inputContainer}>
-          <Grid
+        <Box>
+          <StyledGrid
             container
             justifyContent="space-between"
             alignItems="center"
@@ -165,7 +165,7 @@ const Budget = () => {
                 Reset
               </Button>
             </Grid>
-          </Grid>
+          </StyledGrid>
           <Inputs
             housePrice={housePrice}
             onPriceChange={onPriceChange}
@@ -182,7 +182,7 @@ const Budget = () => {
           />
         </Box>
       </Grid>
-      <Grid item xs={12} sm={6} md={8} className={clsx(classes.container, classes.outputContainer)}>
+      <StyledGrid item xs={12} sm={6} md={8} className={clsx(classes.container, classes.outputContainer)}>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <Box className={classes.sectionTitle}>
@@ -259,7 +259,7 @@ const Budget = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </StyledGrid>
     </StyledGrid>
   );
 };

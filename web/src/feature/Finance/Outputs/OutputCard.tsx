@@ -17,21 +17,21 @@ const StyledGrid = styled(Grid)((
   }
 ) => ({
   [`&.${classes.spacing}`]: {
-    padding: `${theme.spacing() * 1.5}px 0`,
+    padding: `${theme.spacing(1.5)} 0`,
   },
 
   [`& .${classes.title}`]: {
-    padding: `0 0 ${theme.spacing() * 1.5}px 0`,
+    padding: `0 0 ${theme.spacing(1.5)} 0`,
   },
 
   [`&.${classes.totalRow}`]: {
-    padding: `${theme.spacing() * 1.5}px 0 0 0`,
+    padding: `${theme.spacing(1.5)} 0 0 0`,
     fontWeight: 500,
   }
 }));
 
-const formatter = (value, opt) => {
-  let val = value;
+const formatter = (value: number, opt: string) => {
+  let val: string | number = value;
   if (opt === 'currency') {
     const currencyFormatter = new Intl.NumberFormat('en-AU', {
       style: 'currency',
@@ -41,15 +41,26 @@ const formatter = (value, opt) => {
   }
 
   if (opt === 'percent') {
-    const perc = +Math.round(val * 10000) / 100;
+    const perc = +Math.round(value * 10000) / 100;
     val = `${perc}%`;
   }
 
   return val;
 };
 
-const OutputCard = (props) => {
-  const { title, items, total } = props;
+interface Props {
+  title: string;
+  items: Item[];
+  total: Item;
+}
+
+interface Item {
+  label: string;
+  value: number;
+  format: string;
+}
+
+const OutputCard: React.FC<Props> = ({ title, items, total }) => {
 
 
   const elements = items.map((item) => (
@@ -78,11 +89,7 @@ const OutputCard = (props) => {
   );
 };
 
-const TotalRow = (props) => {
-
-
-  const { label, value, format } = props;
-
+const TotalRow: React.FC<Item> = ({ label, value, format }) => {
   if (value === null) return null;
   const val = formatter(value, format);
 
@@ -101,21 +108,17 @@ const TotalRow = (props) => {
   );
 };
 
-const StandardRow = (props) => {
-
-
-  const { label, value, format } = props;
-
+const StandardRow: React.FC<Item> = ({ label, value, format }) => {
   if (value === null) return null;
   const val = formatter(value, format);
 
   return (
-    <Grid container direction="row" alignContent="space-between" className={classes.spacing}>
+    <StyledGrid container direction="row" alignContent="space-between" className={classes.spacing}>
       <Grid item xs>
         {label}
       </Grid>
       <Grid item>{val}</Grid>
-    </Grid>
+    </StyledGrid>
   );
 };
 
