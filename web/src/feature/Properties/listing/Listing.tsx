@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { BreadcrumbNav } from '../components/Breadcrumb/BreadcrumbNav';
-import { Property } from '../../../_services/ApiService/types';
+import { Property } from '@/_services/ApiService/types';
 import KingBedOutlinedIcon from '@mui/icons-material/KingBedOutlined';
 import BathtubOutlinedIcon from '@mui/icons-material/BathtubOutlined';
 import DriveEtaOutlinedIcon from '@mui/icons-material/DriveEtaOutlined';

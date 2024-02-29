@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { blue } from '@mui/material/colors';
 import { useAuth0 } from '@auth0/auth0-react';
 import Budget from './feature/Finance/Budget';
@@ -84,7 +84,7 @@ class App extends React.Component {
           <Box>
             <Navigation />
             <Box>
-              <Route>
+              <Routes>
                 <Route path="/" element={<Budget />} />
                 <Route path="budget" element={<Budget />} />
                 <Route path="resources" element={<Resources />} />
@@ -96,7 +96,7 @@ class App extends React.Component {
                     </RequireAuth>
                   }
                 />
-              </Route>
+              </Routes>
             </Box>
           </Box>
         </ThemeProvider>

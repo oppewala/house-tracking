@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Route, useParams } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import ListingDirectory from './property-directory/ListingDirectory';
 import NewProperty from './new-property/NewProperty';
@@ -36,12 +36,12 @@ const Properties = () => {
       <Typography variant="h3" className={classes.sectionTitle}>
         Properties
       </Typography>
-      <Route>
+      <Routes>
         <Route path='add' element={<NewProperty />} />
         <Route path='check' element={<PropertyCheck />} />
         <Route path=':id' element={<ListingRoute />} />
         <Route element={<ListingDirectory />} />
-      </Route>
+      </Routes>
     </div>
   );
 };

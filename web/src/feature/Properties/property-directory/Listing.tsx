@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Card, Typography } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
@@ -27,7 +27,7 @@ const Root = styled('div')((
   }
 ) => ({
   [`& .${classes.pageTitle}`]: {
-    margin: `${theme.spacing() * 5}px`,
+    margin: theme.spacing(5),
   }
 }));
 
@@ -38,7 +38,7 @@ interface Props {
 
 export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
   const [deleting, setDeleting] = useState<boolean>(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const id: string = house.ID ?? '';
 
@@ -108,7 +108,7 @@ export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
           size="small"
           onClick={() => {
             setDeleting(true);
-            DeleteProperty(id).then(() => history.go(0));
+            DeleteProperty(id).then(() => navigate(0));
           }}
           color="secondary"
           disabled={deleting}
@@ -120,8 +120,11 @@ export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
   );
 };
 
-const Tags = (props) => {
-  const { tags } = props;
+interface TagsProps {
+  tags: string[];
+}
+
+const Tags: React.FC<TagsProps> = ({ tags }) => {
   const tagEls = tags?.map((t) => <li key={t}>{t}</li>);
 
   return (
