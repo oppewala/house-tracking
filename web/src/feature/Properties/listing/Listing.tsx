@@ -79,70 +79,68 @@ export const Listing: FunctionComponent<Props> = ({ id }) => {
     );
   };
 
-  return (
-    <>
-      <BreadcrumbNav crumbs={[{ name: 'Properties', route: '/Properties' }]}>
-        {address}
-      </BreadcrumbNav>
-      <Typography variant={'h4'}>{property?.Price}</Typography>
-      <HouseLayout house={property} />
-      <Grid container spacing={3}>
-        <Grid item sm={12} md={6}>
-          <Paper>
-            <div>
-              {property?.Tags?.map((t) => (
-                <Chip key={t} label={t} />
-              ))}
-            </div>
-            <TextField
-              label="Notes"
-              value={property?.Notes}
-              multiline
-              rows={5}
-              fullWidth
-              margin="normal"
-            />
-            <List>
-              {property?.References?.map((r) => (
-                <ListItem button component="a" key={r.Value} href={r.Value}>
-                  <ListItemText primary={r.Type} secondary={r.Value} />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-        </Grid>
-        <Grid item sm={12} md={6}>
-          <Card className={classes.mapCard}>
-            <CardContent className={classes.mapCardContent}>
-              <MapEmbed
-                placeId={property?.Location.PlaceID}
-                showPlaceholder
-                title="property location"
-              />
-            </CardContent>
-          </Card>
-        </Grid>
+  return <>
+    <BreadcrumbNav crumbs={[{ name: 'Properties', route: '/Properties' }]}>
+      {address}
+    </BreadcrumbNav>
+    <Typography variant={'h4'}>{property?.Price}</Typography>
+    <HouseLayout house={property} />
+    <Grid container spacing={3}>
+      <Grid item sm={12} md={6}>
+        <Paper>
+          <div>
+            {property?.Tags?.map((t) => (
+              <Chip key={t} label={t} />
+            ))}
+          </div>
+          <TextField
+            variant="standard"
+            label="Notes"
+            value={property?.Notes}
+            multiline
+            rows={5}
+            fullWidth
+            margin="normal" />
+          <List>
+            {property?.References?.map((r) => (
+              <ListItem button component="a" key={r.Value} href={r.Value}>
+                <ListItemText primary={r.Type} secondary={r.Value} />
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
       </Grid>
-      {apiState === 'loading' ? (
-        <Loading />
-      ) : (
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="rawdb-content"
-            id={'rawdb-header-' + property?.ID}
-          >
-            Raw DB information
-          </AccordionSummary>
-          <AccordionDetails>
-            <div>
-              <pre>{JSON.stringify(property, null, 2)}</pre>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-      )}
-    </>
-  );
+      <Grid item sm={12} md={6}>
+        <Card className={classes.mapCard}>
+          <CardContent className={classes.mapCardContent}>
+            <MapEmbed
+              placeId={property?.Location.PlaceID}
+              showPlaceholder
+              title="property location"
+            />
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+    {apiState === 'loading' ? (
+      <Loading />
+    ) : (
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="rawdb-content"
+          id={'rawdb-header-' + property?.ID}
+        >
+          Raw DB information
+        </AccordionSummary>
+        <AccordionDetails>
+          <div>
+            <pre>{JSON.stringify(property, null, 2)}</pre>
+          </div>
+        </AccordionDetails>
+      </Accordion>
+    )}
+  </>;
 };
 
 const Loading: FunctionComponent = () => <div>Loading</div>;
