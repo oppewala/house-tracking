@@ -32,7 +32,7 @@ const StyledGrid = styled(Grid)((
   },
 
   [`& .${classes.container}`]: {
-    padding: `${theme.spacing() * 6}px ${theme.spacing() * 5}px 0`,
+    padding: `${theme.spacing(6)} ${theme.spacing(5)} 0`,
   },
 
   [`& .${classes.inputContainer}`]: {
@@ -44,8 +44,8 @@ const StyledGrid = styled(Grid)((
   [`& .${classes.outputContainer}`]: {},
 
   [`& .${classes.sectionTitle}`]: {
-    height: theme.spacing() * 7,
-    marginBottom: theme.spacing() * 3,
+    height: theme.spacing(7),
+    marginBottom: theme.spacing(3),
     verticalAlign: 'bottom',
   },
 
@@ -63,7 +63,7 @@ const Budget = () => {
   const location = useLocation();
   const clipboard = useClipboard();
 
-  const useStateWithLocalStorage = (localStorageKey, defaultValue) => {
+  const useStateWithLocalStorage = (localStorageKey: string, defaultValue: any) => {
     let initialState = localStorage.getItem(localStorageKey) || defaultValue;
     if (location.search && location.search !== '') {
       const urlParams = new URLSearchParams(location.search);
@@ -101,11 +101,11 @@ const Budget = () => {
     false,
   );
 
-  const onPriceChange = (e) => setPrice(e.target.value);
-  const onSavingsChange = (e) => setSavings(e.target.value);
-  const onLengthChange = (e) => setLength(e.target.value);
-  const onLivingCostsChange = (e) => setLivingCosts(e.target.value);
-  const onFirstHomeBuyerChange = (e) => setFirstHomeBuyer(e.target.checked);
+  const onPriceChange = (e: any) => setPrice(e.target.value);
+  const onSavingsChange = (e: any) => setSavings(e.target.value);
+  const onLengthChange = (e: any) => setLength(e.target.value);
+  const onLivingCostsChange = (e: any) => setLivingCosts(e.target.value);
+  const onFirstHomeBuyerChange = (e: any) => setFirstHomeBuyer(e.target.checked);
 
   const formReset = () => {
     setPrice(0);
@@ -138,7 +138,7 @@ const Budget = () => {
     Object.keys(localStorage).forEach((key) => {
       if (!key.startsWith('Budget')) return;
 
-      url.searchParams.set(key, localStorage.getItem(key));
+      url.searchParams.set(key, localStorage.getItem(key) ?? '');
     });
 
     clipboard.copy(url.href);
@@ -147,7 +147,7 @@ const Budget = () => {
   return (
     <StyledGrid container spacing={0} direction="row" className={classes.root}>
       <Grid item xs={12} sm={6} md={4} className={clsx(classes.container, classes.inputContainer)}>
-        <Box className={classes.input}>
+        <Box className={classes.inputContainer}>
           <Grid
             container
             justifyContent="space-between"

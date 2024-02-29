@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddressInput } from 'feature/Properties/components/AddressInput';
+import { AddressInput } from '@/feature/Properties/components/AddressInput';
 import NbnDetails from './NbnDetails';
 import Nearby from './Nearby';
 import { config } from '@/_helpers/config';
@@ -14,7 +14,7 @@ const PropertyCheck = () => {
     point: { lat: 0, lng: 0 },
   });
 
-  const onAutoComplete = async (autoRes) => {
+  const onAutoComplete = async (autoRes: any) => {
     if (!autoRes) return;
 
     setAddress(autoRes);
@@ -31,7 +31,7 @@ const PropertyCheck = () => {
   return (
     <section className="w-full">
       <h2 className="font-bold text-lg">Property Check</h2>
-      <AddressInput address={address} changeHandler={onAutoComplete} />
+      <AddressInput changeHandler={onAutoComplete} error={undefined} />
       <div hidden={!address.placeId}>
         <iframe
           title="Property Map"

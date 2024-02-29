@@ -1,7 +1,11 @@
 import React from 'react';
 
-export const ScoreInput = (props) => {
-  const { score, sliderChangeHandler } = props;
+interface Props {
+  score: any;
+  sliderChangeHandler: any;
+}
+
+export const ScoreInput: React.FC<Props> = ({ score, sliderChangeHandler }) => {
 
   return (
     <div>
@@ -34,8 +38,14 @@ export const ScoreInput = (props) => {
   );
 };
 
-const Slider = (props) => {
-  const { score, name, desc, changeHandler } = props;
+interface SliderProps {
+  score: any; 
+  name: string; 
+  desc: string;
+  changeHandler: any;
+}
+
+const Slider: React.FC<SliderProps> = ({ score, name, desc, changeHandler }) => {
   const value = score[name];
 
   return (

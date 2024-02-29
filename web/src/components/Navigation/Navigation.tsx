@@ -97,7 +97,7 @@ function Navigation() {
               Login
             </Button>
             <Button
-              onClick={() => logout({ returnTo: window.location.origin })}
+              onClick={() => logout()}
               style={{
                 display: isAuthenticated ? 'inline-flex' : 'none',
               }}

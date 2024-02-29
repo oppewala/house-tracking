@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { NbnSearchResult } from './NbnSearchResult';
 
-const NbnDetails = (props) => {
-  const { address } = props;
+interface Props {
+  address: any;
+}
 
-  const [nbnSearch, setNbnSearch] = useState([]);
-  const [selectedLoc, setSelectedLoc] = useState('');
-  const [nbnInfo, setNbnInfo] = useState({});
+const NbnDetails: React.FC<Props> = ({ address }) => {
+
+  const [nbnSearch, setNbnSearch] = useState<any>([]);
+  const [selectedLoc, setSelectedLoc] = useState<string>('');
+  const [nbnInfo, setNbnInfo] = useState<any>({});
 
   useEffect(() => {
     if (!address.street || address.street === '') return;
 
-    const queryParams = {
+    const queryParams: any = {
       Street: address.street,
+      Suburb: undefined,
+      State: undefined,
+      Postcode: undefined
     };
     if (address.suburb && address.suburb !== '') {
       queryParams.Suburb = address.suburb;
@@ -46,7 +52,7 @@ const NbnDetails = (props) => {
       .catch((e) => console.error(e));
   }, [selectedLoc, setNbnInfo]);
 
-  const searchResultElements = nbnSearch.map((s) => (
+  const searchResultElements = nbnSearch.map((s: any) => (
     <NbnSearchResult
       key={s.Id}
       id={s.Id}
@@ -72,7 +78,11 @@ const NbnDetails = (props) => {
   );
 };
 
-const NbnInfo = (props) => {
+interface NbnInfoProps {
+  nbnInfo: any;
+}
+
+const NbnInfo = (props: NbnInfoProps) => {
   const { nbnInfo } = props;
   if (nbnInfo === undefined) return <div />;
 

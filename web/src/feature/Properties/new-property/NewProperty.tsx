@@ -12,14 +12,14 @@ import {
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import { TextInput } from 'components/TextInput';
-import { AddressInput } from 'feature/Properties/components/AddressInput';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { TextInput } from '@/components/TextInput';
+import { AddressInput } from '@/feature/Properties/components/AddressInput';
 import Tags from './Tags';
 import Map from './Map';
 import PropertyDetails from './PropertyDetails';
 import References from './References';
-import { useForm } from 'react-hook-form';
+import { FieldErrors, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { Address, Nbn, PropertyReference } from '../types';
 import { SubmitNewProperty } from '../../../_services/ApiService/houseApi';
 import { Property } from '../../../_services/ApiService/types';
@@ -38,7 +38,7 @@ const Root = styled('div')((
   }
 ) => ({
   [`& .${classes.breadcrumb}`]: {
-    marginBottom: theme.spacing() * 3,
+    marginBottom: theme.spacing(3),
   },
 
   [`& .${classes.urlSelect}`]: {
@@ -46,7 +46,7 @@ const Root = styled('div')((
   }
 }));
 
-type FormInputs = {
+export type FormInputs = {
   address: Address;
   references: PropertyReference[];
   tags: string[];
@@ -66,7 +66,6 @@ export const NewProperty: FunctionComponent = () => {
     getValues,
     setValue,
     clearErrors,
-    errors,
     watch,
     formState,
   } = useForm<FormInputs>({
@@ -78,21 +77,15 @@ export const NewProperty: FunctionComponent = () => {
     },
   });
 
-
-
   useEffect(() => {
-    register({ name: 'address', type: 'custom' }, { required: 'Address is required' });
-    register({ name: 'references', type: 'custom' });
-    register({ name: 'tags', type: 'custom' });
-    register({ name: 'extrarooms', type: 'boolean' }, { required: false });
   });
 
   const [failed, setFailed] = useState<string | undefined>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const addressFieldChangeHandler = async (address) => {
-    if (address || getValues('address') || errors.address) {
+  const addressFieldChangeHandler = async (address: Address) => {
+    if (address || getValues('address') || formState.errors?.address) {
       clearErrors('address');
       setValue('address', address);
     }
@@ -106,10 +99,10 @@ export const NewProperty: FunctionComponent = () => {
     };
     setValue('references', [...references, reference]);
   };
-  const removeReference = (e) => {
+  const removeReference = (e: any) => {
     console.log('remove', e);
   };
-  const updateReference = (id, url) => {
+  const updateReference = (id: number, url: string) => {
     const references = getValues('references');
     setValue(
       'references',
@@ -124,11 +117,11 @@ export const NewProperty: FunctionComponent = () => {
     );
   };
 
-  const addTag = (tag) => {
+  const addTag = (tag: string) => {
     const tags = getValues('tags');
     setValue('tags', [...tags, tag]);
   };
-  const removeTag = (tag) => {
+  const removeTag = (tag: string) => {
     const tags = getValues('tags');
     setValue(
       'tags',
@@ -182,14 +175,20 @@ export const NewProperty: FunctionComponent = () => {
 
       const responseObj = await response.json();
       if (responseObj.Id) {
-        history.push(`/Properties/${responseObj.Id}`);
+        navigate(`/Properties/${responseObj.Id}`);
       }
     } catch (e) {
       setFailed('Failed to submit new property');
       console.error('Failed to submit new property', e);
     }
   };
-  const onErrors = (error, event) => console.error('Error during submit', error, event);
+  const onErrors: SubmitErrorHandler<FormInputs> = (error, event) => console.error('Error during submit', error, event);
+
+  const price = register('price', { required: true });
+  const address = register('address', { required: 'Address is required' });
+  const references = register('references');
+  const tags = register('tags');
+  const notes = register('notes');
 
   return (
     <Root>
@@ -209,18 +208,18 @@ export const NewProperty: FunctionComponent = () => {
           <Grid item xs={12} md={6}>
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <AddressInput changeHandler={addressFieldChangeHandler} error={errors.address} />
+                <AddressInput changeHandler={addressFieldChangeHandler} error={formState.errors?.address} />
               </Grid>
               <Grid item xs={12}>
                 <TextInput
                   desc="Price"
-                  name="price"
-                  inputRef={register({ required: true })}
-                  error={!!errors?.price}
+                  name={price.name}
+                  inputRef={price.ref}
+                  error={!!formState.errors?.price}
                 />
               </Grid>
               <Grid item xs={12}>
-                <PropertyDetails inputRef={register({ required: true })} errors={errors} />
+                <PropertyDetails register={register} errors={formState.errors} />
               </Grid>
               <Tags tags={watch('tags')} addTag={addTag} removeTag={removeTag} />
               <References
@@ -239,12 +238,12 @@ export const NewProperty: FunctionComponent = () => {
               <Grid item xs={12}>
                 <TextField
                   label="Notes"
-                  name="notes"
+                  name={notes.name}
                   multiline
                   variant="outlined"
                   fullWidth
                   rows={6}
-                  inputRef={register}
+                  inputRef={notes.ref}
                 />
               </Grid>
             </Grid>

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Button, Grid, Typography } from '@mui/material';
 import { PropertyReference } from '../types';
-import { TextInput } from 'components/TextInput/TextInput';
+import { TextInput } from '@/components/TextInput/TextInput';
 
 interface Props {
   references: PropertyReference[];
@@ -16,7 +16,7 @@ export const References: FunctionComponent<Props> = ({
   removeReference,
   addReference,
 }) => {
-  const onUpdateReference = (e, id) => {
+  const onUpdateReference = (e: any, id: number) => {
     updateReference(id, e.currentTarget.value);
   };
 
@@ -32,7 +32,7 @@ export const References: FunctionComponent<Props> = ({
                   name={h.value}
                   value={h.value}
                   desc="URL"
-                  handleChange={(e) => onUpdateReference(e, h.id)}
+                  handleChange={(e: any) => onUpdateReference(e, h.id)}
                 />
               </Grid>
               <Grid item xs={2}>

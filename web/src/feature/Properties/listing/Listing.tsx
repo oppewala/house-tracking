@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { RetrieveProperty } from '../../../_services/ApiService/houseApi';
+import { RetrieveProperty } from '@/_services/ApiService/houseApi';
 import {
   Card,
   CardContent,
@@ -93,7 +93,7 @@ export const Listing: FunctionComponent<Props> = ({ id }) => {
 
   return <>
     <BreadcrumbNav crumbs={[{ name: 'Properties', route: '/Properties' }]}>
-      {address}
+      <span>{address}</span>
     </BreadcrumbNav>
     <Typography variant={'h4'}>{property?.Price}</Typography>
     <HouseLayout house={property} />

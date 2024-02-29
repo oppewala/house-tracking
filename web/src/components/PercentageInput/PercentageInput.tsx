@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FormControl, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { toNumber } from 'lodash';
 
-export const PercentageInput = ({ desc, handleChange, name, value }) => {
+interface Props
+{
+  desc: React.ReactNode;
+  handleChange: (i: number) => void;
+  name: string;
+  value: number;
+}
+
+export const PercentageInput: React.FC<Props> = ({ desc, handleChange, name, value }) => {
   let initValue = value;
   if (Number.isNaN(value)) {
     initValue = 0.0;
@@ -12,7 +21,7 @@ export const PercentageInput = ({ desc, handleChange, name, value }) => {
     handleChange(displayValue / 100);
   }, [displayValue, handleChange]);
 
-  const onValueChange = (e) => setDisplayValue(e.target.value);
+  const onValueChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = (e) => setDisplayValue(toNumber(e.target.value));
 
   return (
     <FormControl fullWidth variant="outlined">

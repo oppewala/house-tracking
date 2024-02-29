@@ -1,7 +1,12 @@
 import React from 'react';
 import OutputCard from './OutputCard';
 
-const Deposit = ({ savings, isFirstHomeBuyerEligible }) => {
+interface Props {
+  savings: number;
+  isFirstHomeBuyerEligible: boolean | null | undefined;
+}
+
+const Deposit: React.FC<Props> = ({ savings, isFirstHomeBuyerEligible }) => {
   const firstHomeBuyer = isFirstHomeBuyerEligible ? 10000 : null;
 
   const totalSavings = Number(firstHomeBuyer) + Number(savings);

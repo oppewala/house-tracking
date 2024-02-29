@@ -1,7 +1,12 @@
 import React from 'react';
 
-export const NbnSearchResult = (props) => {
-  const { id, formattedAddress, selectHandler } = props;
+interface Props {
+  id: string;
+  formattedAddress: string;
+  selectHandler: any;
+}
+
+export const NbnSearchResult: React.FC<Props> = ({ id, formattedAddress, selectHandler }) => {
 
   const onClick = () => {
     selectHandler(id);

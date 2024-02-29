@@ -1,7 +1,16 @@
 import React from 'react';
 import OutputCard from './OutputCard';
 
-const Costs = ({ price, stampDuty, transferFee, applicationFee, total, incidentalCosts }) => {
+interface Props {
+  price: number;
+  stampDuty: number;
+  transferFee: number;
+  applicationFee: number;
+  total: number;
+  incidentalCosts: number;
+}
+
+const Costs: React.FC<Props> = ({ price, stampDuty, transferFee, applicationFee, total, incidentalCosts }) => {
   const items = [
     { label: 'Property Price', value: price, format: 'currency' },
     { label: 'Stamp Duty', value: stampDuty, format: 'currency' },
