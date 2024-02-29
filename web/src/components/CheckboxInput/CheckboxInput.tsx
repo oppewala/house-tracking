@@ -10,7 +10,7 @@ interface Props {
   error?: boolean;
 }
 
-export const CheckboxInput = ({ checked, onChange, label, name, inputRef }: Props): JSX.Element => {
+export const CheckboxInput: React.FC<Props> = ({ checked, onChange, label, name, inputRef }) => {
   return (
     <>
       <FormControlLabel

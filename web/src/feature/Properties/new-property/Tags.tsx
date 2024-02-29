@@ -1,7 +1,27 @@
 import React, { ChangeEvent, FunctionComponent, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { Grid, Chip, Typography, FormControl, InputLabel, OutlinedInput } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
+const PREFIX = 'Tags';
+
+const classes = {
+  chipContainer: `${PREFIX}-chipContainer`
+};
+
+const StyledGrid = styled(Grid)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.chipContainer}`]: {
+    display: 'flex',
+    justifyContent: 'left',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(0.5),
+    },
+  }
+}));
 
 interface Props {
   tags: string[];
@@ -9,19 +29,8 @@ interface Props {
   removeTag: (tag: string) => void;
 }
 
-const useStyles = makeStyles((theme) => ({
-  chipContainer: {
-    display: 'flex',
-    justifyContent: 'left',
-    flexWrap: 'wrap',
-    '& > *': {
-      margin: theme.spacing(0.5),
-    },
-  },
-}));
-
 export const Tags: FunctionComponent<Props> = ({ tags, addTag, removeTag }) => {
-  const classes = useStyles();
+
 
   const desc = 'Tags';
   const name = 'tags';
@@ -41,7 +50,7 @@ export const Tags: FunctionComponent<Props> = ({ tags, addTag, removeTag }) => {
   };
 
   return (
-    <Grid item xs={12}>
+    <StyledGrid item xs={12}>
       <Typography variant="h5">Tags</Typography>
       <FormControl fullWidth variant="outlined">
         <InputLabel htmlFor={name}>{desc}</InputLabel>
@@ -59,7 +68,7 @@ export const Tags: FunctionComponent<Props> = ({ tags, addTag, removeTag }) => {
           <Chip key={t} label={t} onDelete={() => removeTag(t)} aria-label={t} />
         ))}
       </div>
-    </Grid>
+    </StyledGrid>
   );
 };
 

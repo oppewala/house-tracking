@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { RetrieveProperty } from '../../../_services/ApiService/houseApi';
 import {
   Card,
@@ -21,24 +22,35 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import TextField from '@mui/material/TextField';
-import makeStyles from '@mui/styles/makeStyles';
 import { MapEmbed } from '../components/MapEmbed';
+
+const PREFIX = 'Listing';
+
+const classes = {
+  mapCard: `${PREFIX}-mapCard`,
+  mapCardContent: `${PREFIX}-mapCardContent`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.mapCard}`]: {
+    height: '100%',
+  },
+
+  [`& .${classes.mapCardContent}`]: {
+    height: '100%',
+  }
+}));
 
 interface Props {
   id: string;
 }
 
-const useStyles = makeStyles((theme) => ({
-  mapCard: {
-    height: '100%',
-  },
-  mapCardContent: {
-    height: '100%',
-  },
-}));
-
 export const Listing: FunctionComponent<Props> = ({ id }) => {
-  const classes = useStyles();
+
   const [apiState, setApiState] = useState<string>('loading');
   const [property, setProperty] = useState<Property>();
   useEffect(() => {
@@ -88,11 +100,11 @@ export const Listing: FunctionComponent<Props> = ({ id }) => {
     <Grid container spacing={3}>
       <Grid item sm={12} md={6}>
         <Paper>
-          <div>
+          <Root>
             {property?.Tags?.map((t) => (
               <Chip key={t} label={t} />
             ))}
-          </div>
+          </Root>
           <TextField
             variant="standard"
             label="Notes"

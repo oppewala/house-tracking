@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { Card, Typography } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
@@ -11,21 +12,29 @@ import KingBedOutlinedIcon from '@mui/icons-material/KingBedOutlined';
 import BathtubOutlinedIcon from '@mui/icons-material/BathtubOutlined';
 import DriveEtaOutlinedIcon from '@mui/icons-material/DriveEtaOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import withStyles from '@mui/styles/withStyles';
 import { DeleteProperty } from '../../../_services/ApiService/houseApi';
 import { Property as PropertyType } from '../../../_services/ApiService/types';
+
+const PREFIX = 'Listing';
+
+const classes = {
+  pageTitle: `${PREFIX}-pageTitle`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.pageTitle}`]: {
+    margin: `${theme.spacing() * 5}px`,
+  }
+}));
 
 interface Props {
   house: PropertyType;
   detailsUrl: string;
 }
-
-// todo: style
-const styles = (theme) => ({
-  pageTitle: {
-    margin: `${theme.spacing() * 5}px`,
-  },
-});
 
 export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
   const [deleting, setDeleting] = useState<boolean>(false);
@@ -77,9 +86,9 @@ export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
             Raw DB information
           </AccordionSummary>
           <AccordionDetails>
-            <div>
+            <Root>
               <pre>{JSON.stringify(house, null, 2)}</pre>
-            </div>
+            </Root>
           </AccordionDetails>
         </Accordion>
       </CardContent>
@@ -123,4 +132,4 @@ const Tags = (props) => {
   );
 };
 
-export default withStyles(styles)(Listing);
+export default (Listing);

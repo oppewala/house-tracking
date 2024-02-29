@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import {
   Grid,
   Hidden,
@@ -19,19 +20,30 @@ import Map from './Map';
 import PropertyDetails from './PropertyDetails';
 import References from './References';
 import { useForm } from 'react-hook-form';
-import makeStyles from '@mui/styles/makeStyles';
 import { Address, Nbn, PropertyReference } from '../types';
 import { SubmitNewProperty } from '../../../_services/ApiService/houseApi';
 import { Property } from '../../../_services/ApiService/types';
 import { Alert } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  breadcrumb: {
+const PREFIX = 'NewProperty';
+
+const classes = {
+  breadcrumb: `${PREFIX}-breadcrumb`,
+  urlSelect: `${PREFIX}-urlSelect`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.breadcrumb}`]: {
     marginBottom: theme.spacing() * 3,
   },
-  urlSelect: {
+
+  [`& .${classes.urlSelect}`]: {
     width: '100%',
-  },
+  }
 }));
 
 type FormInputs = {
@@ -66,7 +78,7 @@ export const NewProperty: FunctionComponent = () => {
     },
   });
 
-  const classes = useStyles();
+
 
   useEffect(() => {
     register({ name: 'address', type: 'custom' }, { required: 'Address is required' });
@@ -180,7 +192,7 @@ export const NewProperty: FunctionComponent = () => {
   const onErrors = (error, event) => console.error('Error during submit', error, event);
 
   return (
-    <div>
+    <Root>
       <Typography variant="subtitle1" className={classes.breadcrumb}>
         <Link
           variant="button"
@@ -260,7 +272,7 @@ export const NewProperty: FunctionComponent = () => {
           </Alert>
         </Snackbar>
       </form>
-    </div>
+    </Root>
   );
 };
 

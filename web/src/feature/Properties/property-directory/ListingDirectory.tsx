@@ -1,18 +1,30 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { Grid } from '@mui/material';
 import { Link, useRouteMatch } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
 import Button from '@mui/material/Button';
 import { Listing } from './Listing';
 import { RetrieveAllProperties } from '../../../_services/ApiService/houseApi';
 
-const useStyles = makeStyles((theme) => ({
-  directoryContainer: {
+const PREFIX = 'ListingDirectory';
+
+const classes = {
+  directoryContainer: `${PREFIX}-directoryContainer`,
+  childNav: `${PREFIX}-childNav`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.directoryContainer}`]: {
     marginTop: 0,
   },
-  childNav: {
+
+  [`& .${classes.childNav}`]: {
     margin: `${theme.spacing() * 2}px 0 0 0`,
-  },
+  }
 }));
 
 const ListingDirectory: FunctionComponent = () => {
@@ -23,7 +35,7 @@ const ListingDirectory: FunctionComponent = () => {
   const controller = new AbortController();
   const { signal } = controller;
   const match = useRouteMatch();
-  const classes = useStyles();
+
 
   useEffect(() => {
     RetrieveAllProperties({ signal })
@@ -41,7 +53,7 @@ const ListingDirectory: FunctionComponent = () => {
   }, []);
 
   if (error) {
-    return <div>Failed to load: {error.message}</div>;
+    return <Root>Failed to load: {error.message}</Root>;
   }
   if (!isLoaded) {
     return <div>Loading...</div>;

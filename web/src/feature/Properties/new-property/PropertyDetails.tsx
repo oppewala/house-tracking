@@ -9,7 +9,7 @@ interface Props {
   errors: FieldErrors<any>;
 }
 
-const PropertyDetails = ({ inputRef, errors }: Props): JSX.Element => {
+const PropertyDetails: React.FC<Props> = ({ inputRef, errors }) => {
   return (
     <Grid container direction="row" spacing={5}>
       <Grid item xs={12} sm={4} lg={3}>

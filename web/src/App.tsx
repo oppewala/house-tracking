@@ -1,7 +1,7 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Route, Navigate } from 'react-router-dom';
-import { withStyles } from '@mui/styles';
 import { blue } from '@mui/material/colors';
 import { useAuth0 } from '@auth0/auth0-react';
 import Budget from './feature/Finance/Budget';
@@ -10,7 +10,7 @@ import Navigation from './components/Navigation/Navigation';
 import Resources from './feature/Resources/Resources';
 import { Box, CssBaseline, StyledEngineProvider, Theme } from '@mui/material';
 
-const htTheme = createTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: blue[500],
@@ -33,28 +33,44 @@ const htTheme = createTheme({
   },
 });
 
-const styles = (theme: Theme) => ({
-  root: {
+const PREFIX = 'App';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  offset: `${PREFIX}-offset`,
+  content: `${PREFIX}-content`,
+  footer: `${PREFIX}-footer`
+};
+
+const StyledStyledEngineProvider = styled(StyledEngineProvider)((
+  {
+    theme: Theme
+  }
+) => ({
+  [`& .${classes.root}`]: {
     height: '100%',
     flex: 1,
     overflowX: 'hidden',
   },
-  offset: theme.mixins.toolbar,
-  content: {
+
+  [`& .${classes.offset}`]: theme.mixins.toolbar,
+
+  [`& .${classes.content}`]: {
     height: `calc(100vh - 64px)`, // Viewport - Header size
     // marginTop: theme.spacing(), // TODO: Why is this required?
   },
-  footer: {
+
+  [`& .${classes.footer}`]: {
     position: 'fixed',
-  },
-});
+  }
+}));
 
 interface AuthProps {
   children: JSX.Element;
   redirectTo: string;
 }
 
-const RequireAuth = ({ children, redirectTo }: AuthProps): JSX.Element  => {
+const RequireAuth: React.FC<AuthProps> = ({ children, redirectTo })  => {
   const { isAuthenticated } = useAuth0();
   return isAuthenticated ? children : <Navigate to={redirectTo} />;
 }
@@ -62,8 +78,8 @@ const RequireAuth = ({ children, redirectTo }: AuthProps): JSX.Element  => {
 class App extends React.Component {
   render() {
     return (
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={htTheme}>
+      <StyledStyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           <Box>
             <Navigation />
@@ -84,9 +100,9 @@ class App extends React.Component {
             </Box>
           </Box>
         </ThemeProvider>
-      </StyledEngineProvider>
+      </StyledStyledEngineProvider>
     );
   }
 }
 
-export default withStyles(styles)(App);
+export default (App);
