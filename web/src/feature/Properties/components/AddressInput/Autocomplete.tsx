@@ -40,7 +40,7 @@ const StyledGrid = styled(Grid)((
   }
 }));
 
-function loadScript(src, position, id) {
+function loadScript(src: string, position: HTMLHeadElement | null, id: string) {
   if (!position) {
     return;
   }
@@ -51,17 +51,66 @@ function loadScript(src, position, id) {
   script.src = src;
   position.appendChild(script);
 }
+interface ServiceWrapper
+{
+  current: google.maps.places.AutocompleteService | null
+}
 
-const autocompleteService = { current: null };
+const autocompleteService: ServiceWrapper = { current: null };
 
-export default function GoogleAutocomplete(props) {
+const Dropdown: React.FC<any> = (p) => {
+  return (
+    <Popper
+      /* eslint-disable-next-line react/jsx-props-no-spreading */
+      {...p}
+      id="property-lookup-dropdown"
+      /* eslint-disable-next-line react/destructuring-assignment */
+      className={clsx(p.className, classes.dropdown)}
+    />
+  );
+};
 
-  const [selectedValue, setSelectedValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState('');
-  const [suggestions, setSuggestions] = React.useState([]);
+const RenderOption: React.FC<any> = ({ option }) => {
+  const matches = option.structured_formatting.main_text_matched_substrings;
+  const parts = parse(
+    option.structured_formatting.main_text,
+    matches.map((match: any) => [match.offset, match.offset + match.length]),
+  );
+
+  return (
+    <StyledGrid container alignItems="center">
+      <Grid item>
+        <LocationOnIcon className={classes.icon} />
+      </Grid>
+      <Grid item xs>
+        {parts.map((part, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+            {part.text}
+          </span>
+        ))}
+
+        <Typography variant="body2" color="textSecondary">
+          {option.structured_formatting.secondary_text}
+        </Typography>
+      </Grid>
+    </StyledGrid>
+  );
+}
+
+interface Props
+{
+  selectionHandler: (placeId: string) => void,
+  label: string,
+  error: any
+}
+
+export default function GoogleAutocomplete({ selectionHandler, label, error }: Props) {
+
+  const [selectedValue, setSelectedValue] = React.useState<any>(null);
+  const [inputValue, setInputValue] = React.useState<string>('');
+  const [suggestions, setSuggestions] = React.useState<any>([]);
   const loaded = React.useRef(false);
-
-  const { selectionHandler, label, error } = props;
 
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
@@ -86,7 +135,7 @@ export default function GoogleAutocomplete(props) {
           },
           types: ['address'],
         };
-        autocompleteService.current.getPlacePredictions(autocompletionRequest, callback);
+        autocompleteService.current?.getPlacePredictions(autocompletionRequest, callback);
       }, 200),
     [],
   );
@@ -106,9 +155,9 @@ export default function GoogleAutocomplete(props) {
       return undefined;
     }
 
-    fetchSuggestions({ input: inputValue }, (results) => {
+    fetchSuggestions({ input: inputValue }, (results: any) => {
       if (active) {
-        let newSuggestions = [];
+        let newSuggestions: any = [];
 
         if (selectedValue) {
           newSuggestions = [selectedValue];
@@ -127,28 +176,15 @@ export default function GoogleAutocomplete(props) {
     };
   }, [selectedValue, inputValue, fetchSuggestions]);
 
-  const selectSuggestion = (suggestion) => {
+  const selectSuggestion = (suggestion: any) => {
     selectionHandler(suggestion?.place_id);
-  };
-
-  const Dropdown = (p) => {
-    return (
-      <Popper
-        /* eslint-disable-next-line react/jsx-props-no-spreading */
-        {...p}
-        id="property-lookup-dropdown"
-        /* eslint-disable-next-line react/destructuring-assignment */
-        className={clsx(p.className, classes.dropdown)}
-      />
-    );
   };
 
   return (
     <Autocomplete
-      debug
       id="property-lookup"
       fullWidth
-      getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
+      getOptionLabel={(option: any) => (typeof option === 'string' ? option : option.description)}
       filterOptions={(x) => x}
       options={suggestions}
       autoComplete
@@ -182,33 +218,7 @@ export default function GoogleAutocomplete(props) {
         />
       )}
       PopperComponent={Dropdown}
-      renderOption={(option) => {
-        const matches = option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length]),
-        );
-
-        return (
-          <StyledGrid container alignItems="center">
-            <Grid item>
-              <LocationOnIcon className={classes.icon} />
-            </Grid>
-            <Grid item xs>
-              {parts.map((part, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
-                  {part.text}
-                </span>
-              ))}
-
-              <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting.secondary_text}
-              </Typography>
-            </Grid>
-          </StyledGrid>
-        );
-      }}
+      renderOption={(props, option: any, {selected}) => (<RenderOption option={option} />)}
     />
   );
 }
