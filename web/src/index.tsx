@@ -24,15 +24,14 @@ const root = createRoot(container as Element);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-          <Provider store={store}>
-            <App />
-          </Provider>
+      <Auth0ProviderWithNavigate>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </Auth0ProviderWithNavigate>
     </BrowserRouter>
   </React.StrictMode>
 );
-
-{/* <Auth0ProviderWithNavigate>
-      </Auth0ProviderWithNavigate> */}
 
 
 // If you want your app to work offline and load faster, you can change
