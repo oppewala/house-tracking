@@ -1,5 +1,5 @@
 import React from 'react';
-import { adaptV4Theme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Route, Navigate } from 'react-router-dom';
 import { withStyles } from '@mui/styles';
 import { blue } from '@mui/material/colors';
@@ -8,8 +8,9 @@ import Budget from './feature/Finance/Budget';
 import Properties from './feature/Properties/Properties';
 import Navigation from './components/Navigation/Navigation';
 import Resources from './feature/Resources/Resources';
+import { Box, CssBaseline, StyledEngineProvider, Theme } from '@mui/material';
 
-const htTheme = createTheme(adaptV4Theme({
+const htTheme = createTheme({
   palette: {
     primary: {
       main: blue[500],
@@ -20,19 +21,19 @@ const htTheme = createTheme(adaptV4Theme({
       height: '64px',
     },
   },
-  props: {
+  components: {
     MuiTypography: {
-      variantMapping: {
-        h3: 'h1',
-        h4: 'h2',
-        h5: 'h3',
-        h6: 'h4',
-      },
+      // variantMapping: {
+      //   h3: 'h1',
+      //   h4: 'h2',
+      //   h5: 'h3',
+      //   h6: 'h4',
+      // },
     },
   },
-}));
+});
 
-const styles = (theme) => ({
+const styles = (theme: Theme) => ({
   root: {
     height: '100%',
     flex: 1,
@@ -60,15 +61,13 @@ const RequireAuth = ({ children, redirectTo }: AuthProps): JSX.Element  => {
 
 class App extends React.Component {
   render() {
-    const { classes } = this.props;
-
     return (
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={htTheme}>
           <CssBaseline />
-          <Box className={classes.root}>
+          <Box>
             <Navigation />
-            <Box className={classes.content}>
+            <Box>
               <Route>
                 <Route path="/" element={<Budget />} />
                 <Route path="budget" element={<Budget />} />
