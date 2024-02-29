@@ -1,10 +1,10 @@
 const config = {
-  GoogleApiKey: process.env.REACT_APP_GOOGLE_APIKEY,
-  SentryDsn: process.env.REACT_APP_SENTRY_DSN,
-  ApiRoot: process.env.REACT_APP_API_ROOT,
+  GoogleApiKey: import.meta.env.VITE_GOOGLE_APIKEY,
+  SentryDsn: import.meta.env.VITE_SENTRY_DSN,
+  ApiRoot: import.meta.env.VITE_API_ROOT,
   Auth0: {
-    Domain: process.env.REACT_APP_AUTH0_DOMAIN,
-    ClientId: process.env.REACT_APP_AUTH0_CLIENTID,
+    Domain: import.meta.env.VITE_AUTH0_DOMAIN,
+    ClientId: import.meta.env.VITE_AUTH0_CLIENTID,
   },
 };
 
