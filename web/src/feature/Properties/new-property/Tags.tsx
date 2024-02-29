@@ -1,13 +1,7 @@
 import React, { ChangeEvent, FunctionComponent, useState } from 'react';
-import {
-  Grid,
-  Chip,
-  Typography,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  makeStyles,
-} from '@material-ui/core';
+import { Grid, Chip, Typography, FormControl, InputLabel, OutlinedInput } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 interface Props {
   tags: string[];

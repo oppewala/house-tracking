@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Button, Box, Typography } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid, Button, Box, Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { useClipboard } from 'use-clipboard-copy';
 import clsx from 'clsx';
@@ -130,7 +130,7 @@ const Budget = () => {
         <Box className={classes.input}>
           <Grid
             container
-            justify="space-between"
+            justifyContent="space-between"
             alignItems="center"
             className={classes.sectionTitle}
           >

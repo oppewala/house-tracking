@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@mui/material';
 import { PropertyReference } from '../types';
 import { TextInput } from 'components/TextInput/TextInput';
 

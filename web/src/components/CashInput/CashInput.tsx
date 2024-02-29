@@ -4,7 +4,7 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 
 interface Props {

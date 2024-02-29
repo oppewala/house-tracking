@@ -9,8 +9,8 @@ import {
   CircularProgress,
   Snackbar,
   IconButton,
-} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { TextInput } from 'components/TextInput';
 import { AddressInput } from 'feature/Properties/components/AddressInput';
@@ -19,11 +19,11 @@ import Map from './Map';
 import PropertyDetails from './PropertyDetails';
 import References from './References';
 import { useForm } from 'react-hook-form';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import { Address, Nbn, PropertyReference } from '../types';
 import { SubmitNewProperty } from '../../../_services/ApiService/houseApi';
 import { Property } from '../../../_services/ApiService/types';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   breadcrumb: {
@@ -216,7 +216,7 @@ export const NewProperty: FunctionComponent = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <Grid container direction="column" spacing={5}>
-              <Hidden smDown>
+              <Hidden mdDown>
                 <Map placeId={watch('address')?.placeId} />
               </Hidden>
               <Grid item xs={12}>

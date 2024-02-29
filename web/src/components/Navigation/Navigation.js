@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Link, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { AppBar, Toolbar, Typography, Link, Button } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const useStyles = makeStyles((theme) => ({

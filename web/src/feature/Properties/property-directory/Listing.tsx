@@ -1,17 +1,17 @@
 import React, { FunctionComponent, useState } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
-import { Card, Typography } from '@material-ui/core';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import KingBedOutlinedIcon from '@material-ui/icons/KingBedOutlined';
-import BathtubOutlinedIcon from '@material-ui/icons/BathtubOutlined';
-import DriveEtaOutlinedIcon from '@material-ui/icons/DriveEtaOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { withStyles } from '@material-ui/core/styles';
+import { Card, Typography } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import KingBedOutlinedIcon from '@mui/icons-material/KingBedOutlined';
+import BathtubOutlinedIcon from '@mui/icons-material/BathtubOutlined';
+import DriveEtaOutlinedIcon from '@mui/icons-material/DriveEtaOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import withStyles from '@mui/styles/withStyles';
 import { DeleteProperty } from '../../../_services/ApiService/houseApi';
 import { Property as PropertyType } from '../../../_services/ApiService/types';
 
@@ -68,20 +68,20 @@ export const Listing: FunctionComponent<Props> = ({ house, detailsUrl }) => {
         <HouseLayout house={house} />
 
         <Tags tags={house.Tags} />
-        <ExpansionPanel>
-          <ExpansionPanelSummary
+        <Accordion>
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="rawdb-content"
             id={'rawdb-header-' + house.ID}
           >
             Raw DB information
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <div>
               <pre>{JSON.stringify(house, null, 2)}</pre>
             </div>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       </CardContent>
       <CardActions>
         <Button size="small" href={mapUrl} target="_blank">

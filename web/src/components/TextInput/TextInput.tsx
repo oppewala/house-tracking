@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, OutlinedInput, FormHelperText } from '@material-ui/core';
+import { FormControl, InputLabel, OutlinedInput, FormHelperText } from '@mui/material';
 import React, { FunctionComponent } from 'react';
 
 interface Props {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { CheckboxInput } from 'components/CheckboxInput';
 import { CashInput } from 'components/CashInput';
 import { PercentageInput } from 'components/PercentageInput';

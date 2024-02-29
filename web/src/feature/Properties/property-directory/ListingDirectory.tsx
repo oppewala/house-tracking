@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import makeStyles from '@mui/styles/makeStyles';
+import Button from '@mui/material/Button';
 import { Listing } from './Listing';
 import { RetrieveAllProperties } from '../../../_services/ApiService/houseApi';
 

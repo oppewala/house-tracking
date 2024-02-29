@@ -1,6 +1,6 @@
 import React from 'react';
 import { NumberInput } from 'components/NumberInput';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { CheckboxInput } from 'components/CheckboxInput';
 import { FieldErrors } from 'react-hook-form';
 

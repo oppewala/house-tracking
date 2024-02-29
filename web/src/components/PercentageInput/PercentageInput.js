@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FormControl, InputAdornment, InputLabel, OutlinedInput } from '@material-ui/core';
+import { FormControl, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 
 export const PercentageInput = ({ desc, handleChange, name, value }) => {
   let initValue = value;

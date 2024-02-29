@@ -10,18 +10,18 @@ import {
   ListItemText,
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { BreadcrumbNav } from '../components/Breadcrumb/BreadcrumbNav';
 import { Property } from '../../../_services/ApiService/types';
-import KingBedOutlinedIcon from '@material-ui/icons/KingBedOutlined';
-import BathtubOutlinedIcon from '@material-ui/icons/BathtubOutlined';
-import DriveEtaOutlinedIcon from '@material-ui/icons/DriveEtaOutlined';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import KingBedOutlinedIcon from '@mui/icons-material/KingBedOutlined';
+import BathtubOutlinedIcon from '@mui/icons-material/BathtubOutlined';
+import DriveEtaOutlinedIcon from '@mui/icons-material/DriveEtaOutlined';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import TextField from '@mui/material/TextField';
+import makeStyles from '@mui/styles/makeStyles';
 import { MapEmbed } from '../components/MapEmbed';
 
 interface Props {
@@ -126,20 +126,20 @@ export const Listing: FunctionComponent<Props> = ({ id }) => {
       {apiState === 'loading' ? (
         <Loading />
       ) : (
-        <ExpansionPanel>
-          <ExpansionPanelSummary
+        <Accordion>
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="rawdb-content"
             id={'rawdb-header-' + property?.ID}
           >
             Raw DB information
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <div>
               <pre>{JSON.stringify(property, null, 2)}</pre>
             </div>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       )}
     </>
   );
