@@ -1,5 +1,5 @@
 import React from 'react';
-import OutputCard from './OutputCard';
+import OutputCard, { Item } from './OutputCard';
 
 interface Props {
   savings: number;
@@ -11,7 +11,7 @@ const Deposit: React.FC<Props> = ({ savings, isFirstHomeBuyerEligible }) => {
 
   const totalSavings = Number(firstHomeBuyer) + Number(savings);
 
-  const items = [
+  const items: Item[] = [
     { label: 'Savings', value: savings, format: 'currency' },
     { label: 'First Home Buyers Grant', value: firstHomeBuyer, format: 'currency' },
   ];

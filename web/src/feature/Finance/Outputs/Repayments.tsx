@@ -3,8 +3,13 @@ import { Round } from '@/_helpers/round';
 import { CostsCalculator } from '../CostsCalculator';
 import OutputCard from './OutputCard';
 
-const Repayments = (props) => {
-  const { interestRate, mortgageLength, mortgageAmount } = props;
+interface Props {
+  interestRate: number;
+  mortgageLength: number;
+  mortgageAmount: number;
+}
+
+const Repayments: React.FC<Props> = ({ interestRate, mortgageLength, mortgageAmount }) => {
 
   const monthly = -CostsCalculator.RepaymentsMonthly(interestRate, mortgageLength, mortgageAmount);
   const totalPaid = monthly * 12 * mortgageLength;

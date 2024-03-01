@@ -51,12 +51,12 @@ const formatter = (value: number, opt: string) => {
 interface Props {
   title: string;
   items: Item[];
-  total: Item;
+  total?: Item;
 }
 
-interface Item {
+export interface Item {
   label: string;
-  value: number;
+  value: number | null;
   format: string;
 }
 

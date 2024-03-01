@@ -1,8 +1,11 @@
 import React from 'react';
 import { config } from '@/_helpers/config';
 
-const Nearby = (props) => {
-  const { address } = props;
+interface Props {
+  address: any;
+}
+
+const Nearby: React.FC<Props> = ({ address }) => {
 
   const fetchUrl = new URL('/maps/api/place/nearbysearch/json', 'https://maps.googleapis.com');
   fetchUrl.searchParams.set('location', `${address.point.lat}%2C${address.point.lng}`);

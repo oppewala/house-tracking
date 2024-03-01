@@ -1,22 +1,22 @@
 import React from 'react';
 
-const formatter = (value: number | bigint, opt: string) => {
-  let val: string = value;
-  if (opt === 'currency') {
-    const currencyFormatter = new Intl.NumberFormat('en-AU', {
-      style: 'currency',
-      currency: 'AUD',
-    });
-    val = currencyFormatter.format(val);
-  }
+// const formatter = (value: number, opt: string) => {
+//   let val: string = value.toString();
+//   if (opt === 'currency') {
+//     const currencyFormatter = new Intl.NumberFormat('en-AU', {
+//       style: 'currency',
+//       currency: 'AUD',
+//     });
+//     return currencyFormatter.format(value);
+//   }
 
-  if (opt === 'percent') {
-    const perc = +Math.round(val * 10000) / 100;
-    val = `${perc}%`;
-  }
+//   if (opt === 'percent') {
+//     const perc = +Math.round(value * 10000) / 100;
+//     return `${perc}%`;
+//   }
 
-  return val;
-};
+//   return val;
+// };
 
 // interface RowProps {
 //   desc: string;

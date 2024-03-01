@@ -34,7 +34,7 @@ jobs:
           environment: prod
       - name: Build And Deploy
         id: builddeploy
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ZEALOUS_BAY_0858BA500 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
@@ -43,5 +43,11 @@ jobs:
           app_location: "/web" # App source code path
           #api_location: 'api' # Api source code path - optional
           #app_artifact_location: '' # Built app content directory - optional
-          app_build_command: REACT_APP_GOOGLE_APIKEY=${{ secrets.REACT_APP_GOOGLE_APIKEY }} REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} REACT_APP_API_ROOT=https://api.house.crackedjar.com/ REACT_APP_AUTH0_DOMAIN=${{ secrets.REACT_APP_AUTH0_DOMAIN }} REACT_APP_AUTH0_CLIENTID=${{ secrets.REACT_APP_AUTH0_CLIENTID }} yarn build
+          app_build_command: 
+            VITE_GOOGLE_APIKEY=${{ secrets.REACT_APP_GOOGLE_APIKEY }} \
+            VITE_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }} \
+            VITE_API_ROOT=https://api.house.crackedjar.com/ \
+            VITE_AUTH0_DOMAIN=${{ secrets.REACT_APP_AUTH0_DOMAIN }} \
+            VITE_AUTH0_CLIENTID=${{ secrets.REACT_APP_AUTH0_CLIENTID }} \
+            yarn build
           ###### End of Repository/Build Configurations ######
