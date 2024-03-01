@@ -1,3 +1,5 @@
+/// <reference types='google.maps' />
+
 import React, { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import GoogleAutocomplete from './Autocomplete';
@@ -19,7 +21,7 @@ export const AddressInput: FunctionComponent<AddressInputProps> = ({ changeHandl
       return;
     }
 
-    const geocoder = new window.google.maps.Geocoder();
+    const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ placeId }, (results, status) => {
       if (status !== 'OK') {
         // eslint-disable-next-line
@@ -27,7 +29,7 @@ export const AddressInput: FunctionComponent<AddressInputProps> = ({ changeHandl
         return;
       }
 
-      if (results.length === 0) {
+      if (!results || results.length === 0) {
         // eslint-disable-next-line
         console.error('Could not find matching place');
         return;

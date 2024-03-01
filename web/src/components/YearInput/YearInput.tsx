@@ -4,10 +4,18 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 
-export const YearInput = ({ desc, handleChange, name, value, subText }) => {
+interface Props {
+  desc: React.ReactNode;
+  handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  name: string;
+  value: number;
+  subText?: string | undefined;
+}
+
+export const YearInput: React.FC<Props> = ({ desc, handleChange, name, value, subText }) => {
   let initValue = value;
   if (Number.isNaN(value)) {
     initValue = 0.0;

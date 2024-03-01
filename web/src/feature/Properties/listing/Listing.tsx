@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { RetrieveProperty } from '../../../_services/ApiService/houseApi';
+import { styled } from '@mui/material/styles';
+import { RetrieveProperty } from '@/_services/ApiService/houseApi';
 import {
   Card,
   CardContent,
@@ -10,35 +11,46 @@ import {
   ListItemText,
   Paper,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { BreadcrumbNav } from '../components/Breadcrumb/BreadcrumbNav';
-import { Property } from '../../../_services/ApiService/types';
-import KingBedOutlinedIcon from '@material-ui/icons/KingBedOutlined';
-import BathtubOutlinedIcon from '@material-ui/icons/BathtubOutlined';
-import DriveEtaOutlinedIcon from '@material-ui/icons/DriveEtaOutlined';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import { Property } from '@/_services/ApiService/types';
+import KingBedOutlinedIcon from '@mui/icons-material/KingBedOutlined';
+import BathtubOutlinedIcon from '@mui/icons-material/BathtubOutlined';
+import DriveEtaOutlinedIcon from '@mui/icons-material/DriveEtaOutlined';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import TextField from '@mui/material/TextField';
 import { MapEmbed } from '../components/MapEmbed';
+
+const PREFIX = 'Listing';
+
+const classes = {
+  mapCard: `${PREFIX}-mapCard`,
+  mapCardContent: `${PREFIX}-mapCardContent`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.mapCard}`]: {
+    height: '100%',
+  },
+
+  [`& .${classes.mapCardContent}`]: {
+    height: '100%',
+  }
+}));
 
 interface Props {
   id: string;
 }
 
-const useStyles = makeStyles((theme) => ({
-  mapCard: {
-    height: '100%',
-  },
-  mapCardContent: {
-    height: '100%',
-  },
-}));
-
 export const Listing: FunctionComponent<Props> = ({ id }) => {
-  const classes = useStyles();
+
   const [apiState, setApiState] = useState<string>('loading');
   const [property, setProperty] = useState<Property>();
   useEffect(() => {
@@ -79,70 +91,68 @@ export const Listing: FunctionComponent<Props> = ({ id }) => {
     );
   };
 
-  return (
-    <>
-      <BreadcrumbNav crumbs={[{ name: 'Properties', route: '/Properties' }]}>
-        {address}
-      </BreadcrumbNav>
-      <Typography variant={'h4'}>{property?.Price}</Typography>
-      <HouseLayout house={property} />
-      <Grid container spacing={3}>
-        <Grid item sm={12} md={6}>
-          <Paper>
-            <div>
-              {property?.Tags?.map((t) => (
-                <Chip key={t} label={t} />
-              ))}
-            </div>
-            <TextField
-              label="Notes"
-              value={property?.Notes}
-              multiline
-              rows={5}
-              fullWidth
-              margin="normal"
-            />
-            <List>
-              {property?.References?.map((r) => (
-                <ListItem button component="a" key={r.Value} href={r.Value}>
-                  <ListItemText primary={r.Type} secondary={r.Value} />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-        </Grid>
-        <Grid item sm={12} md={6}>
-          <Card className={classes.mapCard}>
-            <CardContent className={classes.mapCardContent}>
-              <MapEmbed
-                placeId={property?.Location.PlaceID}
-                showPlaceholder
-                title="property location"
-              />
-            </CardContent>
-          </Card>
-        </Grid>
+  return <>
+    <BreadcrumbNav crumbs={[{ name: 'Properties', route: '/Properties' }]}>
+      <span>{address}</span>
+    </BreadcrumbNav>
+    <Typography variant={'h4'}>{property?.Price}</Typography>
+    <HouseLayout house={property} />
+    <Grid container spacing={3}>
+      <Grid item sm={12} md={6}>
+        <Paper>
+          <Root>
+            {property?.Tags?.map((t) => (
+              <Chip key={t} label={t} />
+            ))}
+          </Root>
+          <TextField
+            variant="standard"
+            label="Notes"
+            value={property?.Notes}
+            multiline
+            rows={5}
+            fullWidth
+            margin="normal" />
+          <List>
+            {property?.References?.map((r) => (
+              <ListItem button component="a" key={r.Value} href={r.Value}>
+                <ListItemText primary={r.Type} secondary={r.Value} />
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
       </Grid>
-      {apiState === 'loading' ? (
-        <Loading />
-      ) : (
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="rawdb-content"
-            id={'rawdb-header-' + property?.ID}
-          >
-            Raw DB information
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <div>
-              <pre>{JSON.stringify(property, null, 2)}</pre>
-            </div>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      )}
-    </>
-  );
+      <Grid item sm={12} md={6}>
+        <Card className={classes.mapCard}>
+          <CardContent className={classes.mapCardContent}>
+            <MapEmbed
+              placeId={property?.Location.PlaceID}
+              showPlaceholder
+              title="property location"
+            />
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+    {apiState === 'loading' ? (
+      <Loading />
+    ) : (
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="rawdb-content"
+          id={'rawdb-header-' + property?.ID}
+        >
+          Raw DB information
+        </AccordionSummary>
+        <AccordionDetails>
+          <div>
+            <pre>{JSON.stringify(property, null, 2)}</pre>
+          </div>
+        </AccordionDetails>
+      </Accordion>
+    )}
+  </>;
 };
 
 const Loading: FunctionComponent = () => <div>Loading</div>;

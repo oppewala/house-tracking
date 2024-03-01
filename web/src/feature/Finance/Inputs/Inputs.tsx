@@ -1,11 +1,27 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { CheckboxInput } from 'components/CheckboxInput';
-import { CashInput } from 'components/CashInput';
-import { PercentageInput } from 'components/PercentageInput';
-import { YearInput } from '../../../components/YearInput';
+import { Grid } from '@mui/material';
+import { CheckboxInput } from '@/components/CheckboxInput';
+import { CashInput } from '@/components/CashInput';
+import { PercentageInput } from '@/components/PercentageInput';
+import { YearInput } from '@/components/YearInput';
 
-const Inputs = (props) => {
+interface Props
+{
+  firstHomeBuyer: boolean | undefined;
+  onFirstHomeBuyerChange: ((event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void) | undefined;
+  housePrice: number;
+  onPriceChange: any;
+  savings: number;
+  onSavingsChange: any;
+  interestRate: number;
+  onInterestRateChange: any;
+  length: number;
+  onLengthChange: any;
+  monthlyLivingCosts: number;
+  onLivingCostsChange: any;
+}
+
+const Inputs: React.FC<Props> = (props) => {
   const { firstHomeBuyer, onFirstHomeBuyerChange } = props;
   const { housePrice, onPriceChange } = props;
   const { savings, onSavingsChange } = props;

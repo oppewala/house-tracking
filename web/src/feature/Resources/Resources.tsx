@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Resources = () => {
+const Resources: React.FC = () => {
   return (
     <div>
       <h1 className="header header-xl">Resources</h1>

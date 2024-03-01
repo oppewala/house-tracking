@@ -1,5 +1,11 @@
-import { combineReducers } from 'redux';
+import { createSlice } from '@reduxjs/toolkit'
 
-export default combineReducers({
-  //newProperty: NewPropertyReducer,
-});
+const initialState: any[] = [];
+
+const propertiesSlice = createSlice({
+  name: 'properties',
+  initialState,
+  reducers: {}
+})
+
+export default propertiesSlice.reducer;

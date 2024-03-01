@@ -2,8 +2,15 @@ import React from 'react';
 import { CostsCalculator } from '../CostsCalculator';
 import OutputCard from './OutputCard';
 
-const Mortgage = (props) => {
-  const { mortgageAmount, housePrice, totalCost, monthlyRepayments, monthlyLivingCosts } = props;
+interface Props { 
+  mortgageAmount: number, 
+  housePrice: number, 
+  totalCost: number, 
+  monthlyRepayments: number, 
+  monthlyLivingCosts: number 
+}
+
+const Mortgage: React.FC<Props> = ({ mortgageAmount, housePrice, totalCost, monthlyRepayments, monthlyLivingCosts }) => {
 
   const lvr = mortgageAmount / housePrice;
 

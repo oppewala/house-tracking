@@ -4,7 +4,7 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
   subText?: string;
 }
 
-export const CashInput = ({ desc, handleChange, name, value, subText }: Props): JSX.Element => {
+export const CashInput: React.FC<Props> = ({ desc, handleChange, name, value, subText }) => {
   let initValue = value;
   if (Number.isNaN(value)) {
     initValue = 0.0;

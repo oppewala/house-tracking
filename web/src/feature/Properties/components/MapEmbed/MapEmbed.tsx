@@ -1,5 +1,5 @@
 import React from 'react';
-import { config } from '_helpers/config';
+import { config } from '@/_helpers/config';
 
 interface Props {
   placeId?: string;
@@ -7,7 +7,7 @@ interface Props {
   showPlaceholder?: boolean;
 }
 
-export const MapEmbed = ({ placeId, title, showPlaceholder }: Props): JSX.Element => {
+export const MapEmbed: React.FC<Props> = ({ placeId, title, showPlaceholder }) => {
   if (!showPlaceholder && (!placeId || placeId === '')) return <></>;
   if (!config.GoogleApiKey || config.GoogleApiKey === '') return <></>;
 

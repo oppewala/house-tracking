@@ -1,18 +1,30 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Grid } from '@material-ui/core';
-import { Link, useRouteMatch } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { styled } from '@mui/material/styles';
+import { Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import { Listing } from './Listing';
 import { RetrieveAllProperties } from '../../../_services/ApiService/houseApi';
 
-const useStyles = makeStyles((theme) => ({
-  directoryContainer: {
+const PREFIX = 'ListingDirectory';
+
+const classes = {
+  directoryContainer: `${PREFIX}-directoryContainer`,
+  childNav: `${PREFIX}-childNav`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.directoryContainer}`]: {
     marginTop: 0,
   },
-  childNav: {
-    margin: `${theme.spacing() * 2}px 0 0 0`,
-  },
+
+  [`& .${classes.childNav}`]: {
+    margin: `${theme.spacing(2)} 0 0 0`,
+  }
 }));
 
 const ListingDirectory: FunctionComponent = () => {
@@ -22,8 +34,6 @@ const ListingDirectory: FunctionComponent = () => {
 
   const controller = new AbortController();
   const { signal } = controller;
-  const match = useRouteMatch();
-  const classes = useStyles();
 
   useEffect(() => {
     RetrieveAllProperties({ signal })
@@ -41,25 +51,25 @@ const ListingDirectory: FunctionComponent = () => {
   }, []);
 
   if (error) {
-    return <div>Failed to load: {error.message}</div>;
+    return <Root>Failed to load: {error.message}</Root>;
   }
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
 
-  const houseEls = houses.map((h) => (
+  const houseEls = houses.map((h: any) => (
     <Grid key={h.ID} item xs>
-      <Listing house={h} detailsUrl={`${match.url}/${h.ID}`} />
+      <Listing house={h} detailsUrl={h.ID} />
     </Grid>
   ));
 
   return (
     <div>
       <div className={classes.childNav}>
-        <Button size="small" component={Link} to={`${match.url}/add`}>
+        <Button size="small" component={Link} to='add'>
           Add new
         </Button>
-        <Button size="small" component={Link} to={`${match.url}/check`}>
+        <Button size="small" component={Link} to='check'>
           Check Existing
         </Button>
       </div>
