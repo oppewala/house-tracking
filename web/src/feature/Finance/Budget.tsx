@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Grid, Button, Box, Typography } from '@mui/material';
+import { Grid, Button, Box, Typography, Snackbar } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { useClipboard } from 'use-clipboard-copy';
 import clsx from 'clsx';
@@ -132,6 +132,7 @@ const Budget = () => {
 
   const monthlyRepayment = -CostsCalculator.RepaymentsMonthly(interestRate, length, mortgageAmount);
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const shareForm = () => {
     let url = new URL(window.location.href);
 
@@ -142,125 +143,135 @@ const Budget = () => {
     });
 
     clipboard.copy(url.href);
+    setSnackbarOpen(true);
   };
 
+
   return (
-    <StyledGrid container spacing={0} direction="row" className={classes.root}>
-      <Grid item xs={12} sm={6} md={4} className={clsx(classes.container, classes.inputContainer)}>
-        <Box>
-          <StyledGrid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-            className={classes.sectionTitle}
-          >
-            <Grid item>
-              <Typography variant="h3">Budget</Typography>
-            </Grid>
-            <Grid item>
-              <Button onClick={shareForm} color="primary">
-                Share
-              </Button>
-              <Button onClick={formReset} color="secondary">
-                Reset
-              </Button>
-            </Grid>
-          </StyledGrid>
-          <Inputs
-            housePrice={housePrice}
-            onPriceChange={onPriceChange}
-            firstHomeBuyer={firstHomeBuyer}
-            onFirstHomeBuyerChange={onFirstHomeBuyerChange}
-            savings={savings}
-            onSavingsChange={onSavingsChange}
-            interestRate={interestRate}
-            onInterestRateChange={setInterestRate}
-            length={length}
-            onLengthChange={onLengthChange}
-            monthlyLivingCosts={monthlyLivingCosts}
-            onLivingCostsChange={onLivingCostsChange}
-          />
-        </Box>
-      </Grid>
-      <StyledGrid item xs={12} sm={6} md={8} className={clsx(classes.container, classes.outputContainer)}>
-        <Grid container spacing={5}>
-          <Grid item xs={12} md={6}>
-            <Box className={classes.sectionTitle}>
-              <Typography
-                variant="h5"
-                className={clsx(classes.sectionTitle, classes.subSectionTitle)}
-              >
-                Result
-              </Typography>
-            </Box>
-            <Grid container direction="column" spacing={5}>
+    <>
+      <Snackbar 
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }} 
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        message="Share URL copied to clipboard"
+      />
+      <StyledGrid container spacing={0} direction="row" className={classes.root}>
+        <Grid item xs={12} sm={6} md={4} className={clsx(classes.container, classes.inputContainer)}>
+          <Box>
+            <StyledGrid
+              container
+              justifyContent="space-between"
+              alignItems="center"
+              className={classes.sectionTitle}
+            >
               <Grid item>
-                <Costs
-                  price={housePrice}
-                  stampDuty={stampDuty}
-                  transferFee={transferFee}
-                  applicationFee={constants.mortgageApplicationFee}
-                  incidentalCosts={constants.incidentalCosts}
-                  total={totalCosts}
-                />
+                <Typography variant="h3">Budget</Typography>
               </Grid>
               <Grid item>
-                <Deposit savings={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
+                <Button onClick={shareForm} color="primary">
+                  Share
+                </Button>
+                <Button onClick={formReset} color="secondary">
+                  Reset
+                </Button>
               </Grid>
-              <Grid item>
-                <Mortgage
-                  housePrice={housePrice}
-                  totalCost={totalCosts}
-                  mortgageAmount={mortgageAmount}
-                  monthlyRepayments={monthlyRepayment}
-                  monthlyLivingCosts={monthlyLivingCosts}
-                />
-              </Grid>
-              <Grid item>
-                <Repayments
-                  interestRate={interestRate}
-                  mortgageAmount={mortgageAmount}
-                  mortgageLength={length}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Box className={classes.sectionTitle}>
-              <Typography
-                variant="h5"
-                className={clsx(classes.sectionTitle, classes.subSectionTitle)}
-              >
-                Different Interest Rates
-              </Typography>
-            </Box>
-            <Grid container direction="column" spacing={5}>
-              <Grid item>
-                <Repayments
-                  interestRate={3 / 100}
-                  mortgageAmount={mortgageAmount}
-                  mortgageLength={length}
-                />
-              </Grid>
-              <Grid item>
-                <Repayments
-                  interestRate={5 / 100}
-                  mortgageAmount={mortgageAmount}
-                  mortgageLength={length}
-                />
-              </Grid>
-              <Grid item>
-                <Repayments
-                  interestRate={8 / 100}
-                  mortgageAmount={mortgageAmount}
-                  mortgageLength={length}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
+            </StyledGrid>
+            <Inputs
+              housePrice={housePrice}
+              onPriceChange={onPriceChange}
+              firstHomeBuyer={firstHomeBuyer}
+              onFirstHomeBuyerChange={onFirstHomeBuyerChange}
+              savings={savings}
+              onSavingsChange={onSavingsChange}
+              interestRate={interestRate}
+              onInterestRateChange={setInterestRate}
+              length={length}
+              onLengthChange={onLengthChange}
+              monthlyLivingCosts={monthlyLivingCosts}
+              onLivingCostsChange={onLivingCostsChange}
+            />
+          </Box>
         </Grid>
+        <StyledGrid item xs={12} sm={6} md={8} className={clsx(classes.container, classes.outputContainer)}>
+          <Grid container spacing={5}>
+            <Grid item xs={12} md={6}>
+              <Box className={classes.sectionTitle}>
+                <Typography
+                  variant="h5"
+                  className={clsx(classes.sectionTitle, classes.subSectionTitle)}
+                >
+                  Result
+                </Typography>
+              </Box>
+              <Grid container direction="column" spacing={5}>
+                <Grid item>
+                  <Costs
+                    price={housePrice}
+                    stampDuty={stampDuty}
+                    transferFee={transferFee}
+                    applicationFee={constants.mortgageApplicationFee}
+                    incidentalCosts={constants.incidentalCosts}
+                    total={totalCosts}
+                  />
+                </Grid>
+                <Grid item>
+                  <Deposit savings={savings} isFirstHomeBuyerEligible={isFirstHomeBuyerEligible} />
+                </Grid>
+                <Grid item>
+                  <Mortgage
+                    housePrice={housePrice}
+                    totalCost={totalCosts}
+                    mortgageAmount={mortgageAmount}
+                    monthlyRepayments={monthlyRepayment}
+                    monthlyLivingCosts={monthlyLivingCosts}
+                  />
+                </Grid>
+                <Grid item>
+                  <Repayments
+                    interestRate={interestRate}
+                    mortgageAmount={mortgageAmount}
+                    mortgageLength={length}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box className={classes.sectionTitle}>
+                <Typography
+                  variant="h5"
+                  className={clsx(classes.sectionTitle, classes.subSectionTitle)}
+                >
+                  Different Interest Rates
+                </Typography>
+              </Box>
+              <Grid container direction="column" spacing={5}>
+                <Grid item>
+                  <Repayments
+                    interestRate={3 / 100}
+                    mortgageAmount={mortgageAmount}
+                    mortgageLength={length}
+                  />
+                </Grid>
+                <Grid item>
+                  <Repayments
+                    interestRate={5 / 100}
+                    mortgageAmount={mortgageAmount}
+                    mortgageLength={length}
+                  />
+                </Grid>
+                <Grid item>
+                  <Repayments
+                    interestRate={8 / 100}
+                    mortgageAmount={mortgageAmount}
+                    mortgageLength={length}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </StyledGrid>
       </StyledGrid>
-    </StyledGrid>
+    </>
   );
 };
 
