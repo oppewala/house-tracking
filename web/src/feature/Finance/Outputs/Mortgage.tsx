@@ -7,10 +7,11 @@ interface Props {
   housePrice: number, 
   totalCost: number, 
   monthlyRepayments: number, 
-  monthlyLivingCosts: number 
+  monthlyLivingCosts: number,
+  lmi?: number | undefined | null,
 }
 
-const Mortgage: React.FC<Props> = ({ mortgageAmount, housePrice, totalCost, monthlyRepayments, monthlyLivingCosts }) => {
+const Mortgage: React.FC<Props> = ({ mortgageAmount, housePrice, totalCost, monthlyRepayments, monthlyLivingCosts, lmi }) => {
 
   const lvr = mortgageAmount / housePrice;
 
@@ -20,7 +21,7 @@ const Mortgage: React.FC<Props> = ({ mortgageAmount, housePrice, totalCost, mont
   const totalLivingCosts = monthlyLivingCosts * 6;
   const minimumSixMo = minimum + totalLivingCosts + totalRepayments;
 
-  const lmi = CostsCalculator.lmi(lvr);
+  if (lmi === undefined || lmi === null) lmi = CostsCalculator.lmi(lvr);
 
   const items = [
     { label: 'Total Mortgage', value: mortgageAmount, format: 'currency' },

@@ -100,6 +100,8 @@ const Budget = () => {
     'Budget.firstHomeBuyer',
     false,
   );
+  const [lmiWaiver, setLmiWaiver] = useStateWithLocalStorage('Budget.lmiWaiver', false);
+  const [customLmi, setCustomLmi] = useStateWithLocalStorage('Budget.customLmi', 0)
 
   const onPriceChange = (e: any) => setPrice(e.target.value);
   const onSavingsChange = (e: any) => setSavings(e.target.value);
